@@ -10,6 +10,7 @@ export const config = { path: "/api/tutor" };
 const JSON_HINT = '\n\nReply with ONLY a JSON object, no other text, with exactly this shape: {"reply": "...", "reply_es": "...", "feedback": {"ok": true, "corrected": "...", "why_es": "..."}, "ideas": [{"en": "...", "es": "..."}, {"en": "...", "es": "..."}]}';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let PROVIDER_USED = "";
+let DIAG = [];   // diagnóstico temporal
 const PROVIDER = () => PROVIDER_USED || (process.env.ANTHROPIC_API_KEY ? "claude" : "gemini");
 const reply = (status, body) => Response.json(body, { status, headers: { "Cache-Control": "no-store", "X-Tutor-Provider": PROVIDER() } });
 
@@ -145,6 +146,7 @@ async function askClaude(system, messages, D, budgetMs) {
       if (err instanceof Anthropic.APIError) { console.error(`Claude ${err.status}:`, err.message); last = new UpstreamError(502, `claude: HTTP ${err.status}`); continue; }
       throw err;
     }
+    DIAG.push({ stop: msg.stop_reason, details: msg.stop_details || null, types: msg.content.map(b => b.type), text: msg.content.filter(b => b.type === "text").map(b => b.text).join("").slice(0, 300) });
     if (msg.stop_reason === "refusal") { last = new UpstreamError(422, "claude: refusal"); continue; }
     const data = parseReply(msg.content.filter(b => b.type === "text").map(b => b.text).join(""));
     if (data && typeof data.reply === "string" && data.reply.trim()) return data;
@@ -172,6 +174,11 @@ export default async function handler(req) {
     return reply(502, { error: "server" });
   }
 
+  DIAG = [];
+  if (body && body.debug === "solo-claude") {
+    try { const d = await askClaude(prompt.system, prompt.messages, D, 22000); return reply(200, { ok: true, reply: d.reply, diag: DIAG }); }
+    catch (err) { return reply(200, { ok: false, why: err.why || String(err), diag: DIAG }); }
+  }
   try {
     let data;
     PROVIDER_USED = "";
