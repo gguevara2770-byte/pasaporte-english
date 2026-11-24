@@ -9,7 +9,8 @@ export const config = { path: "/api/tutor" };
 
 const JSON_HINT = '\n\nReply with ONLY a JSON object, no other text, with exactly this shape: {"reply": "...", "reply_es": "...", "feedback": {"ok": true, "corrected": "...", "why_es": "..."}, "ideas": [{"en": "...", "es": "..."}, {"en": "...", "es": "..."}]}';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const PROVIDER = () => (process.env.ANTHROPIC_API_KEY ? "claude" : "gemini");
+let PROVIDER_USED = "";
+const PROVIDER = () => PROVIDER_USED || (process.env.ANTHROPIC_API_KEY ? "claude" : "gemini");
 const reply = (status, body) => Response.json(body, { status, headers: { "Cache-Control": "no-store", "X-Tutor-Provider": PROVIDER() } });
 
 let DATA = null;
@@ -83,7 +84,7 @@ async function askGemini(system, messages) {
   }
   const body = JSON.stringify({ systemInstruction: { parts: [{ text: system + JSON_HINT }] }, contents, generationConfig: { responseMimeType: "application/json" } });
   let lastStatus = 502;
-  const deadline = Date.now() + 19000;   // responder antes de que Netlify corte la función
+  const deadline = Date.now() + (PROVIDER_USED === "gemini" && process.env.ANTHROPIC_API_KEY ? 11000 : 19000);   // responder antes de que Netlify corte la función
   for (const model of models) {
     for (let attempt = 0; attempt < 2; attempt++) {
       const left = deadline - Date.now();
@@ -121,27 +122,35 @@ async function askGemini(system, messages) {
   throw new UpstreamError(lastStatus === 429 ? 429 : 502, lastWhy);
 }
 
-async function askClaude(system, messages, D) {
-  const client = new Anthropic();
+async function askClaude(system, messages, D, budgetMs) {
   const model = process.env.CLAUDE_MODEL || "claude-opus-5-5";
-  const params = {
-    model, max_tokens: 8000, system, messages,
-    output_config: { effort: "low", format: { type: "json_schema", schema: D.schema } }
-  };
-  if (/^claude-(opus|sonnet|fable)-/.test(model)) { params.betas = ["server-side-fallback-2026-07-01"]; params.fallbacks = "default"; }
-  let msg;
-  try {
-    msg = await client.beta.messages.create(params);
-  } catch (err) {
-    if (err instanceof Anthropic.RateLimitError) throw new UpstreamError(429);
-    if (err instanceof Anthropic.AuthenticationError) { console.error("ANTHROPIC_API_KEY no es válida."); throw new UpstreamError(503); }
-    if (err instanceof Anthropic.APIError) { console.error(`Claude ${err.status}:`, err.message); throw new UpstreamError(502); }
-    throw err;
+  const deadline = Date.now() + budgetMs;
+  let last = new UpstreamError(502, "claude: sin respuesta");
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const left = deadline - Date.now();
+    if (left < 4000) break;
+    // En el segundo intento se recuerda que la respuesta no puede ir vacía.
+    const sys = attempt === 0 ? system : system + "\n\nImportant: reply and reply_es must contain your line; never leave them empty.";
+    const params = {
+      model, max_tokens: 8000, system: sys, messages,
+      output_config: { effort: "low", format: { type: "json_schema", schema: D.schema } }
+    };
+    if (/^claude-(opus|sonnet|fable)-/.test(model)) { params.betas = ["server-side-fallback-2026-07-01"]; params.fallbacks = "default"; }
+    let msg;
+    try {
+      msg = await new Anthropic({ timeout: left, maxRetries: 0 }).beta.messages.create(params);
+    } catch (err) {
+      if (err instanceof Anthropic.RateLimitError) throw new UpstreamError(429, "claude: límite de uso");
+      if (err instanceof Anthropic.AuthenticationError) { console.error("ANTHROPIC_API_KEY no es válida."); throw new UpstreamError(503, "claude: clave no válida"); }
+      if (err instanceof Anthropic.APIError) { console.error(`Claude ${err.status}:`, err.message); last = new UpstreamError(502, `claude: HTTP ${err.status}`); continue; }
+      throw err;
+    }
+    if (msg.stop_reason === "refusal") { last = new UpstreamError(422, "claude: refusal"); continue; }
+    const data = parseReply(msg.content.filter(b => b.type === "text").map(b => b.text).join(""));
+    if (data && typeof data.reply === "string" && data.reply.trim()) return data;
+    last = new UpstreamError(502, `claude ${model}: respuesta vacía (${msg.stop_reason})`);
   }
-  if (msg.stop_reason === "refusal") throw new UpstreamError(422, "claude: refusal");
-  const data = parseReply(msg.content.filter(b => b.type === "text").map(b => b.text).join(""));
-  if (!data || typeof data.reply !== "string" || !data.reply.trim()) throw new UpstreamError(502, `claude ${model}: respuesta vacía (${msg.stop_reason})`);
-  return data;
+  throw last;
 }
 
 export default async function handler(req) {
@@ -164,9 +173,23 @@ export default async function handler(req) {
   }
 
   try {
-    const data = process.env.ANTHROPIC_API_KEY
-      ? await askClaude(prompt.system, prompt.messages, D)
-      : await askGemini(prompt.system, prompt.messages);
+    let data;
+    PROVIDER_USED = "";
+    if (process.env.ANTHROPIC_API_KEY) {
+      try {
+        PROVIDER_USED = "claude";
+        data = await askClaude(prompt.system, prompt.messages, D, process.env.GEMINI_API_KEY ? 14000 : 22000);
+      } catch (err) {
+        // Si también hay clave de Gemini, se prueba con Gemini antes de rendirse.
+        if (!(err instanceof UpstreamError) || !process.env.GEMINI_API_KEY || err.status === 429) throw err;
+        console.error("Claude falló (" + err.why + "); se prueba con Gemini.");
+        PROVIDER_USED = "gemini";
+        data = await askGemini(prompt.system, prompt.messages);
+      }
+    } else {
+      PROVIDER_USED = "gemini";
+      data = await askGemini(prompt.system, prompt.messages);
+    }
     if (!data || typeof data.reply !== "string" || !data.reply.trim()) return reply(502, { error: "bad_output", detail: "respuesta sin texto" });
     return reply(200, data);
   } catch (err) {
