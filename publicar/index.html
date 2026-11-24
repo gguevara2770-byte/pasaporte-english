@@ -492,6 +492,56 @@ details.lesson:not([open]) { gap: 0; }
 .lt-review .yes { color: var(--ok); font-weight: 700; }
 .lt-review .no { color: var(--bad); font-weight: 700; }
 
+/* Programas */
+.progs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 960px) { .progs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .progs { grid-template-columns: 1fr; } }
+.prog { display: grid; gap: .45rem; align-content: start; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--brand); border-radius: 16px; padding: 1.2rem; box-shadow: var(--shadow); transition: transform .15s, border-color .15s; min-width: 0; }
+.prog:hover { transform: translateY(-2px); border-color: var(--brand); }
+.prog b { font-family: var(--f-display); font-size: 1.25rem; }
+.prog span { color: var(--muted); font-size: .94rem; }
+.prog em { font-style: normal; font-weight: 700; color: var(--brand); margin-top: .3rem; }
+.prog .prog-tag { justify-self: start; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); background: var(--brand-soft); border-radius: 4px; padding: .12rem .45rem; }
+.prog-travel { border-top-color: #0284C7; }
+.prog-travel .prog-tag { color: #FFFFFF; background: #0284C7; }
+
+/* Banda de viajes */
+.travel-band { background: linear-gradient(120deg, #E0F2FE 0%, #EDE9FE 100%); border-block: 1px solid var(--line); padding-block: 3.5rem; }
+.travel-in { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 2.5rem; align-items: center; }
+@media (max-width: 860px) { .travel-in { grid-template-columns: 1fr; } }
+.travel-copy { display: grid; gap: .7rem; }
+.travel-copy h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+.travel-copy p { color: var(--muted); max-width: 56ch; }
+.travel-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; counter-reset: ts; }
+.travel-steps li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .1rem .8rem; background: var(--surface); border-radius: 14px; padding: .85rem 1rem; box-shadow: var(--shadow); counter-increment: ts; }
+.travel-steps li::before { content: counter(ts); grid-row: span 2; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #0284C7; color: #FFFFFF; font-weight: 800; }
+.travel-steps span { color: var(--muted); font-size: .92rem; }
+
+/* Página de viajes */
+.mhead-travel { background: linear-gradient(120deg, #E0F2FE 0%, #EDE9FE 100%); }
+.travel-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 760px) { .travel-cards { grid-template-columns: 1fr; } }
+.travel-card { display: flex; gap: .9rem; align-items: center; text-align: left; cursor: pointer; background: var(--surface); border: 1.5px solid var(--line); border-radius: 16px; padding: 1.1rem; box-shadow: var(--shadow); min-width: 0; }
+.travel-card:hover { border-color: var(--brand); }
+.travel-card > span { display: grid; gap: .2rem; min-width: 0; }
+.travel-card b { font-family: var(--f-display); font-size: 1.15rem; }
+.travel-card span span { color: var(--muted); font-size: .92rem; }
+.travel-card .avatar { color: #FFFFFF; }
+.phrase-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: .8rem; }
+@media (max-width: 960px) { .phrase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .phrase-grid { grid-template-columns: 1fr; } }
+.phrase-cat { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 1rem; display: grid; gap: .3rem; align-content: start; min-width: 0; }
+.phrase-cat h3 { font-size: 1.1rem; margin-bottom: .3rem; }
+.vphrase { display: grid; gap: .1rem; text-align: left; cursor: pointer; background: none; border: none; border-radius: 10px; padding: .45rem .55rem; color: var(--ink); }
+.vphrase:hover { background: var(--brand-soft); }
+.vphrase .en { font-weight: 700; }
+.vphrase .tr { color: var(--muted); font-size: .9rem; }
+.travel-tips { margin-top: 2rem; }
+
+/* Cuenta */
+.acc { border-top: 4px solid var(--brand); }
+.prof-grid .acc { grid-column: 1 / -1; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -503,13 +553,13 @@ details.lesson:not([open]) { gap: 0; }
     <nav class="links" aria-label="Secciones">
       <a href="#programa">Curso</a>
       <a href="#tutor">Tutor IA</a>
-      <a href="#temas">Temas</a>
+      <a href="#viajes">Viajes</a>
       <a href="#karaoke">Karaoke</a>
     </nav>
     <div class="nav-right">
       <button class="btn small" id="installBtn" hidden>Instalar app</button>
       <span class="pill" id="navPct">0% del curso</span>
-      <a class="btn small" href="#perfil" id="profileBtn">Mi perfil</a>
+      <a class="btn small" href="#cuenta" id="profileBtn">Iniciar sesión</a>
       <a class="btn primary small" id="navCta" href="#modulo-1">Empezar</a>
     </div>
   </div>
@@ -519,13 +569,14 @@ details.lesson:not([open]) { gap: 0; }
   <section class="hero">
     <div class="inner">
       <div>
-        <span class="eyebrow">Curso autodidacta para hispanohablantes · A1 → B1+</span>
+        <span class="eyebrow">Instituto de inglés online para hispanohablantes · A1 → B1+</span>
         <h1>Habla inglés con <span class="hl">confianza</span>.</h1>
         <p class="lede">Seis módulos con lecciones claras y ejercicios que explican cada respuesta, más un tutor IA para conversar sobre los temas que te interesan. Cada frase viene con su traducción al español.</p>
         <div class="cta">
           <a class="btn primary" href="#nivel" id="heroCta">Hacer el test de nivel</a>
           <a class="btn" href="#modulo-1" id="heroZero">Empezar desde cero</a>
         </div>
+        <p class="hero-level" id="heroLogin"><a href="#cuenta">Inicia sesión</a> para continuar donde te quedaste desde cualquier celular o computadora.</p>
         <p class="hero-level" id="heroLevel">¿Ya tienes base? El test de nivel te dice en 10 minutos desde qué módulo empezar.</p>
         <div class="stats">
           <div><b>6</b><span>módulos</span></div>
@@ -539,6 +590,39 @@ details.lesson:not([open]) { gap: 0; }
         <div class="demo-label"><span class="dot"></span><span class="eyebrow">Pruébalo: un ejercicio real del módulo 1</span></div>
         <div id="demo"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="block" id="programas">
+    <div class="inner">
+      <div class="sec-head">
+        <span class="eyebrow">Nuestros programas</span>
+        <h2>Elige tu objetivo</h2>
+        <p>Un mismo método, cuatro caminos. Empieza por el que más te motive y combínalos cuando quieras.</p>
+      </div>
+      <div class="progs">
+        <a class="prog" href="#programa"><span class="prog-tag">A1 → B1+</span><b>Inglés general</b><span>Seis módulos con lecciones, práctica guiada, audio y lecturas.</span><em>Ver el programa →</em></a>
+        <a class="prog prog-travel" href="#viajes"><span class="prog-tag">Nuevo</span><b>Inglés para viajar</b><span>Aeropuerto, hotel, restaurantes y emergencias, con frases útiles y simulaciones.</span><em>Preparar mi viaje →</em></a>
+        <a class="prog" href="#tutor"><span class="prog-tag">8 áreas</span><b>Inglés para el trabajo</b><span>Entrevistas, reuniones y atención al cliente según tu profesión.</span><em>Practicar →</em></a>
+        <a class="prog" href="#tutor"><span class="prog-tag">Tutor IA</span><b>Club de conversación</b><span>Habla sobre fútbol, música y tus temas favoritos con personajes propios.</span><em>Conversar →</em></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="travel-band" id="viajar-intro">
+    <div class="inner travel-in">
+      <div class="travel-copy">
+        <span class="eyebrow">Inglés para viajar</span>
+        <h2>Tu próximo viaje, sin miedo a hablar</h2>
+        <p>Practica las situaciones reales de cualquier viaje: migración, check-in, pedir comida, moverte por la ciudad y hacer amigos de otros países.</p>
+        <div class="cta"><a class="btn primary" href="#viajes">Ver frases para viajar</a><button class="btn" data-act="tu-topic" data-topic="viajar">Simular mi viaje con Sofía</button></div>
+      </div>
+      <ol class="travel-steps">
+        <li><b>Antes de salir</b><span>Reservas, check-in y preguntas de migración.</span></li>
+        <li><b>En destino</b><span>Hotel, transporte, restaurantes y compras.</span></li>
+        <li><b>Imprevistos</b><span>Maleta perdida, pasaporte y salud.</span></li>
+        <li><b>Nuevos amigos</b><span>Conversa con viajeros y con gente del lugar.</span></li>
+      </ol>
     </div>
   </section>
 
@@ -646,6 +730,7 @@ details.lesson:not([open]) { gap: 0; }
 <main id="karaoke" hidden></main>
 <main id="perfil" hidden></main>
 <main id="nivel" hidden></main>
+<main id="viajes" hidden></main>
 
 <footer>
   <div class="inner">
@@ -659,7 +744,7 @@ details.lesson:not([open]) { gap: 0; }
   <a href="#inicio" data-v="landing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</a>
   <a href="#programa" data-v="module"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>Curso</a>
   <a href="#tutor" data-v="tutor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Tutor</a>
-  <a href="#karaoke" data-v="karaoke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Karaoke</a>
+  <a href="#viajes" data-v="viajes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>Viajes</a>
   <a href="#perfil" data-v="perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Perfil</a>
 </nav>
 
@@ -699,7 +784,7 @@ const ICON = {
 const STORE = "pasaporte-v1";
 let S = { p: {}, tab: {} };
 try { const raw = localStorage.getItem(STORE); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch (e) {}
-function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} }
+function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} if (typeof scheduleSync === "function") scheduleSync(); }
 const T = { demo: null, order: {}, rec: {}, live: {}, score: {}, err: {}, model: {}, tr: false, resetArm: false };
 let DATA = [];
 let view = { m: null, tab: "leccion" };
@@ -710,35 +795,52 @@ function cid(key) { return "c-" + key.replace(/:/g, "-"); }
 
 /* ---------- Audio ---------- */
 const stopBtn = document.getElementById("audioStop");
-function browserSay(text, slow) {
+const MALE_VOICE = /(\bmale\b|david|mark|guy|george|james|daniel|fred|tom\b|ryan|christopher|eric|roger|brian|andrew|matthew|aaron|arthur|liam|oliver|steffan|davis|tony|jason|ralph)/i;
+const FEMALE_VOICE = /(female|zira|aria|jenny|samantha|victoria|karen|moira|tessa|susan|hazel|libby|sonia|emma|ava|allison|michelle|natasha|serena|fiona|kate|linda|heather|sara|joanna|salli|kendra|kimberly|ivy|google us english)/i;
+function pickVoice(g) {
+  const all = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
+  const pref = all.filter(v => /^en(-|_)US/i.test(v.lang)).concat(all.filter(v => !/^en(-|_)US/i.test(v.lang)));
+  if (g === "m" || g === "f") {
+    const re = g === "m" ? MALE_VOICE : FEMALE_VOICE, other = g === "m" ? FEMALE_VOICE : MALE_VOICE;
+    const v = pref.find(x => re.test(x.name) && !(g === "m" && /female/i.test(x.name)));
+    if (v) return { voice: v, pitch: 1 };
+    // Sin voz del género: se usa una voz neutra con el tono ajustado.
+    const neutral = pref.find(x => !other.test(x.name)) || pref[0];
+    return { voice: neutral, pitch: g === "m" ? 0.72 : 1.15 };
+  }
+  return { voice: pref[0], pitch: 1 };
+}
+function browserSay(text, slow, g) {
   try {
     if (!("speechSynthesis" in window)) return;
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "en-US"; u.rate = slow ? 0.7 : 0.95;
-    const v = speechSynthesis.getVoices().find(v => /^en(-|_)US/i.test(v.lang)) || speechSynthesis.getVoices().find(v => /^en/i.test(v.lang));
-    if (v) u.voice = v;
+    const pick = pickVoice(g);
+    if (pick.voice) u.voice = pick.voice;
+    u.pitch = pick.pitch;
     u.onstart = () => { stopBtn.hidden = false; };
     u.onend = u.onerror = () => { stopBtn.hidden = true; };
     speechSynthesis.speak(u);
   } catch (e) {}
 }
-function say(text, slow) {
+function say(text, slow, g) {
   if (audioOff) return;
   if (TTS) {
     TTS.speak(text, { language: "en", rate: slow ? 0.75 : 1 }).catch(err => {
       if (err && err.code === "not_granted") { audioOff = true; document.body.classList.add("no-audio"); }
-      else if (err && ["unavailable", "upstream_error", "rate_limited"].includes(err.code)) browserSay(text, slow);
+      else if (err && ["unavailable", "upstream_error", "rate_limited"].includes(err.code)) browserSay(text, slow, g);
     });
-  } else browserSay(text, slow);
+  } else browserSay(text, slow, g);
 }
+try { if ("speechSynthesis" in window) speechSynthesis.getVoices(); } catch (e) {}
 stopBtn.addEventListener("click", () => {
   if (TTS) TTS.stop().catch(() => {});
   try { speechSynthesis.cancel(); } catch (e) {}
   stopBtn.hidden = true;
 });
-function sayBtn(text, label, slow) {
-  return `<button class="say" data-act="say" data-say="${esc(text)}" ${slow ? 'data-slow="1"' : ""} aria-label="${label ? esc(label) : "Escuchar"}">${slow ? ICON.slow : ICON.speaker}${label ? esc(label) : ""}</button>`;
+function sayBtn(text, label, slow, g) {
+  return `<button class="say" data-act="say" data-say="${esc(text)}" ${slow ? 'data-slow="1"' : ""} ${g ? `data-g="${g}"` : ""} aria-label="${label ? esc(label) : "Escuchar"}">${slow ? ICON.slow : ICON.speaker}${label ? esc(label) : ""}</button>`;
 }
 
 /* ---------- Progreso ---------- */
@@ -1093,7 +1195,7 @@ document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act, key = b.dataset.key;
   switch (act) {
-    case "say": say(b.dataset.say, b.dataset.slow === "1"); break;
+    case "say": say(b.dataset.say, b.dataset.slow === "1", b.dataset.g); break;
     case "opt":
       if (getChosen(key) != null) return;
       if (key === "demo") T.demo = +b.dataset.o; else { S.p[key] = +b.dataset.o; save(); }
@@ -1237,7 +1339,7 @@ async function callTutor() {
     TU.msgs.push({ who: "tutor", en: r.reply, es: String(r.reply_es || "") });
     TU.ideas = Array.isArray(r.ideas) ? r.ideas.filter(i => i && i.en).slice(0, 3).map(i => ({ en: String(i.en), es: String(i.es || "") })) : [];
     TU.busy = false; TU.ctl = null; renderChat();
-    if (TU.voice) say(r.reply);
+    if (TU.voice) say(r.reply, false, charOf(TU.topic.id).g);
   } catch (e) {
     if (ctl !== TU.ctl) return;
     TU.busy = false; TU.ctl = null;
@@ -1312,7 +1414,7 @@ function renderTutor() {
 function renderChat() {
   const chat = document.getElementById("chat"); if (!chat) return;
   let html = TU.msgs.map(m => m.who === "tutor"
-    ? `<div class="msg tutor">${avatar(TU.topic.id, "sm")}<div class="bubble"><p class="en">${esc(m.en)}</p>${m.es ? `<p class="es">${esc(m.es)}</p>` : ""}<div>${sayBtn(m.en, "Escuchar")}</div></div></div>`
+    ? `<div class="msg tutor">${avatar(TU.topic.id, "sm")}<div class="bubble"><p class="en">${esc(m.en)}</p>${m.es ? `<p class="es">${esc(m.es)}</p>` : ""}<div>${sayBtn(m.en, "Escuchar", false, charOf(TU.topic.id).g)}</div></div></div>`
     : `<div class="msg me"><div class="bubble">${esc(m.text)}</div>${!m.fb ? "" : m.fb.ok
         ? `<p class="fb ok"><b>¡Bien dicho!</b> ${esc(m.fb.why)}${m.fb.corrected && normTxt(m.fb.corrected) !== normTxt(m.text) ? ` Más natural: «${esc(m.fb.corrected)}»` : ""}</p>`
         : `<p class="fb fix"><b>Mejor así:</b> «${esc(m.fb.corrected)}» ${esc(m.fb.why)}</p>`}</div>`).join("");
@@ -1526,7 +1628,9 @@ let PROFILE = null;
 try { PROFILE = JSON.parse(localStorage.getItem(PROF_STORE) || "null"); } catch (e) {}
 function updateProfileBtn() {
   const b = document.getElementById("profileBtn");
-  if (b) b.textContent = PROFILE && PROFILE.names ? "Hola, " + PROFILE.names.split(/\s+/)[0] : "Mi perfil";
+  const first = PROFILE && PROFILE.names ? PROFILE.names.split(/\s+/)[0] : (ACC.email ? ACC.email.split("@")[0] : "");
+  if (b) { b.textContent = ACC.token ? "Hola, " + first : "Iniciar sesión"; b.href = ACC.token ? "#perfil" : "#cuenta"; }
+  const hl = document.getElementById("heroLogin"); if (hl) hl.hidden = !!ACC.token;
 }
 let profModels = [];
 function renderProfile() {
@@ -1535,9 +1639,10 @@ function renderProfile() {
   profEl.innerHTML = `<div class="mhead"><div class="inner">
       <nav class="crumbs"><a href="#inicio">Inicio</a> / Mi perfil</nav>
       <h1>${PROFILE && PROFILE.names ? "Hola, " + esc(PROFILE.names.split(/\s+/)[0]) : "Mi perfil"}</h1>
-      <p class="goal">Tus datos y la IA de tu tutor. Todo se guarda solo en este dispositivo.</p>
+      <p class="goal">${ACC.token ? "Tu progreso se guarda en tu cuenta: continúa donde te quedaste desde cualquier dispositivo." : "Inicia sesión para guardar tu progreso en la nube y continuar desde cualquier dispositivo."}</p>
     </div></div>
     <div class="inner tutor-body"><div class="prof-grid">
+      ${accountCardHtml()}
       <form class="card" id="profForm" novalidate>
         <h2>Datos personales</h2>
         <div class="field"><label for="pfNames">Nombres</label><input id="pfNames" autocomplete="given-name" placeholder="Ana María"></div>
@@ -1546,7 +1651,7 @@ function renderProfile() {
         <div class="field"><label for="pfEmail">Correo electrónico</label><input id="pfEmail" type="email" inputmode="email" autocomplete="email" placeholder="ana@correo.com"></div>
         <p class="err" id="pfErr" hidden></p>
         <div class="row"><button class="btn primary" type="submit">Guardar perfil</button><span class="ok-msg" id="pfOk"></span></div>
-        <p class="privacy">Tus datos se guardan solo en este celular o computadora. No se envían a ningún servidor ni a la IA.</p>
+        <p class="privacy">Tus datos se guardan en este dispositivo y, si inicias sesión, también en tu cuenta para usarlos en otros dispositivos. Nunca se envían a la IA.</p>
       </form>
       <form class="card" id="aiForm" novalidate>
         <h2>Tu tutor IA</h2>
@@ -1611,6 +1716,7 @@ function saveProfile() {
   if (msg) return;
   PROFILE = { names, last, phone, email };
   try { localStorage.setItem(PROF_STORE, JSON.stringify(PROFILE)); } catch (e) {}
+  scheduleSync();
   updateProfileBtn();
   ok.textContent = "Perfil guardado.";
   const h = profEl.querySelector(".mhead h1"); if (h) h.textContent = "Hola, " + names.split(/\s+/)[0];
@@ -1780,12 +1886,134 @@ document.addEventListener("click", e => {
     if (LT.step >= PLACEMENT.length) {
       LV = lvCompute(LT.ans);
       try { localStorage.setItem(LV_STORE, JSON.stringify(LV)); } catch (err) {}
+      scheduleSync();
       TU.level = null;
       updateProgress(); renderProgram();
     }
     renderLevel(); window.scrollTo(0, 0);
   }
 });
+
+/* ---------- Cuenta en la nube ---------- */
+const ACC_STORE = "pasaporte-cuenta";
+let ACC = {};
+try { ACC = JSON.parse(localStorage.getItem(ACC_STORE) || "{}") || {}; } catch (e) {}
+let syncTimer = null, syncMsg = "";
+function saveAcc() { try { localStorage.setItem(ACC_STORE, JSON.stringify(ACC)); } catch (e) {} }
+function cloudData() { return { v: 1, p: S.p, tab: S.tab, voice: S.voice, nivel: LV, perfil: PROFILE }; }
+function mergeCloud(d) {
+  if (!d || typeof d !== "object") return;
+  if (d.p && typeof d.p === "object") for (const k in d.p) if (S.p[k] == null) S.p[k] = d.p[k];
+  if (d.tab && typeof d.tab === "object") S.tab = Object.assign({}, d.tab, S.tab);
+  if (typeof d.voice === "boolean" && S.voice == null) S.voice = d.voice;
+  try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {}
+  if (d.nivel && !LV) { LV = d.nivel; try { localStorage.setItem(LV_STORE, JSON.stringify(LV)); } catch (e) {} }
+  if (d.perfil && !PROFILE) { PROFILE = d.perfil; try { localStorage.setItem(PROF_STORE, JSON.stringify(PROFILE)); } catch (e) {} }
+}
+async function accCall(body) {
+  let res;
+  try { res = await fetch("api/cuenta", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
+  catch (e) { return { status: 0, data: {} }; }
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  return { status: res.status, data };
+}
+function scheduleSync() { if (!ACC.token) return; clearTimeout(syncTimer); syncTimer = setTimeout(pushSync, 4000); }
+async function pushSync() {
+  if (!ACC.token) return;
+  const r = await accCall({ action: "guardar", token: ACC.token, data: cloudData() });
+  if (r.status === 200) syncMsg = "Progreso guardado en la nube.";
+  else if (r.status === 401) { ACC = {}; saveAcc(); syncMsg = ""; updateProfileBtn(); }
+  else syncMsg = "No se pudo guardar en la nube ahora. Se volverá a intentar con tu próximo avance.";
+  const el = document.getElementById("accSync"); if (el) el.textContent = syncMsg;
+}
+function accountCardHtml() {
+  if (ACC.token) return `<div class="card acc" id="accCard">
+      <h2>Tu cuenta</h2>
+      <p>Sesión iniciada como <strong>${esc(ACC.email)}</strong>.</p>
+      <p class="note">Tu progreso, tu nivel y tu perfil se guardan en la nube. Entra con tu correo desde cualquier celular o computadora y continúa donde te quedaste.</p>
+      <p class="ok-msg" id="accSync">${esc(syncMsg)}</p>
+      <div class="row"><button class="btn small" data-act="acc-sync">Guardar ahora</button><button class="linkbtn" data-act="acc-out">Cerrar sesión</button></div>
+    </div>`;
+  return `<form class="card acc" id="accCard" novalidate>
+      <h2>Inicia sesión</h2>
+      <p class="note">Guarda tu progreso en la nube y continúa donde te quedaste desde cualquier dispositivo.</p>
+      <div class="field"><label for="accEmail">Correo electrónico</label><input id="accEmail" type="email" inputmode="email" autocomplete="email" placeholder="ana@correo.com"></div>
+      <div class="field"><label for="accPass">Contraseña</label><input id="accPass" type="password" autocomplete="current-password" placeholder="Mínimo 8 caracteres"></div>
+      <p class="err" id="accErr" hidden></p>
+      <div class="row"><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" type="button" data-act="acc-register">Crear cuenta nueva</button></div>
+      <p class="privacy">Al crear una cuenta guardamos tu correo, tu progreso y los datos de tu perfil para sincronizarlos. La contraseña se guarda cifrada y nadie puede verla.</p>
+    </form>`;
+}
+async function accLogin(mode) {
+  const email = document.getElementById("accEmail").value.trim();
+  const password = document.getElementById("accPass").value;
+  const err = document.getElementById("accErr");
+  const show = m => { err.textContent = m; err.hidden = !m; };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return show("Escribe un correo válido. Por ejemplo: ana@correo.com.");
+  if (password.length < 8) return show("La contraseña debe tener al menos 8 caracteres.");
+  show(mode === "registro" ? "Creando tu cuenta…" : "Iniciando sesión…");
+  const r = await accCall({ action: mode, email, password, data: mode === "registro" ? cloudData() : undefined });
+  if (r.status === 200 && r.data.token) {
+    ACC = { token: r.data.token, email: r.data.email }; saveAcc();
+    mergeCloud(r.data.data);
+    syncMsg = mode === "registro" ? "Cuenta creada. Tu progreso ya está en la nube." : "Sesión iniciada. Recuperamos tu progreso.";
+    updateProfileBtn(); updateProgress(); renderProfile();
+    pushSync();
+    return;
+  }
+  show({ 409: "Ya existe una cuenta con ese correo. Pulsa «Iniciar sesión».", 401: "Correo o contraseña incorrectos.", 400: "Revisa el correo y la contraseña (mínimo 8 caracteres).", 0: "No hay conexión a internet." }[r.status]
+    || "No se pudo conectar con el servidor. Inténtalo de nuevo en unos minutos.");
+}
+document.addEventListener("submit", e => { if (e.target.id === "accCard") { e.preventDefault(); accLogin("entrar"); } });
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "acc-register") accLogin("registro");
+  if (act === "acc-sync") pushSync();
+  if (act === "acc-out") {
+    const token = ACC.token; ACC = {}; saveAcc(); syncMsg = "";
+    if (token) accCall({ action: "salir", token });
+    updateProfileBtn(); renderProfile();
+  }
+});
+// Al abrir la app con sesión iniciada, recupera lo guardado en la nube.
+if (ACC.token) {
+  accCall({ action: "cargar", token: ACC.token }).then(r => {
+    if (r.status === 200) { mergeCloud(r.data.data); updateProfileBtn(); updateProgress(); scheduleSync(); }
+    else if (r.status === 401) { ACC = {}; saveAcc(); updateProfileBtn(); }
+  });
+}
+
+/* ---------- Inglés para viajar ---------- */
+let VIAJES = null;
+fetch("data/viajes.json").then(r => r.json()).then(d => { VIAJES = d; if (location.hash === "#viajes") renderViajes(); }).catch(() => {});
+function renderViajes() {
+  const cats = VIAJES ? VIAJES.categorias : [];
+  viEl.innerHTML = `<div class="mhead mhead-travel"><div class="inner">
+      <nav class="crumbs"><a href="#inicio">Inicio</a> / Inglés para viajar</nav>
+      <h1>Inglés para viajar</h1>
+      <p class="goal">Las frases que más vas a usar en tu viaje, con audio y traducción, y simulaciones con el tutor para practicar antes de salir.</p>
+    </div></div>
+    <div class="inner tutor-body">
+      <div class="travel-cards">
+        <button class="travel-card" data-act="tu-topic" data-topic="viajar">${avatar("viajar")}<span><b>Simula tu viaje con Sofía</b><span>Migración, hotel, taxi, restaurante, emergencias… 11 situaciones reales.</span></span></button>
+        <button class="travel-card" data-act="tu-topic" data-topic="extranjeros">${avatar("extranjeros")}<span><b>Conversa con Jake, un viajero</b><span>Haz amigos, ayuda a turistas y habla de tu país.</span></span></button>
+      </div>
+      <h2 class="sub-h" style="margin-top:2.2rem">Frases esenciales <span class="note">· toca una frase para escucharla</span></h2>
+      ${!VIAJES ? '<p class="note">Cargando frases…</p>' : `<div class="phrase-grid">${cats.map(c => `<section class="phrase-cat"><h3>${esc(c.nombre)}</h3>
+        ${c.frases.map(f => `<button class="vphrase" data-act="say" data-say="${esc(f[0])}" data-g="f"><span class="en">${esc(f[0])}</span><span class="tr">${esc(f[1])}</span></button>`).join("")}</section>`).join("")}</div>`}
+      <div class="travel-tips card">
+        <h2>Consejos antes de viajar</h2>
+        <ul class="lt-rules">
+          <li>Practica en voz alta las respuestas de migración: motivo del viaje, cuántos días te quedas y dónde te alojas.</li>
+          <li>Guarda en tu celular la dirección de tu hotel escrita en inglés, por si tienes que mostrársela al taxista.</li>
+          <li>Si no entiendes algo, pide que lo repitan: «Sorry, could you say that again, please?»</li>
+          <li>Haz una simulación con Sofía la semana antes de tu viaje.</li>
+        </ul>
+      </div>
+    </div>`;
+}
 
 /* ---------- Karaoke ---------- */
 const kaEl = document.getElementById("karaoke");
@@ -1819,7 +2047,8 @@ function renderKaraoke() {
 /* ---------- Rutas ---------- */
 const landEl = document.getElementById("landing");
 const profEl = document.getElementById("perfil");
-const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl };
+const viEl = document.getElementById("viajes");
+const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl, viajes: viEl };
 function showView(name) {
   Object.entries(VIEWS).forEach(([k, el]) => { el.hidden = k !== name; });
   document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.v === name));
@@ -1837,6 +2066,8 @@ function route() {
   } else if (h === "#tutor") { view.m = null; showView("tutor"); renderTutor(); window.scrollTo(0, 0); }
   else if (h === "#karaoke") { view.m = null; showView("karaoke"); renderKaraoke(); window.scrollTo(0, 0); }
   else if (h === "#perfil") { view.m = null; showView("perfil"); renderProfile(); window.scrollTo(0, 0); }
+  else if (h === "#cuenta") { view.m = null; showView("perfil"); renderProfile(); const a = document.getElementById("accCard"); if (a) a.scrollIntoView(); else window.scrollTo(0, 0); }
+  else if (h === "#viajes") { view.m = null; showView("viajes"); renderViajes(); window.scrollTo(0, 0); }
   else if (h === "#nivel") { view.m = null; showView("nivel"); renderLevel(); window.scrollTo(0, 0); }
   else {
     view.m = null; showView(h === "#programa" ? "module" : "landing");

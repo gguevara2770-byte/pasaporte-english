@@ -134,6 +134,134 @@
    ]
   },
   {
+   "id": "viajes",
+   "name": "Viajar por el mundo",
+   "desc": "Todo lo que necesitas para moverte, resolver problemas y hacer amigos en otro país.",
+   "topics": [
+    {
+     "id": "viajar",
+     "name": "Inglés para viajar",
+     "desc": "Aeropuerto, hotel, transporte y emergencias",
+     "scen": [
+      {
+       "t": "En migración al llegar",
+       "goal": "Responder al oficial: motivo del viaje, cuántos días te quedas y dónde te alojas.",
+       "role": "an immigration officer at the airport asking the student the usual arrival questions"
+      },
+      {
+       "t": "Facturar y embarcar",
+       "goal": "Facturar tu maleta, elegir asiento y preguntar por la puerta de embarque.",
+       "role": "an airline agent at the check-in counter helping the student before the flight"
+      },
+      {
+       "t": "Perdí mi maleta",
+       "goal": "Explicar cómo es tu maleta y dejar tus datos de contacto.",
+       "role": "an employee at the lost luggage desk at the airport"
+      },
+      {
+       "t": "Del aeropuerto al hotel",
+       "goal": "Pedir un taxi, dar la dirección y preguntar el precio.",
+       "role": "a taxi driver at the airport taking the student to their hotel"
+      },
+      {
+       "t": "Check-in en el hotel",
+       "goal": "Confirmar tu reserva y preguntar por el desayuno, el wifi y la salida.",
+       "role": "a hotel receptionist welcoming the student, who has a reservation"
+      },
+      {
+       "t": "Comer en un restaurante",
+       "goal": "Pedir mesa, elegir platos, mencionar una alergia y pedir la cuenta.",
+       "role": "a waiter at a restaurant abroad serving the student"
+      },
+      {
+       "t": "Pedir direcciones",
+       "goal": "Preguntar cómo llegar a un museo y entender las indicaciones.",
+       "role": "a helpful local person in the street giving directions to the student, who is a tourist"
+      },
+      {
+       "t": "Metro, bus y tren",
+       "goal": "Comprar un boleto y preguntar qué línea tomar.",
+       "role": "a ticket office employee at a train station helping the student"
+      },
+      {
+       "t": "Comprar recuerdos",
+       "goal": "Preguntar precios, pedir otra talla o color y pagar.",
+       "role": "a shop assistant at a souvenir shop"
+      },
+      {
+       "t": "Reservar un tour",
+       "goal": "Preguntar horarios, precio y qué incluye el tour.",
+       "role": "an employee at a tour agency offering day trips"
+      },
+      {
+       "t": "Una emergencia: perdí el pasaporte",
+       "goal": "Explicar qué pasó y pedir ayuda con calma.",
+       "role": "a police officer helping the student, who lost their passport while traveling"
+      }
+     ]
+    },
+    {
+     "id": "extranjeros",
+     "name": "Conversar con extranjeros",
+     "desc": "Hacer amigos, ayudar a turistas y hablar de tu país",
+     "scen": [
+      {
+       "t": "Conoce a un viajero en el hostal",
+       "goal": "Presentarte, contar de dónde eres y preguntar por su viaje.",
+       "role": "a backpacker meeting the student for the first time in a hostel common room"
+      },
+      {
+       "t": "Ayuda a un turista en tu ciudad",
+       "goal": "Recomendar lugares, comida y cómo moverse por tu ciudad.",
+       "role": "a tourist visiting the student's city who asks the student for recommendations"
+      },
+      {
+       "t": "Habla de tu país",
+       "goal": "Explicar costumbres, comida típica y fiestas de tu país.",
+       "role": "a curious traveler who wants to learn about the student's country and culture"
+      },
+      {
+       "t": "Haz amigos en un tour",
+       "goal": "Charlar con otro turista durante una excursión.",
+       "role": "another tourist on the same group tour, chatting with the student"
+      },
+      {
+       "t": "Habla con tu anfitrión",
+       "goal": "Preguntar por la casa, el barrio y recomendaciones.",
+       "role": "the host of the apartment where the student is staying during a trip"
+      },
+      {
+       "t": "Planear un viaje juntos",
+       "goal": "Proponer destinos, fechas y presupuesto con un amigo extranjero.",
+       "role": "a foreign friend planning a trip together with the student"
+      }
+     ]
+    },
+    {
+     "id": "viajes",
+     "name": "Viajes y turismo",
+     "desc": "Aeropuerto, hotel y moverte por la ciudad",
+     "scen": [
+      {
+       "t": "Check-in en el aeropuerto",
+       "goal": "Facturar tu maleta y elegir asiento.",
+       "role": "an airline check-in agent at the airport"
+      },
+      {
+       "t": "Pide indicaciones en la calle",
+       "goal": "Llegar a un museo preguntando a alguien del lugar.",
+       "role": "a helpful local person in a street in London giving directions to a tourist"
+      },
+      {
+       "t": "Llega a tu hotel",
+       "goal": "Hacer el check-in y preguntar por el desayuno y el wifi.",
+       "role": "a hotel receptionist welcoming a guest who has a reservation"
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "vida",
    "name": "Vida diaria",
    "desc": "Situaciones de todos los días para soltarte a hablar.",
@@ -179,28 +307,6 @@
        "t": "Entrevista sobre tu deporte favorito",
        "goal": "Explicar qué deporte practicas y por qué te gusta.",
        "role": "a sports blogger interviewing an amateur athlete about their favorite sport"
-      }
-     ]
-    },
-    {
-     "id": "viajes",
-     "name": "Viajes",
-     "desc": "Aeropuerto, hotel y moverte por la ciudad",
-     "scen": [
-      {
-       "t": "Check-in en el aeropuerto",
-       "goal": "Facturar tu maleta y elegir asiento.",
-       "role": "an airline check-in agent at the airport"
-      },
-      {
-       "t": "Pide indicaciones en la calle",
-       "goal": "Llegar a un museo preguntando a alguien del lugar.",
-       "role": "a helpful local person in a street in London giving directions to a tourist"
-      },
-      {
-       "t": "Llega a tu hotel",
-       "goal": "Hacer el check-in y preguntar por el desayuno y el wifi.",
-       "role": "a hotel receptionist welcoming a guest who has a reservation"
       }
      ]
     },
@@ -505,121 +611,155 @@
    "n": "Kike Gol",
    "t": "comentarista deportivo y fanático del fútbol",
    "p": "a passionate football fan friend who loves talking about football news and debates; an excited sports commentator",
-   "c": "#D62828"
+   "c": "#D62828",
+   "g": "m"
   },
   "musicastars": {
    "n": "MC Brisa",
    "t": "cantante urbana que vive la música",
    "p": "an urban music singer who loves reggaeton and pop and talks about famous artists as a fan",
-   "c": "#7B2CBF"
+   "c": "#7B2CBF",
+   "g": "f"
   },
   "gaming": {
    "n": "Pixel",
    "t": "gamer y streamer",
    "p": "a cheerful gamer and streamer who uses a bit of gaming slang",
-   "c": "#4F46E5"
+   "c": "#4F46E5",
+   "g": "m"
   },
   "rutina": {
    "n": "Coach Max",
    "t": "entrenador de vida, siempre positivo",
    "p": "an upbeat life coach who loves morning routines and motivational phrases",
-   "c": "#2A9D8F"
+   "c": "#2A9D8F",
+   "g": "m"
   },
   "deportes": {
    "n": "Rayo Duarte",
    "t": "delantero estrella",
    "p": "a confident and funny star striker who uses football slang",
-   "c": "#E4572E"
+   "c": "#E4572E",
+   "g": "m"
   },
   "viajes": {
    "n": "Nora Vega",
    "t": "viajera e influencer",
    "p": "an adventurous travel influencer who has visited 60 countries",
-   "c": "#0077B6"
+   "c": "#0077B6",
+   "g": "f"
   },
   "comida": {
    "n": "Chef Tano",
    "t": "chef de televisión",
    "p": "a dramatic and passionate TV chef who loves food",
-   "c": "#C1121F"
+   "c": "#C1121F",
+   "g": "m"
   },
   "compras": {
    "n": "Ivy Chen",
    "t": "estilista de moda",
    "p": "a stylish fashion expert with strong opinions",
-   "c": "#BE185D"
+   "c": "#BE185D",
+   "g": "f"
   },
   "salud": {
    "n": "Dra. Lina Park",
    "t": "médica paciente y clara",
    "p": "a calm and kind doctor who explains things clearly",
-   "c": "#0F766E"
+   "c": "#0F766E",
+   "g": "f"
   },
   "social": {
    "n": "Sam Rivers",
    "t": "el amigo más sociable",
    "p": "the most sociable friend, always planning something fun",
-   "c": "#B5480B"
+   "c": "#B5480B",
+   "g": "m"
   },
   "ocio": {
    "n": "Luna Reel",
    "t": "crítica de cine y series",
    "p": "a passionate movie and series critic who loves recommendations",
-   "c": "#9D174D"
+   "c": "#9D174D",
+   "g": "f"
   },
   "entrevista": {
    "n": "Ms. Grant",
    "t": "reclutadora exigente pero justa",
    "p": "a demanding but fair recruiter",
-   "c": "#334155"
+   "c": "#334155",
+   "g": "f"
   },
   "oficina": {
    "n": "Olivia Stone",
    "t": "jefa de equipo organizada",
    "p": "an organized and friendly team manager",
-   "c": "#1D4ED8"
+   "c": "#1D4ED8",
+   "g": "f"
   },
   "cliente": {
    "n": "Rick Fuller",
    "t": "cliente difícil (tú lo atiendes)",
    "p": "a demanding customer who calms down when treated well",
-   "c": "#B45309"
+   "c": "#B45309",
+   "g": "m"
   },
   "ventas": {
    "n": "Diana Price",
    "t": "compradora que negocia duro",
    "p": "a tough negotiator who always asks for a discount",
-   "c": "#6D28D9"
+   "c": "#6D28D9",
+   "g": "f"
   },
   "it": {
    "n": "Leo Byte",
    "t": "líder técnico apasionado por el código",
    "p": "a tech lead who loves clean code and clear explanations",
-   "c": "#047857"
+   "c": "#047857",
+   "g": "m"
   },
   "saludpro": {
    "n": "Ben Carter",
    "t": "paciente y colega del hospital",
    "p": "a friendly person at the hospital, sometimes a patient and sometimes a colleague",
-   "c": "#0E7490"
+   "c": "#0E7490",
+   "g": "m"
   },
   "turismo": {
    "n": "Greta Walker",
    "t": "huésped exigente",
    "p": "a demanding hotel guest who travels a lot",
-   "c": "#A21CAF"
+   "c": "#A21CAF",
+   "g": "f"
   },
   "finanzas": {
    "n": "Mark Ledger",
    "t": "director financiero",
    "p": "a precise finance director who loves numbers",
-   "c": "#374151"
+   "c": "#374151",
+   "g": "m"
   },
   "custom": {
    "n": "Alex",
    "t": "compañero de conversación",
    "p": "a friendly and curious conversation partner",
-   "c": "#5B6582"
+   "c": "#5B6582",
+   "g": "m"
+  },
+  "viajar": {
+   "n": "Sofía Ríos",
+   "t": "tripulante de cabina y viajera",
+   "p": "a friendly flight attendant and experienced traveler who helps travelers handle real situations abroad",
+   "c": "#0284C7",
+   "g": "f"
+  },
+  "extranjeros": {
+   "n": "Jake Miller",
+   "t": "mochilero estadounidense",
+   "p": "a friendly American backpacker traveling around Latin America who loves meeting locals",
+   "c": "#C2410C",
+   "g": "m"
   }
  },
  "levels": {

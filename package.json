@@ -1,11 +1,12 @@
 {
   "name": "pasaporte-english",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Curso de inglés para hispanohablantes con tutor IA y karaoke (PWA).",
+  "description": "Curso de inglés para hispanohablantes con tutor IA, viajes y karaoke (PWA).",
   "type": "module",
   "engines": { "node": ">=18" },
   "dependencies": {
-    "@anthropic-ai/sdk": "^1.13.0"
+    "@anthropic-ai/sdk": "^1.13.0",
+    "@netlify/blobs": "^11.1.7"
   }
 }

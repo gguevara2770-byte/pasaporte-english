@@ -35,6 +35,12 @@ Curso de inglés para hispanohablantes (A1 → B1+), instalable en el celular (P
 Cambia los archivos dentro de `subir-a-github/` en GitHub (o súbelos de nuevo). Netlify publica solo en cada cambio.
 Sube el número de `CACHE` en `publicar/sw.js` (por ejemplo `pasaporte-v8`) para que los celulares descarguen la versión nueva.
 
+## Cuentas de usuario
+
+Botón **Iniciar sesión** (o **Perfil → Tu cuenta**): el usuario crea una cuenta con correo y contraseña. El progreso, el nivel y el perfil se guardan en **Netlify Blobs** (almacenamiento incluido en Netlify) y se recuperan en cualquier dispositivo.
+- La función está en `netlify/functions/cuenta.mjs`. Las contraseñas se guardan con hash PBKDF2, nunca en texto.
+- Antes de abrir la app al público, publica una **política de privacidad**, porque guardas correo, nombre y celular. Más adelante conviene añadir un límite de intentos de inicio de sesión y la opción de recuperar la contraseña.
+
 ## Costos y límites
 
 - **Gemini gratis:** el límite diario se reparte entre todos tus usuarios. Si se agota o el modelo está saturado, el tutor avisa y reintenta solo.

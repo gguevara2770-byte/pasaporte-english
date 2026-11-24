@@ -1,0 +1,46 @@
+{
+ "categorias": [
+  { "id": "aeropuerto", "nombre": "Aeropuerto y migración", "frases": [
+    ["I'm here on vacation for two weeks.", "Estoy aquí de vacaciones por dos semanas."],
+    ["I'm staying at a hotel downtown.", "Me alojo en un hotel en el centro."],
+    ["Where is the baggage claim?", "¿Dónde se recogen las maletas?"],
+    ["My flight was delayed.", "Mi vuelo se retrasó."]
+  ]},
+  { "id": "hotel", "nombre": "Hotel", "frases": [
+    ["I have a reservation under the name García.", "Tengo una reserva a nombre de García."],
+    ["What time is check-out?", "¿A qué hora es la salida?"],
+    ["Could I have another towel, please?", "¿Me podría dar otra toalla, por favor?"],
+    ["The Wi-Fi isn't working.", "El wifi no funciona."]
+  ]},
+  { "id": "restaurante", "nombre": "Restaurante", "frases": [
+    ["A table for two, please.", "Una mesa para dos, por favor."],
+    ["Could we see the menu?", "¿Podemos ver la carta?"],
+    ["I'm allergic to nuts.", "Soy alérgico a los frutos secos."],
+    ["Can I have the check, please?", "¿Me trae la cuenta, por favor?"]
+  ]},
+  { "id": "transporte", "nombre": "Transporte y direcciones", "frases": [
+    ["How do I get to the city center?", "¿Cómo llego al centro de la ciudad?"],
+    ["Is it far from here?", "¿Está lejos de aquí?"],
+    ["One ticket to Central Station, please.", "Un boleto a la Estación Central, por favor."],
+    ["Could you call me a taxi?", "¿Me podría pedir un taxi?"]
+  ]},
+  { "id": "compras", "nombre": "Compras", "frases": [
+    ["How much is this?", "¿Cuánto cuesta esto?"],
+    ["Do you accept credit cards?", "¿Aceptan tarjeta de crédito?"],
+    ["Can I try it on?", "¿Me lo puedo probar?"],
+    ["I'm just looking, thanks.", "Solo estoy mirando, gracias."]
+  ]},
+  { "id": "emergencias", "nombre": "Emergencias", "frases": [
+    ["I need help, please.", "Necesito ayuda, por favor."],
+    ["I lost my passport.", "Perdí mi pasaporte."],
+    ["Where is the nearest hospital?", "¿Dónde está el hospital más cercano?"],
+    ["Please call the police.", "Por favor, llame a la policía."]
+  ]},
+  { "id": "amigos", "nombre": "Conversar con extranjeros", "frases": [
+    ["Where are you from?", "¿De dónde eres?"],
+    ["This is my first time here.", "Es mi primera vez aquí."],
+    ["What do you recommend I visit?", "¿Qué me recomiendas visitar?"],
+    ["Let's keep in touch!", "¡Sigamos en contacto!"]
+  ]}
+ ]
+}
