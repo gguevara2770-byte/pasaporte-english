@@ -62,17 +62,18 @@ async function updatePlan(s, key, fn) {
 }
 const keyOf = ref => { const k = String(ref || "").split("|")[0]; return k.startsWith("u/") ? k : null; };
 
-// Pago único de 6 meses (Checkout Pro)
+// Pagos únicos con Checkout Pro (Yape o tarjeta): 1 mes ("mes") o 6 meses ("semestral")
 async function applyPayment(s, payment) {
   const key = keyOf(payment.external_reference);
   if (!key || payment.status !== "approved") return null;
+  const tipo = String(payment.external_reference).split("|")[1] === "mes" ? "mes" : "semestral";
   return updatePlan(s, key, plan => {
     const mark = "p" + payment.id;
     if (plan.pagos.includes(mark)) return;
     plan.pagos.push(mark);
-    plan.historial.push({ fecha: Date.now(), tipo: "semestral", monto: Number(payment.transaction_amount) || 0, moneda: payment.currency_id || "PEN", mpId: String(payment.id) });
-    plan.hasta = Math.max(plan.hasta || 0, Date.now()) + 183 * DAY;
-    if (plan.estado !== "activa") { plan.tipo = "semestral"; plan.estado = "activo"; }
+    plan.historial.push({ fecha: Date.now(), tipo, monto: Number(payment.transaction_amount) || 0, moneda: payment.currency_id || "PEN", mpId: String(payment.id), medio: payment.payment_method_id || "" });
+    plan.hasta = Math.max(plan.hasta || 0, Date.now()) + (tipo === "mes" ? 31 : 183) * DAY;
+    if (plan.estado !== "activa") { plan.tipo = tipo; plan.estado = "activo"; }
   });
 }
 // Suscripción mensual (estado del enlace de suscripción)
@@ -164,13 +165,14 @@ export default async function handler(req) {
         await updatePlan(s, who.key, plan => { plan.mpPreapproval = pre.id; if (!plan.estado || plan.estado === "gratis") plan.estado = "pendiente"; });
         return json(200, { url: pre.init_point });
       }
-      if (b.plan === "semestral") {
+      if (b.plan === "semestral" || b.plan === "mes") {
+        const unMes = b.plan === "mes";
         const pref = await mp("/checkout/preferences", {
           method: "POST",
           body: JSON.stringify({
-            items: [{ id: "premium-6-meses", title: "Pasaporte English Premium · 6 meses", quantity: 1, unit_price: P.semestral, currency_id: P.moneda }],
+            items: [{ id: unMes ? "premium-1-mes" : "premium-6-meses", title: "Pasaporte English Premium · " + (unMes ? "1 mes" : "6 meses"), quantity: 1, unit_price: unMes ? P.mensual : P.semestral, currency_id: P.moneda }],
             payer: { email: who.user.email },
-            external_reference: who.key + "|semestral|" + randomBytes(6).toString("hex"),
+            external_reference: who.key + "|" + b.plan + "|" + randomBytes(6).toString("hex"),
             back_urls: { success: back, pending: back, failure: back },
             auto_return: "approved",
             notification_url: url.origin + "/api/mp-webhook"

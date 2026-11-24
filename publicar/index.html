@@ -611,6 +611,12 @@ details.lesson:not([open]) { gap: 0; }
 .linkbtn.danger { color: var(--bad); }
 .foot-admin { color: var(--muted); }
 
+/* Opciones de pago */
+.pay-options { display: grid; gap: .7rem; }
+.pay-opt { display: grid; gap: .35rem; justify-items: start; background: var(--surface-2); border-radius: 12px; padding: .75rem .85rem; }
+.pay-chip { justify-self: start; font-size: .8rem; font-weight: 700; border-radius: 99px; padding: .2rem .6rem; background: var(--brand-soft); color: var(--brand); }
+.pay-chip.yape { background: #F3E8FF; color: #6B21A8; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -2171,7 +2177,7 @@ function fmtDate(ms) { return ms ? new Date(ms).toLocaleDateString("es-PE", { da
 function fmtDateTime(ms) { return ms ? new Date(ms).toLocaleString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "—"; }
 function pctOf(u) { return Math.min(100, Math.round(u.done / totalItems() * 100)); }
 function soles(v) { return "S/ " + Number(v || 0).toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-const PLAN_NAME = { gratis: "Gratis", mensual: "Mensual", semestral: "6 meses", cortesia: "Cortesía", premium: "Premium" };
+const PLAN_NAME = { gratis: "Gratis", mensual: "Mensual (débito automático)", mes: "1 mes", semestral: "6 meses", cortesia: "Cortesía", premium: "Premium" };
 async function adminCall(body) { return accCall({ adminKey: AD.key, ...body }); }
 async function adminLoad() {
   AD.err = ""; AD.loading = true; renderAdmin();
@@ -2255,7 +2261,7 @@ function adminSummary() {
   const total = pays.reduce((n, p) => n + p.monto, 0);
   const levels = LV_CODES.concat(["Principiante"]).map(c => [c, u.filter(x => x.nivel === c).length]).filter(x => x[1] > 0);
   const maxL = Math.max(1, ...levels.map(x => x[1]));
-  const byPlan = ["mensual", "semestral", "cortesia"].map(t => [PLAN_NAME[t], prem.filter(x => x.plan === t).length]);
+  const byPlan = ["mensual", "mes", "semestral", "cortesia"].map(t => [PLAN_NAME[t], prem.filter(x => x.plan === t).length]);
   return `<div class="ad-stats">
       <div><b>${u.length}</b><span>clientes registrados</span></div>
       <div><b>${u.filter(x => now - x.created < WEEK).length}</b><span>nuevos esta semana</span></div>
@@ -2380,6 +2386,8 @@ function planLabel() {
   if (!PLAN.premium) return PLAN.estado === "pendiente" ? "Gratis (pago pendiente)" : "Gratis";
   const until = " hasta el " + fmtDate(PLAN.hasta);
   if (PLAN.tipo === "mensual") return (PLAN.estado === "cancelada" ? "Premium mensual (cancelada, activa" : "Premium mensual (se renueva cada mes, pagado") + until + ")";
+  if (PLAN.tipo === "mes") return "Premium 1 mes (activo" + until + ")";
+  if (PLAN.tipo === "cortesia") return "Premium de cortesía (activo" + until + ")";
   return "Premium 6 meses (activo" + until + ")";
 }
 async function payCall(body) {
@@ -2423,13 +2431,17 @@ function planCardsHtml() {
     </div>
     <div class="plan">
       <span class="eyebrow">Premium mensual</span><div class="price">${money(P.mensual)} <small>/ mes</small></div>
-      <ul><li>Los 6 módulos (A1 → B1+)</li><li>Tutor IA sin límite</li><li>Inglés para viajar completo</li><li>Todos los temas y personajes</li><li>Cancela cuando quieras</li></ul>
-      ${btn("mensual", "Suscribirme")}
+      <ul><li>Los 6 módulos (A1 → B1+)</li><li>Tutor IA sin límite</li><li>Inglés para viajar completo</li><li>Todos los temas y personajes</li></ul>
+      <div class="pay-options">
+        <div class="pay-opt"><span class="pay-chip">Tarjeta · débito automático</span><span class="note">Registras tu tarjeta una vez y se cobra solo cada mes. Cancela cuando quieras.</span>${btn("mensual", "Suscribirme con tarjeta")}</div>
+        <div class="pay-opt"><span class="pay-chip yape">Yape o tarjeta · 1 mes</span><span class="note">Pago único, sin renovación. Cuando termine, vuelves a pagar si quieres seguir.</span>${btn("mes", "Pagar 1 mes")}</div>
+      </div>
     </div>
     <div class="plan plan-best">
       <span class="plan-flag">Ahorra ${save}%</span>
       <span class="eyebrow">Premium 6 meses</span><div class="price">${money(P.semestral)} <small>pago único</small></div>
       <ul><li>Todo lo del plan mensual</li><li>6 meses de acceso</li><li>Sin renovaciones automáticas</li><li>Ideal para completar el curso</li></ul>
+      <span class="pay-chip yape">Yape o tarjeta</span>
       ${btn("semestral", "Pagar 6 meses")}
     </div>
   </div>`;
@@ -2452,11 +2464,13 @@ function renderPremium(lockMsg) {
           ${PLAN.tipo === "mensual" && PLAN.estado === "activa" ? '<button class="linkbtn" data-act="pay-cancel" id="payCancel">Cancelar la suscripción</button>' : ""}
         </div></div>` : ""}
       ${planCardsHtml()}
-      ${ACC.token && !active ? `<div class="field mp-email"><label for="mpEmail">Correo de tu cuenta de Mercado Pago (solo para la suscripción mensual)</label>
+      ${ACC.token && !active ? `<div class="field mp-email"><label for="mpEmail">Correo de tu cuenta de Mercado Pago (solo para el débito automático con tarjeta)</label>
         <input id="mpEmail" type="email" inputmode="email" value="${esc(ACC.email || "")}"><span class="note">Mercado Pago pide que la suscripción esté a nombre del correo con el que inicias sesión en Mercado Pago.</span></div>` : ""}
       <div class="card pay-faq">
         <h2>Preguntas frecuentes</h2>
-        <details><summary>¿Cómo pago?</summary><p>Al elegir un plan vas a la página segura de Mercado Pago. Puedes pagar con tarjeta de crédito o débito y con los demás medios que Mercado Pago tenga disponibles. Nosotros nunca vemos los datos de tu tarjeta.</p></details>
+        <details><summary>¿Cómo pago?</summary><p>Al elegir un plan vas a la página segura de Mercado Pago. Nosotros nunca vemos los datos de tu tarjeta ni de tu Yape.</p></details>
+        <details><summary>¿Puedo pagar con Yape?</summary><p>Sí, en los pagos únicos: «1 mes» y «6 meses». En Mercado Pago eliges Yape, escribes tu celular y el código de aprobación que te muestra la app de Yape.</p></details>
+        <details><summary>¿Cómo funciona el débito automático?</summary><p>Registras tu tarjeta de crédito o débito una sola vez en Mercado Pago y se cobra automáticamente cada mes. Puedes cancelarlo cuando quieras desde esta página y no se te volverá a cobrar.</p></details>
         <details><summary>¿Puedo cancelar la suscripción mensual?</summary><p>Sí, cuando quieras, desde esta página. Conservas el acceso hasta el final del mes que ya pagaste y no se te vuelve a cobrar.</p></details>
         <details><summary>¿El plan de 6 meses se renueva solo?</summary><p>No. Es un pago único. Cuando termine, puedes volver a comprarlo o pasarte al plan mensual.</p></details>
         <details><summary>Ya pagué y no veo Premium</summary><p>Pulsa «Actualizar estado del pago». Si el pago fue aprobado, se activa al momento. Algunos medios de pago pueden tardar unos minutos en confirmarse.</p></details>
