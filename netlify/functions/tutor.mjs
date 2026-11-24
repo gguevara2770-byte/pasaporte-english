@@ -81,7 +81,7 @@ async function askGemini(system, messages) {
   }
   const body = JSON.stringify({ systemInstruction: { parts: [{ text: system + JSON_HINT }] }, contents, generationConfig: { responseMimeType: "application/json" } });
   let lastStatus = 502;
-  const deadline = Date.now() + 24000;   // Netlify corta la función a los 30 s
+  const deadline = Date.now() + 19000;   // responder antes de que Netlify corte la función
   for (const model of models) {
     for (let attempt = 0; attempt < 2; attempt++) {
       const left = deadline - Date.now();
@@ -90,7 +90,7 @@ async function askGemini(system, messages) {
       try {
         res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
           method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, body,
-          signal: AbortSignal.timeout(Math.min(15000, left))
+          signal: AbortSignal.timeout(Math.min(9000, left))
         });
       } catch (err) {
         console.error(`Gemini ${model} no respondió a tiempo.`);

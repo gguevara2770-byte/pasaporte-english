@@ -1424,6 +1424,12 @@ async function askWithFallback(ctx, signal) {
   let first;
   try { return await askAI(ctx, signal); } catch (e) { first = e; }
   let e = first;
+  if (aiProv() === "app" && e && (e.kind === "appoff" || e.kind === "busy")) {
+    // El tutor incluido estaba ocupado: un reintento automático.
+    await wait(1000);
+    if (signal.aborted) throw Object.assign(new Error("abort"), { name: "AbortError" });
+    return askAI(ctx, signal);
+  }
   if (e && (e.kind === "busy" || e.kind === "server") && aiProv() !== "app") {
     // El modelo está saturado: espera un momento y reintenta una vez.
     await wait(1500);
