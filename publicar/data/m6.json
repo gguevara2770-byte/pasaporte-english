@@ -1,0 +1,130 @@
+{
+"lesson": [
+  { "t": "Present perfect continuous", "p": "Se forma con have / has been + verbo en -ing. Expresa una acción que empezó en el pasado y sigue ahora, o que acaba de terminar y tiene efectos visibles, poniendo el foco en la duración. Es la forma natural de decir «llevo X tiempo haciendo algo». El error típico es usar el presente: I am working here for two years.",
+    "tbl": [["Español", "Inglés", "Clave"], ["Llevo dos horas esperando.", "I've been waiting for two hours.", "for + duración"], ["Estudia inglés desde enero.", "She's been studying English since January.", "since + inicio"], ["¿Cuánto tiempo llevas aquí?", "How long have you been here?", "con estados (be, know) se usa present perfect simple"]],
+    "ex": [["I've been learning English for six months.", "Llevo seis meses aprendiendo inglés."], ["It's been raining all morning.", "Ha estado lloviendo toda la mañana."], ["You look tired. Have you been running?", "Te ves cansado. ¿Has estado corriendo?"]] },
+  { "t": "Estilo indirecto (reported speech)", "p": "Sirve para contar lo que otra persona dijo. Con said o told, el verbo suele retroceder un tiempo: presente → pasado, will → would, can → could. Say no lleva persona (she said that…), mientras que tell sí la necesita (she told me that…). Los pronombres y las referencias de tiempo también cambian.",
+    "tbl": [["Lo que dijo", "Estilo indirecto"], ["«I am tired.»", "She said (that) she was tired."], ["«I will call you.»", "He told me (that) he would call me."], ["«I can't come.»", "They said they couldn't come."], ["«Do you like it?»", "She asked me if I liked it."]],
+    "ex": [["He said he was busy.", "Dijo que estaba ocupado."], ["She told me she would be late.", "Me dijo que llegaría tarde."], ["They asked if we wanted to join them.", "Preguntaron si queríamos unirnos."]] },
+  { "t": "Tercer condicional y wish", "p": "El tercer condicional imagina un pasado distinto al real: If + had + participio, would have + participio. Sirve para hablar de arrepentimientos y oportunidades perdidas. Wish expresa deseos: wish + pasado para el presente (ojalá tuviera) y wish + had + participio para el pasado (ojalá hubiera).",
+    "tbl": [["Estructura", "Significado", "Ejemplo"], ["If + had + participio, would have + participio", "pasado irreal", "If I had known, I would have helped."], ["I wish + pasado", "deseo sobre el presente", "I wish I had more time."], ["I wish + had + participio", "arrepentimiento del pasado", "I wish I had studied more."]],
+    "ex": [["If we had left earlier, we wouldn't have missed the flight.", "Si hubiéramos salido antes, no habríamos perdido el vuelo."], ["I wish I lived near the beach.", "Ojalá viviera cerca de la playa."], ["She wishes she hadn't said that.", "Ella desearía no haber dicho eso."]] },
+  { "t": "Conectores y phrasal verbs", "p": "Los conectores organizan tus ideas. Although va seguido de una frase completa; despite e in spite of van seguidos de sustantivo o -ing; however une dos oraciones y va tras punto o punto y coma. Los phrasal verbs son verbo + partícula y cambian de significado: aprende cada uno con un ejemplo.",
+    "tbl": [["Expresión", "Significado", "Ejemplo"], ["although + frase", "aunque", "Although it was late, we stayed."], ["despite + sustantivo / -ing", "a pesar de", "Despite the rain, we went out."], ["however,", "sin embargo", "It's expensive. However, it's worth it."], ["give up", "rendirse, dejar (un hábito)", "Don't give up!"], ["find out", "averiguar, enterarse", "I found out the truth."], ["look forward to + -ing", "tener ganas de", "I'm looking forward to seeing you."]],
+    "ex": [["Although I was tired, I finished the report.", "Aunque estaba cansado, terminé el informe."], ["Despite having little time, she learned English.", "A pesar de tener poco tiempo, aprendió inglés."], ["He gave up smoking last year.", "Dejó de fumar el año pasado."]] }
+],
+"grammar": [
+  { "q": "«I'm tired,» she said. → She said she ___ tired.", "es": "«Estoy cansada», dijo ella. → Dijo que estaba cansada.", "say": "She said she was tired.", "o": [
+    ["was", "En estilo indirecto, después de said el presente pasa a pasado: am → was."],
+    ["is", "Se oye cuando sigue siendo verdad, pero la forma estándar después de said retrocede un tiempo."],
+    ["will be", "Ella no habló del futuro. Will cambiaría el sentido."],
+    ["has", "Has es «tiene». Cansada se dice con to be."]], "a": 0, "r": "Estilo indirecto: retrocede un tiempo (am → was, will → would, can → could)." },
+  { "q": "If I had studied, I ___ the exam.", "es": "Si hubiera estudiado, habría aprobado el examen.", "o": [
+    ["would pass", "Es segundo condicional: habla del presente. Aquí todo ocurrió en el pasado."],
+    ["will pass", "Will va con el primer condicional (if + presente)."],
+    ["would have passed", "Tercer condicional: if + had + participio, would have + participio."],
+    ["had passed", "Had + participio va en la parte del if, no en el resultado."]], "a": 2, "r": "Pasado que no ocurrió: If + had + participio, would have + participio." },
+  { "q": "___ it was raining, we went for a walk.", "es": "Aunque estaba lloviendo, salimos a caminar.", "o": [
+    ["Despite", "Despite va seguido de sustantivo o -ing (despite the rain), no de una frase con sujeto y verbo."],
+    ["Although", "Although + sujeto + verbo introduce un contraste dentro de la misma oración."],
+    ["However", "However une dos oraciones separadas: It was raining. However, we went…"],
+    ["Because", "Because da una causa. Salir a caminar porque llueve no tiene sentido aquí."]], "a": 1, "r": "although + frase · despite + sustantivo/-ing · however entre oraciones." },
+  { "q": "I ___ for two hours. I'm exhausted.", "es": "Llevo dos horas trabajando. Estoy agotado.", "h": "Piensa en «llevo dos horas trabajando».", "o": [
+    ["am working", "Error típico al traducir «llevo». El presente continuo no conecta pasado y presente."],
+    ["work", "El present simple es para hábitos, no para algo que empezó hace dos horas y sigue."],
+    ["was working", "Es pasado: no explicaría que sigues agotado ahora por esa acción continua."],
+    ["have been working", "Acción que empezó en el pasado y llega hasta ahora, con duración: have been + -ing."]], "a": 3, "r": "«Llevo X tiempo haciendo…» → have been + -ing + for/since." },
+  { "q": "Can you ___ my cat while I'm on holiday?", "es": "¿Puedes cuidar a mi gato mientras estoy de vacaciones?", "o": [
+    ["look after", "Look after = cuidar de alguien o algo."],
+    ["look for", "Look for = buscar algo que perdiste."],
+    ["look up", "Look up = buscar información (en un diccionario o en internet)."],
+    ["look out", "Look out = tener cuidado. Se usa como advertencia."]], "a": 0, "r": "Un phrasal verb cambia de significado con la partícula. Apréndelos con un ejemplo." },
+  { "q": "I wish I ___ more free time.", "es": "Ojalá tuviera más tiempo libre.", "o": [
+    ["have", "Wish expresa un deseo irreal sobre el presente y pide pasado, no presente."],
+    ["will have", "Will no se usa con wish para deseos sobre el presente."],
+    ["had", "Wish + pasado = me gustaría que ahora fuera distinto."],
+    ["would have", "I wish I would… no se usa para hablar de uno mismo en el presente."]], "a": 2, "r": "I wish + pasado (presente irreal) · I wish + had + participio (pasado)." },
+  { "q": "He told ___ that he was busy.", "es": "Me dijo que estaba ocupado.", "o": [
+    ["to me", "Con tell la persona va sin to. To me iría con said: he said to me."],
+    ["me", "Tell siempre lleva a la persona directamente: told me, told her."],
+    ["for me", "Tell no se construye con for."],
+    ["at me", "At me no se usa con tell."]], "a": 1, "r": "tell + persona (told me) · say + lo dicho (said that…)." },
+  { "q": "I'm thinking of ___ smoking.", "es": "Estoy pensando en dejar de fumar.", "o": [
+    ["give up", "Después de una preposición (of) el verbo va en -ing."],
+    ["to give up", "Después de of no va infinitivo con to."],
+    ["giving up", "Of + -ing. Give up = dejar un hábito."],
+    ["giving out", "Give out significa «repartir», no «dejar»."]], "a": 2, "r": "Preposición (of, about, in, at) + verbo en -ing." }
+],
+"vocab": { "theme": "Opiniones, matices y metas", "w": [
+  ["although", "aunque", "Although it's hard, I enjoy it.", "Aunque es difícil, lo disfruto."],
+  ["however", "sin embargo", "It's cheap. However, it's not good.", "Es barato. Sin embargo, no es bueno."],
+  ["despite", "a pesar de", "Despite the traffic, we arrived on time.", "A pesar del tráfico, llegamos a tiempo."],
+  ["to give up", "rendirse, dejar (un hábito)", "Never give up on your goals.", "Nunca renuncies a tus metas."],
+  ["to find out", "averiguar, enterarse", "I found out that she was leaving.", "Me enteré de que se iba."],
+  ["to look forward to", "tener ganas de", "I'm looking forward to the weekend.", "Tengo ganas de que llegue el fin de semana."],
+  ["to regret", "arrepentirse", "I regret not studying harder.", "Me arrepiento de no haber estudiado más."],
+  ["achievement", "logro", "Learning English is a big achievement.", "Aprender inglés es un gran logro."],
+  ["challenge", "reto, desafío", "The interview was a real challenge.", "La entrevista fue un verdadero reto."],
+  ["to suggest", "sugerir", "She suggested taking a break.", "Ella sugirió tomar un descanso."],
+  ["fluent", "con fluidez, fluido", "He is fluent in three languages.", "Habla tres idiomas con fluidez."],
+  ["to improve", "mejorar", "My pronunciation has improved a lot.", "Mi pronunciación ha mejorado mucho."]
+]},
+"listen": [
+  { "s": "I've been waiting for an hour.", "es": "Llevo una hora esperando.", "o": [
+    ["I was waiting for an hour.", "Was suena «woz». En el audio se oye «aiv-bin»."],
+    ["I've been waiting for an hour.", "I've been se une: «aivbin». Acción que sigue hasta ahora."],
+    ["I'll be waiting for an hour.", "I'll be suena «ail-bi», futuro. En el audio se oye «bin»."]], "a": 1 },
+  { "s": "She said she would call.", "es": "Dijo que llamaría.", "o": [
+    ["She said she would call.", "Would suena «wud», sin la l. Es el will del estilo indirecto."],
+    ["She said she wouldn't call.", "Wouldn't tiene un sonido «nt» al final. En el audio no hay negación."],
+    ["She said she could call.", "Could empieza con «k». En el audio se oye «w»."]], "a": 0 },
+  { "s": "If I'd known, I would've helped.", "es": "Si lo hubiera sabido, habría ayudado.", "o": [
+    ["If I knew, I would help.", "Knew suena «niu» y help no termina en «t». En el audio se oye «aid noun» y «helpt»."],
+    ["If I know, I'll help.", "Es el primer condicional. En el audio se oye I'd («aid») y would've («wúdəv»)."],
+    ["If I'd known, I would've helped.", "I'd known = I had known. Would've helped suena «wúdəv helpt»."]], "a": 2 },
+  { "s": "I'm looking forward to seeing you.", "es": "Tengo ganas de verte.", "o": [
+    ["I'm looking for you.", "Look for = buscar. En el audio se oye forward («fóruard»)."],
+    ["I'm looking after you.", "After suena «áfter». En el audio se oye «forward to»."],
+    ["I'm looking forward to seeing you.", "Look forward to + -ing: tener ganas de algo."]], "a": 2 }
+],
+"speak": {
+  "p": [
+    ["I've been studying English for six months.", "Llevo seis meses estudiando inglés.", "I've been suena «aivbin». Months es difícil: «mants», la th casi desaparece."],
+    ["She told me she was moving to Canada.", "Me dijo que se iba a mudar a Canadá.", "Told me suena unido: «tóldmi»."],
+    ["If I had known, I would have come earlier.", "Si lo hubiera sabido, habría venido antes.", "En conversación, would have suena «wúdəv»."],
+    ["I wish I had started sooner.", "Ojalá hubiera empezado antes.", "Started termina en «-tid». Sooner tiene una u larga: «súuner»."],
+    ["Although it was difficult, I didn't give up.", "Aunque fue difícil, no me rendí.", "Although suena «oldóu». La gh no se pronuncia."],
+    ["I'm looking forward to hearing from you.", "Quedo a la espera de tus noticias.", "Frase típica para cerrar correos. Después de to va -ing."]
+  ],
+  "q": [
+    { "q": "What have you learned in these six months?", "es": "¿Qué has aprendido en estos seis meses?", "m": "I've been studying English for six months. Although it was difficult at first, I didn't give up. Now I can understand series with subtitles and I can have simple conversations.", "mes": "Llevo seis meses estudiando inglés. Aunque al principio fue difícil, no me rendí. Ahora entiendo series con subtítulos y puedo tener conversaciones sencillas." },
+    { "q": "Is there anything you regret?", "es": "¿Hay algo de lo que te arrepientas?", "m": "I wish I had started learning English earlier. If I had started at school, I would be fluent now. However, I'm happy with my progress.", "mes": "Ojalá hubiera empezado a aprender inglés antes. Si hubiera empezado en el colegio, ahora lo hablaría con fluidez. Sin embargo, estoy contento con mi progreso." }
+  ]
+},
+"order": [
+  ["I have been living here since March.", "Vivo aquí desde marzo.", "Have been + -ing + since + punto de inicio."],
+  ["He said that he was tired.", "Dijo que estaba cansado.", "Said + that + sujeto + verbo en pasado."],
+  ["If she had left earlier, she would have caught the train.", "Si hubiera salido antes, habría alcanzado el tren.", "If + had + participio, would have + participio."],
+  ["Despite the rain, we enjoyed the trip.", "A pesar de la lluvia, disfrutamos el viaje.", "Despite + sustantivo, coma, la oración principal."],
+  ["I'm looking forward to meeting you.", "Tengo ganas de conocerte.", "Look forward to + verbo en -ing."]
+],
+"read": {
+  "t": "Six months later",
+  "en": "Hi Laura, I wanted to tell you some news. I've been studying English every day for six months, and last week I had my first job interview in English! At first I was very nervous. However, the interviewer was friendly and I understood almost everything. She asked me why I wanted the job, and I told her that I loved working with people. They called me yesterday: I got the job! If I hadn't studied so hard, I would never have had this opportunity. I'm looking forward to telling you everything in person. Hugs, Daniel.",
+  "es": "Hola, Laura: quería contarte una noticia. Llevo seis meses estudiando inglés todos los días, ¡y la semana pasada tuve mi primera entrevista de trabajo en inglés! Al principio estaba muy nervioso. Sin embargo, la entrevistadora fue amable y entendí casi todo. Me preguntó por qué quería el trabajo y le dije que me encantaba trabajar con personas. Me llamaron ayer: ¡conseguí el trabajo! Si no hubiera estudiado tanto, nunca habría tenido esta oportunidad. Tengo ganas de contártelo todo en persona. Abrazos, Daniel.",
+  "qs": [
+    { "q": "How long has Daniel been studying English?", "es": "¿Cuánto tiempo lleva Daniel estudiando inglés?", "o": [
+      ["For six months.", "«I've been studying English every day for six months»."],
+      ["Since last week.", "La semana pasada fue la entrevista, no el inicio de sus estudios."],
+      ["For a year.", "El texto dice seis meses."]], "a": 0 },
+    { "q": "How did he feel at the beginning of the interview?", "es": "¿Cómo se sintió al principio de la entrevista?", "o": [
+      ["Bored.", "No se menciona el aburrimiento."],
+      ["Very nervous.", "«At first I was very nervous»."],
+      ["Angry.", "No se menciona el enfado; la entrevistadora fue amable."]], "a": 1 },
+    { "q": "What does Daniel say about his effort?", "es": "¿Qué dice Daniel sobre su esfuerzo?", "o": [
+      ["He didn't need to study.", "Dice lo contrario: estudió mucho."],
+      ["He wishes he had studied less.", "No se arrepiente de haber estudiado."],
+      ["Without studying hard, he wouldn't have had the opportunity.", "«If I hadn't studied so hard, I would never have had this opportunity»."]], "a": 2 }
+  ]
+}
+}

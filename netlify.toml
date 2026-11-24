@@ -1,0 +1,8 @@
+# Configuración de Netlify para Pasaporte English.
+# La app está en la carpeta "publicar" y el tutor incluido en netlify/functions/tutor.mjs.
+# Netlify instala solo las dependencias de package.json.
+[build]
+  publish = "publicar"
+
+[functions]
+  node_bundler = "esbuild"

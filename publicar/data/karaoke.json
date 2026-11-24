@@ -1,0 +1,36 @@
+{
+ "groups": [
+  {
+   "name": "Éxitos recientes",
+   "desc": "Las canciones en inglés más escuchadas de los últimos años. Ideales para practicar con música que ya conoces.",
+   "songs": [
+    { "t": "Die With A Smile", "a": "Lady Gaga & Bruno Mars", "lvl": "B1", "tip": "Balada lenta y clara: practica unir las palabras al cantar." },
+    { "t": "APT.", "a": "ROSÉ & Bruno Mars", "lvl": "A2", "tip": "Estribillo corto y repetitivo: perfecto para soltar la lengua." },
+    { "t": "Espresso", "a": "Sabrina Carpenter", "lvl": "B1", "tip": "Ritmo pegadizo con expresiones coloquiales del inglés de hoy." },
+    { "t": "Birds of a Feather", "a": "Billie Eilish", "lvl": "A2", "tip": "Voz suave y pausada: fíjate en cómo pronuncia las vocales." },
+    { "t": "Golden", "a": "HUNTR/X (KPop Demon Hunters)", "lvl": "B1", "tip": "Estribillo potente y frases sobre metas y confianza." },
+    { "t": "Ordinary", "a": "Alex Warren", "lvl": "B1", "tip": "Letra emotiva con vocabulario de sentimientos." },
+    { "t": "Beautiful Things", "a": "Benson Boone", "lvl": "B1", "tip": "Empieza suave y termina muy fuerte: buen reto de respiración." },
+    { "t": "Lose Control", "a": "Teddy Swims", "lvl": "B1", "tip": "Soul lento: ideal para practicar las terminaciones de las palabras." },
+    { "t": "Flowers", "a": "Miley Cyrus", "lvl": "A2", "tip": "Present simple y frases cortas: muy fácil de seguir." },
+    { "t": "Anti-Hero", "a": "Taylor Swift", "lvl": "B1", "tip": "Mucho vocabulario cotidiano y expresiones para hablar de ti." }
+   ]
+  },
+  {
+   "name": "Clásicos para karaoke",
+   "desc": "Canciones con letra clara y ritmo cómodo. Empieza por las de nivel A1 y A2.",
+   "songs": [
+    { "t": "Let It Be", "a": "The Beatles", "lvl": "A1", "tip": "Lenta y repetitiva: la mejor para empezar." },
+    { "t": "Count on Me", "a": "Bruno Mars", "lvl": "A1", "tip": "Vocabulario sencillo y condicionales con if." },
+    { "t": "Perfect", "a": "Ed Sheeran", "lvl": "A2", "tip": "Muy lenta y clara: practica la pronunciación sin prisa." },
+    { "t": "Shape of You", "a": "Ed Sheeran", "lvl": "A2", "tip": "Present simple y ritmo constante." },
+    { "t": "As It Was", "a": "Harry Styles", "lvl": "A2", "tip": "Frases cortas y estribillo fácil de recordar." },
+    { "t": "Shake It Off", "a": "Taylor Swift", "lvl": "A2", "tip": "Present simple y present continuous con mucha energía." },
+    { "t": "Hello", "a": "Adele", "lvl": "A2", "tip": "Pausada y muy expresiva: practica la entonación." },
+    { "t": "Someone Like You", "a": "Adele", "lvl": "B1", "tip": "Pasado simple y emociones, con vocalización muy clara." },
+    { "t": "Blinding Lights", "a": "The Weeknd", "lvl": "B1", "tip": "Ritmo rápido de los 80: buen reto de velocidad." },
+    { "t": "Levitating", "a": "Dua Lipa", "lvl": "B1", "tip": "Rápida y bailable: reto para tu pronunciación." }
+   ]
+  }
+ ]
+}

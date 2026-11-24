@@ -1,0 +1,130 @@
+{
+"lesson": [
+  { "t": "Present continuous: lo que pasa ahora", "p": "Se forma con am / is / are + verbo en -ing. Se usa para acciones que están pasando en este momento o en esta temporada, y también para planes ya organizados. Compáralo con el present simple, que habla de hábitos. Algunos verbos de estado (like, know, want, need) casi nunca van en -ing.",
+    "tbl": [["", "Present simple", "Present continuous"], ["Uso", "hábitos y verdades", "ahora mismo, temporal, planes"], ["Ejemplo", "I work in an office.", "I'm working from home this week."], ["Palabras clave", "usually, every day", "now, right now, today, this week"]],
+    "ex": [["Look! It's snowing.", "¡Mira! Está nevando."], ["What are you doing?", "¿Qué estás haciendo?"], ["We're having dinner with friends on Friday.", "Vamos a cenar con amigos el viernes."]] },
+  { "t": "El futuro: going to y will", "p": "Going to se usa para planes e intenciones ya decididos, o predicciones basadas en lo que ves. Will se usa para decisiones tomadas en el momento, promesas, ofrecimientos y predicciones basadas en opinión. Después de will el verbo va en forma base.",
+    "tbl": [["Forma", "Uso", "Ejemplo"], ["be going to + verbo", "plan ya decidido", "I'm going to study medicine."], ["be going to + verbo", "predicción con evidencia", "Look at those clouds. It's going to rain."], ["will + verbo", "decisión en el momento", "I'm cold. I'll close the window."], ["will + verbo", "promesa u opinión", "I think you'll love it."]],
+    "ex": [["We're going to move next year.", "Nos vamos a mudar el año que viene."], ["Don't worry, I'll help you.", "No te preocupes, te ayudaré."], ["I think it will be a great day.", "Creo que será un gran día."]] },
+  { "t": "Comparativos y superlativos", "p": "Para comparar dos cosas: adjetivo corto + -er + than, o more + adjetivo largo + than. Para el máximo de un grupo: the + adjetivo corto + -est, o the most + adjetivo largo. Nunca uses more y -er a la vez. Hay irregulares que conviene memorizar.",
+    "tbl": [["Adjetivo", "Comparativo", "Superlativo"], ["cheap (corto)", "cheaper than", "the cheapest"], ["big (consonante-vocal-consonante)", "bigger than", "the biggest"], ["easy (termina en -y)", "easier than", "the easiest"], ["expensive (largo)", "more expensive than", "the most expensive"], ["good / bad (irregulares)", "better / worse than", "the best / the worst"]],
+    "ex": [["My car is older than yours.", "Mi coche es más viejo que el tuyo."], ["This is the most beautiful beach in the country.", "Esta es la playa más bonita del país."], ["Today is better than yesterday.", "Hoy está mejor que ayer."]] },
+  { "t": "Contables e incontables: much, many, some, any", "p": "Los contables se pueden contar (one apple, two apples). Los incontables no tienen plural (water, money, information, advice). Many va con contables y much con incontables, sobre todo en preguntas y negativas. Some se usa en afirmativas y ofrecimientos; any en preguntas y negativas. A lot of sirve para los dos.",
+    "tbl": [["", "Contables (plural)", "Incontables"], ["¿Cuánto/s?", "How many apples?", "How much water?"], ["Afirmativa", "some apples / a lot of apples", "some water / a lot of water"], ["Negativa", "not many / not any apples", "not much / not any water"]],
+    "ex": [["How much money do you need?", "¿Cuánto dinero necesitas?"], ["There aren't many people here.", "No hay mucha gente aquí."], ["Would you like some coffee?", "¿Quieres un poco de café?"]] }
+],
+"grammar": [
+  { "q": "Look! It ___.", "es": "¡Mira! Está lloviendo.", "o": [
+    ["rains", "El present simple es para hábitos (it rains a lot here). Look! indica que ocurre ahora."],
+    ["is raining", "Algo que pasa en este momento: present continuous."],
+    ["rained", "Es pasado. Look! señala algo que está pasando ahora."],
+    ["rain", "Falta to be y la forma -ing. Con it además faltaría la -s."]], "a": 1, "r": "Ahora mismo → am/is/are + -ing. Siempre o normalmente → present simple." },
+  { "q": "I've bought the tickets. We ___ visit London next week.", "es": "Ya compré los boletos. Vamos a visitar Londres la próxima semana.", "o": [
+    ["will", "Will es para decisiones del momento o predicciones. Aquí el plan ya estaba decidido (hay boletos)."],
+    ["go to", "Falta to be: es are going to."],
+    ["are going to", "Plan ya decidido, con pruebas (los boletos): going to."],
+    ["visiting", "Para usar -ing como futuro hace falta to be: we are visiting."]], "a": 2, "r": "Plan ya decidido → going to. Decisión en el momento → will." },
+  { "q": "This exam is ___ than the last one.", "es": "Este examen es más fácil que el anterior.", "o": [
+    ["easier", "Adjetivo corto terminado en -y: la y cambia a i y se añade -er."],
+    ["more easy", "More se usa con adjetivos largos. Easy es corto: easier."],
+    ["easiest", "Es superlativo. Con than se usa comparativo."],
+    ["more easier", "Doble comparativo: o more o -er, nunca los dos."]], "a": 0, "r": "Corto → -er than. Largo → more … than. Nunca los dos juntos." },
+  { "q": "How ___ water do you drink?", "es": "¿Cuánta agua bebes?", "o": [
+    ["many", "Many va con cosas que se cuentan (how many glasses). Water es incontable."],
+    ["lot", "Lot no funciona solo. Sería a lot of, y en afirmativas."],
+    ["few", "Few va con contables y significa «pocos»."],
+    ["much", "Water es incontable, así que se pregunta con how much."]], "a": 3, "r": "How much + incontable (water, money) · How many + plural (books, people)." },
+  { "q": "She is ___ person I know.", "es": "Es la persona más amable que conozco.", "o": [
+    ["kinder", "Es comparativo y necesitaría than. Aquí se compara con todo un grupo: superlativo."],
+    ["the kindest", "Superlativo de un adjetivo de una sílaba: the + adjetivo + -est."],
+    ["the most kind", "Con adjetivos de una sílaba lo natural es -est. The most kind suena forzado."],
+    ["the more kind", "The more no forma superlativos."]], "a": 1, "r": "Superlativo: the + -est (cortos) · the most + adjetivo (largos)." },
+  { "q": "Is there ___ milk in the fridge?", "es": "¿Hay leche en el refrigerador?", "o": [
+    ["some", "Some se usa en afirmativas y ofrecimientos. En preguntas generales se usa any."],
+    ["many", "Many es para contables. Milk es incontable."],
+    ["any", "Preguntas y negativas con incontables o plurales: any."],
+    ["a", "A no va con incontables: no se dice a milk."]], "a": 2, "r": "some → afirmativas y ofrecimientos · any → preguntas y negativas." },
+  { "q": "What ___ you doing?", "es": "¿Qué estás haciendo?", "o": [
+    ["are", "Present continuous en pregunta: wh- + are + you + -ing."],
+    ["do", "Do va con el present simple (What do you do? = ¿a qué te dedicas?). Con -ing se usa to be."],
+    ["is", "Is es para he, she e it. Con you se usa are."],
+    ["does", "Does no se combina con -ing."]], "a": 0, "r": "Pregunta en continuous: (Wh-) + am/is/are + sujeto + -ing." },
+  { "q": "A: The phone is ringing. B: I ___ answer it.", "es": "A: Está sonando el teléfono. B: Yo contesto.", "o": [
+    ["am going to", "Going to es para planes previos. B decide en este momento."],
+    ["answer", "El present simple no expresa una decisión inmediata."],
+    ["am answering", "El continuous expresaría un plan organizado, no una reacción del momento."],
+    ["will", "Decisión espontánea, tomada al hablar: will (normalmente I'll)."]], "a": 3, "r": "Reaccionas en el momento → I'll + verbo." }
+],
+"vocab": { "theme": "Compras, comida y ciudad", "w": [
+  ["cheap", "barato / barata", "This shirt is very cheap.", "Esta camisa es muy barata."],
+  ["expensive", "caro / cara", "Restaurants here are expensive.", "Los restaurantes aquí son caros."],
+  ["crowded", "lleno de gente", "The subway is crowded in the morning.", "El metro está lleno por la mañana."],
+  ["quiet", "tranquilo / silencioso", "I live in a quiet street.", "Vivo en una calle tranquila."],
+  ["to cook", "cocinar", "My father cooks on Sundays.", "Mi padre cocina los domingos."],
+  ["bread", "pan", "We need some bread.", "Necesitamos pan."],
+  ["vegetables", "verduras", "Eat more vegetables.", "Come más verduras."],
+  ["bill", "cuenta (a pagar)", "Can we have the bill, please?", "¿Nos trae la cuenta, por favor?"],
+  ["to order", "pedir (en un restaurante)", "Are you ready to order?", "¿Están listos para pedir?"],
+  ["to wait", "esperar", "We are waiting for the bus.", "Estamos esperando el autobús."],
+  ["soon", "pronto", "The store will open soon.", "La tienda abrirá pronto."],
+  ["tomorrow", "mañana (el día siguiente)", "I'm going to call you tomorrow.", "Te voy a llamar mañana."]
+]},
+"listen": [
+  { "s": "She's cooking dinner.", "es": "Ella está preparando la cena.", "o": [
+    ["She cooks dinner.", "Cooks termina en «ks». En el audio se oye «cooking», con -ing."],
+    ["She's cooking dinner.", "She's (she is) + cooking: acción en progreso."],
+    ["She cooked dinner.", "Cooked termina en «kt». Lo que se oye es la terminación -ing."]], "a": 1 },
+  { "s": "We're going to travel.", "es": "Vamos a viajar.", "o": [
+    ["We were going to travel.", "Were suena «wer», más largo que we're («wir»). Además se oye presente."],
+    ["We're traveling.", "No se oye going to, sino directamente la forma -ing."],
+    ["We're going to travel.", "We're going to se pronuncia rápido, casi «wir gona»."]], "a": 2 },
+  { "s": "This one is cheaper.", "es": "Este es más barato.", "o": [
+    ["This one is cheaper.", "Cheaper termina en «-er» («chíper»): comparativo."],
+    ["This one is cheap.", "Cheap termina en «p», sin sílaba extra. En el audio se oye «chí-per»."],
+    ["This one is the cheapest.", "Se oiría the y la terminación «-est»."]], "a": 0 },
+  { "s": "There isn't much time.", "es": "No hay mucho tiempo.", "o": [
+    ["There isn't any time.", "Any suena «éni». En el audio se oye «mach»."],
+    ["There's too much time.", "Es afirmativo. En el audio se oye la negación isn't."],
+    ["There isn't much time.", "Isn't much: negación + much con el incontable time."]], "a": 2 }
+],
+"speak": {
+  "p": [
+    ["I'm working from home today.", "Hoy estoy trabajando desde casa.", "I'm suena «aim». Working: la r es suave, casi «wérkin»."],
+    ["What are you doing this weekend?", "¿Qué vas a hacer este fin de semana?", "What are you se une: «wódaryu». Se usa el continuous para planes."],
+    ["I'm going to visit my grandmother.", "Voy a visitar a mi abuela.", "En conversación, going to suena «gona»."],
+    ["This restaurant is better than the other one.", "Este restaurante es mejor que el otro.", "Than suena débil: «dhən». En better, la tt suena casi como una r suave en inglés americano."],
+    ["How much is this jacket?", "¿Cuánto cuesta esta chaqueta?", "Jacket se pronuncia «yáket», con una j como la «y» fuerte."],
+    ["Can I have the bill, please?", "¿Me trae la cuenta, por favor?", "En Estados Unidos se dice check; en Reino Unido, bill."]
+  ],
+  "q": [
+    { "q": "What are your plans for next year?", "es": "¿Qué planes tienes para el año que viene?", "m": "Next year I'm going to change jobs. I'm also going to save money, because I want to travel to Canada.", "mes": "El año que viene voy a cambiar de trabajo. También voy a ahorrar dinero, porque quiero viajar a Canadá." },
+    { "q": "Compare your city with another city you know.", "es": "Compara tu ciudad con otra ciudad que conozcas.", "m": "My city is smaller than Bogotá, but it's quieter and cheaper. Bogotá is more exciting, but the traffic is worse.", "mes": "Mi ciudad es más pequeña que Bogotá, pero es más tranquila y más barata. Bogotá es más emocionante, pero el tráfico es peor." }
+  ]
+},
+"order": [
+  ["They are watching a movie now.", "Ahora están viendo una película.", "Sujeto + are + verbo-ing + complemento + now."],
+  ["We are going to buy a new car.", "Vamos a comprar un coche nuevo.", "Be going to + verbo base. El adjetivo new va antes de car."],
+  ["My sister is taller than me.", "Mi hermana es más alta que yo.", "Comparativo + than. En inglés se dice than me, no than I, en conversación."],
+  ["How much money do you need?", "¿Cuánto dinero necesitas?", "How much + incontable + do + sujeto + verbo."],
+  ["This is the best pizza in town.", "Esta es la mejor pizza de la ciudad.", "The best + sustantivo + in + lugar. Con superlativos se usa in, no of, para lugares."]
+],
+"read": {
+  "t": "Moving to a new city",
+  "en": "Maria is moving from a small village to a big city next month. She is going to start a new job in a bank. Life in the city is more expensive than in the village, but the salaries are higher. Right now she is looking for an apartment. She wants one near her office, because she doesn't want to spend much time on the train. She is a little nervous, but she thinks it will be the best decision of her life.",
+  "es": "María se muda de un pueblo pequeño a una ciudad grande el mes que viene. Va a empezar un trabajo nuevo en un banco. La vida en la ciudad es más cara que en el pueblo, pero los sueldos son más altos. Ahora mismo está buscando un apartamento. Quiere uno cerca de su oficina, porque no quiere pasar mucho tiempo en el tren. Está un poco nerviosa, pero cree que será la mejor decisión de su vida.",
+  "qs": [
+    { "q": "Why is Maria moving?", "es": "¿Por qué se muda María?", "o": [
+      ["Because the village is expensive.", "Es al revés: la ciudad es más cara que el pueblo."],
+      ["Because she is going to start a new job.", "«She is going to start a new job in a bank»."],
+      ["Because her family lives in the city.", "El texto no menciona a su familia."]], "a": 1 },
+    { "q": "What is she doing right now?", "es": "¿Qué está haciendo ahora mismo?", "o": [
+      ["She is looking for an apartment.", "«Right now she is looking for an apartment»."],
+      ["She is working in a bank.", "Empezará el mes que viene. Todavía no trabaja allí."],
+      ["She is traveling by train.", "Menciona el tren porque no quiere pasar mucho tiempo en él."]], "a": 0 },
+    { "q": "How does she feel?", "es": "¿Cómo se siente?", "o": [
+      ["Very sad.", "El texto no dice que esté triste."],
+      ["Bored.", "No se menciona el aburrimiento."],
+      ["A little nervous.", "«She is a little nervous», pero cree que es una buena decisión."]], "a": 2 }
+  ]
+}
+}

@@ -1,0 +1,130 @@
+{
+"lesson": [
+  { "t": "Past continuous y used to", "p": "El past continuous (was / were + -ing) describe una acción en progreso en el pasado, a menudo interrumpida por otra en past simple. Used to + verbo base habla de hábitos o estados del pasado que ya no existen («solía»). No lo confundas con be used to + -ing, que significa «estar acostumbrado a».",
+    "tbl": [["Forma", "Uso", "Ejemplo"], ["was / were + -ing", "acción en progreso", "I was cooking when you called."], ["while + continuous", "dos acciones a la vez", "While I was reading, he was sleeping."], ["used to + verbo", "hábito pasado que ya no existe", "I used to smoke."], ["didn't use to + verbo", "negativa (sin -d)", "She didn't use to like coffee."]],
+    "ex": [["It was raining when we left.", "Estaba lloviendo cuando salimos."], ["We used to live in the countryside.", "Antes vivíamos en el campo."], ["I'm used to getting up early.", "Estoy acostumbrado a levantarme temprano."]] },
+  { "t": "La voz pasiva", "p": "Se usa cuando importa más la acción o el objeto que quién la hace. Se forma con to be en el tiempo que corresponda + participio. Si quieres decir quién la hizo, añade by. En español a menudo equivale a «se» (se habla, se construyó).",
+    "tbl": [["Tiempo", "Activa", "Pasiva"], ["Presente", "People speak English here.", "English is spoken here."], ["Pasado", "They built the bridge in 1890.", "The bridge was built in 1890."], ["Present perfect", "Someone has stolen my bike.", "My bike has been stolen."], ["Futuro", "They will open the store soon.", "The store will be opened soon."]],
+    "ex": [["This phone is made in Korea.", "Este teléfono se fabrica en Corea."], ["The book was written by a famous author.", "El libro fue escrito por un autor famoso."], ["Dinner is served at eight.", "La cena se sirve a las ocho."]] },
+  { "t": "Segundo condicional", "p": "Habla de situaciones imaginarias, poco probables o contrarias a la realidad en el presente o el futuro. Estructura: If + past simple, would + verbo base. Con to be se prefiere were para todas las personas, sobre todo en la expresión If I were you (yo que tú) para dar consejos.",
+    "tbl": [["Condición (irreal)", "Resultado imaginado"], ["If I had more money,", "I would buy a house."], ["If she lived closer,", "we would see her more often."], ["If I were you,", "I wouldn't accept the offer."]],
+    "ex": [["What would you do if you lost your job?", "¿Qué harías si perdieras tu trabajo?"], ["If I spoke French, I would move to Paris.", "Si hablara francés, me mudaría a París."], ["I wouldn't do that if I were you.", "Yo que tú, no haría eso."]] },
+  { "t": "Oraciones de relativo", "p": "Sirven para dar información sobre un sustantivo sin empezar otra frase. Who se usa para personas, which para cosas y animales, that para ambos en conversación, where para lugares y whose para posesión («cuyo»). Si el pronombre es el objeto del verbo, se puede omitir: the book (that) I bought.",
+    "tbl": [["Pronombre", "Para", "Ejemplo"], ["who", "personas", "The man who called you is my boss."], ["which", "cosas, animales", "The car which I bought is red."], ["that", "personas o cosas", "The movie that we saw was great."], ["where", "lugares", "That's the café where we met."], ["whose", "posesión", "The girl whose bag was stolen is crying."]],
+    "ex": [["I have a friend who lives in London.", "Tengo un amigo que vive en Londres."], ["This is the house where I grew up.", "Esta es la casa donde crecí."], ["The pizza we ordered was cold.", "La pizza que pedimos estaba fría."]] }
+],
+"grammar": [
+  { "q": "I ___ TV when the phone rang.", "es": "Estaba viendo la tele cuando sonó el teléfono.", "o": [
+    ["watched", "Con dos past simple parecen acciones seguidas. Aquí ver la tele estaba en progreso."],
+    ["was watching", "Acción en progreso interrumpida por otra: was/were + -ing."],
+    ["am watching", "Es presente. La frase habla del pasado (rang)."],
+    ["was watch", "Falta -ing: was + verbo-ing."]], "a": 1, "r": "Acción larga → was/were + -ing · interrupción → past simple." },
+  { "q": "If I ___ rich, I would travel the world.", "es": "Si fuera rico, viajaría por el mundo.", "o": [
+    ["am", "If + presente es el primer condicional (real). Aquí es una situación imaginaria."],
+    ["will be", "Nunca se usa will en la parte del if."],
+    ["would be", "Would va en la otra mitad de la frase, no después de if."],
+    ["were", "Segundo condicional: if + pasado. Con to be se prefiere were (was es informal)."]], "a": 3, "r": "If + pasado, would + verbo base = situación imaginaria." },
+  { "q": "This bridge ___ in 1890.", "es": "Este puente fue construido en 1890.", "o": [
+    ["was built", "El puente recibe la acción: pasiva en pasado, was + participio."],
+    ["built", "Sería voz activa, como si el puente hubiera construido algo."],
+    ["is built", "Es pasiva en presente. 1890 pide pasado."],
+    ["was build", "Build es la forma base. La pasiva usa el participio: built."]], "a": 0, "r": "Pasiva = be (en el tiempo que toque) + participio." },
+  { "q": "The woman ___ lives next door is a doctor.", "es": "La mujer que vive al lado es médica.", "o": [
+    ["which", "Which es para cosas y animales, no para personas."],
+    ["where", "Where se refiere a lugares."],
+    ["who", "Para personas: who (o that)."],
+    ["what", "What no funciona como pronombre relativo después de un sustantivo."]], "a": 2, "r": "who → personas · which → cosas · where → lugares · that → personas o cosas." },
+  { "q": "When I was a child, I ___ play football every day.", "es": "Cuando era niño, jugaba al fútbol todos los días.", "o": [
+    ["use to", "En afirmativa es used to, con -d. Use to solo aparece después de did / didn't."],
+    ["used to", "Hábito del pasado que ya no existe: used to + verbo base."],
+    ["was used to", "Be used to significa «estar acostumbrado a» y va con -ing."],
+    ["would to", "Would puede expresar hábitos pasados, pero sin to."]], "a": 1, "r": "used to + verbo = «solía» · be used to + -ing = «estar acostumbrado»." },
+  { "q": "English ___ in many countries.", "es": "El inglés se habla en muchos países.", "o": [
+    ["speaks", "El idioma no habla: es hablado por personas. Hace falta la pasiva."],
+    ["is speaking", "Sería activa en progreso, como si el idioma hablara."],
+    ["spoke", "Pasado activo, y el idioma no realiza la acción."],
+    ["is spoken", "Hecho general en pasiva: is + participio. Equivale al «se habla» del español."]], "a": 3, "r": "«Se + verbo» en español → a menudo pasiva en inglés: is spoken, is made." },
+  { "q": "That's the restaurant ___ we had our first date.", "es": "Ese es el restaurante donde tuvimos nuestra primera cita.", "o": [
+    ["where", "Lugar en el que ocurre algo: where."],
+    ["which", "Which necesitaría una preposición: which we had our first date in."],
+    ["who", "Who es solo para personas."],
+    ["what", "What no se usa como relativo después de un sustantivo."]], "a": 0, "r": "Lugar + where + sujeto + verbo." },
+  { "q": "What would you do if you ___ the lottery?", "es": "¿Qué harías si ganaras la lotería?", "o": [
+    ["win", "If + presente es el primer condicional. Ganar la lotería es poco probable: segundo."],
+    ["would win", "Would no va en la parte del if."],
+    ["won", "Segundo condicional: if + past simple (won)."],
+    ["had won", "If + had + participio es el tercer condicional, para el pasado."]], "a": 2, "r": "Would en el resultado, pasado simple en el if." }
+],
+"vocab": { "theme": "Historias, procesos e hipótesis", "w": [
+  ["to happen", "pasar, ocurrir", "What happened last night?", "¿Qué pasó anoche?"],
+  ["suddenly", "de repente", "Suddenly, the lights went out.", "De repente, se fue la luz."],
+  ["while", "mientras", "I fell asleep while I was reading.", "Me quedé dormido mientras leía."],
+  ["to build", "construir", "The castle was built in 1500.", "El castillo fue construido en 1500."],
+  ["to invent", "inventar", "The telephone was invented in 1876.", "El teléfono se inventó en 1876."],
+  ["to grow", "cultivar, crecer", "Coffee is grown in Colombia.", "El café se cultiva en Colombia."],
+  ["made of", "hecho de", "This table is made of wood.", "Esta mesa está hecha de madera."],
+  ["factory", "fábrica", "My uncle works in a car factory.", "Mi tío trabaja en una fábrica de coches."],
+  ["childhood", "infancia", "I had a happy childhood.", "Tuve una infancia feliz."],
+  ["to imagine", "imaginar", "Imagine you lived on the moon.", "Imagina que vivieras en la luna."],
+  ["lottery", "lotería", "If I won the lottery, I'd stop working.", "Si ganara la lotería, dejaría de trabajar."],
+  ["neighborhood", "barrio, vecindario", "This is the neighborhood where I grew up.", "Este es el barrio donde crecí."]
+]},
+"listen": [
+  { "s": "I was walking home when it started to rain.", "es": "Iba caminando a casa cuando empezó a llover.", "o": [
+    ["I walked home when it started to rain.", "Walked suena «wokt». En el audio se oye «was walking»."],
+    ["I was walking home when it started to rain.", "Was walking: acción en progreso. Started: interrupción."],
+    ["I was walking home when it stopped raining.", "Stopped suena «stopt» y va con raining. En el audio se oye «started to rain»."]], "a": 1 },
+  { "s": "The house was built in 1950.", "es": "La casa fue construida en 1950.", "o": [
+    ["The house was sold in 1950.", "Sold suena «sould». En el audio se oye «bilt»."],
+    ["The house is built in 1950.", "Is suena «iz». En el audio se oye «woz», pasado."],
+    ["The house was built in 1950.", "Was built: pasiva en pasado. 1950 se lee «nineteen fifty»."]], "a": 2 },
+  { "s": "I used to live in Madrid.", "es": "Antes vivía en Madrid.", "o": [
+    ["I used to live in Madrid.", "Used to suena «iústa» y va seguido del verbo base live."],
+    ["I'm used to living in Madrid.", "Se oiría «aim» al principio y «living» con -ing."],
+    ["I usually live in Madrid.", "Usually suena «iúshuali», con sh. En el audio se oye «iústa»."]], "a": 0 },
+  { "s": "If I had more time, I'd learn Italian.", "es": "Si tuviera más tiempo, aprendería italiano.", "o": [
+    ["If I have more time, I'll learn Italian.", "Have suena «hav» e I'll «ail». En el audio se oye had e I'd («aid»)."],
+    ["If I had more time, I learned Italian.", "Learned suena «lernd», sin I'd delante."],
+    ["If I had more time, I'd learn Italian.", "Had + I'd («aid»): segundo condicional."]], "a": 2 }
+],
+"speak": {
+  "p": [
+    ["I was having dinner when you called.", "Estaba cenando cuando llamaste.", "Was suena débil, casi «wəz». Called termina en «d»: «cold»."],
+    ["I used to play the piano when I was a kid.", "Tocaba el piano cuando era niño.", "Used to se pronuncia «iústa». No pronuncies la d."],
+    ["This phone is made in China.", "Este teléfono está hecho en China.", "Made suena «meid», con diptongo. China: «cháina»."],
+    ["If I were you, I would accept the job.", "Yo que tú, aceptaría el trabajo.", "I would suena «aiwud». La l de would no se pronuncia."],
+    ["The man who helped me was very kind.", "El hombre que me ayudó fue muy amable.", "Who suena «ju», con una h suave como aire. Helped: «helpt»."],
+    ["Paper was invented in China.", "El papel se inventó en China.", "Invented termina en «-tid»: después de t, la -ed se pronuncia como sílaba."]
+  ],
+  "q": [
+    { "q": "How was your life different ten years ago?", "es": "¿Cómo era diferente tu vida hace diez años?", "m": "Ten years ago I used to live with my parents. I didn't use to cook, and I used to go out every weekend with my friends.", "mes": "Hace diez años vivía con mis padres. No solía cocinar y salía todos los fines de semana con mis amigos." },
+    { "q": "What would you do if you didn't have to work?", "es": "¿Qué harías si no tuvieras que trabajar?", "m": "If I didn't have to work, I would travel around South America and I would learn to surf. I would also spend more time with my family.", "mes": "Si no tuviera que trabajar, viajaría por Sudamérica y aprendería a surfear. También pasaría más tiempo con mi familia." }
+  ]
+},
+"order": [
+  ["I was sleeping when the alarm rang.", "Estaba durmiendo cuando sonó la alarma.", "Acción en progreso (was sleeping) + when + interrupción (rang)."],
+  ["This book was written by a famous author.", "Este libro fue escrito por un autor famoso.", "Pasiva: sujeto + was + participio + by + quién lo hizo."],
+  ["If I had a car, I would drive to work.", "Si tuviera coche, iría al trabajo en coche.", "If + pasado, would + verbo base."],
+  ["The girl who won the race is my cousin.", "La chica que ganó la carrera es mi prima.", "La oración de relativo (who won the race) va justo después de the girl."],
+  ["We used to go camping every summer.", "Solíamos ir de campamento cada verano.", "Used to + verbo base. Go camping = ir de campamento."]
+],
+"read": {
+  "t": "How chocolate is made",
+  "en": "Chocolate is made from cacao beans, which grow on trees in hot countries like Ecuador and Ghana. First, the beans are collected and left in the sun for several days. Then they are sent to factories, where they are cleaned and roasted. After that, the beans are crushed and mixed with sugar and milk. The Aztecs used to drink chocolate as a bitter drink; solid chocolate bars were invented much later, in the nineteenth century.",
+  "es": "El chocolate se hace con semillas de cacao, que crecen en árboles en países cálidos como Ecuador y Ghana. Primero, las semillas se recogen y se dejan al sol durante varios días. Luego se envían a fábricas, donde se limpian y se tuestan. Después, las semillas se trituran y se mezclan con azúcar y leche. Los aztecas solían beber el chocolate como una bebida amarga; las tabletas de chocolate sólido se inventaron mucho después, en el siglo XIX.",
+  "qs": [
+    { "q": "Where do cacao trees grow?", "es": "¿Dónde crecen los árboles de cacao?", "o": [
+      ["In factories.", "En las fábricas se procesan las semillas; los árboles crecen en el campo."],
+      ["In hot countries.", "«which grow on trees in hot countries like Ecuador and Ghana»."],
+      ["In cold countries.", "El texto dice lo contrario: países cálidos."]], "a": 1 },
+    { "q": "What happens in the factories?", "es": "¿Qué ocurre en las fábricas?", "o": [
+      ["The beans are cleaned and roasted.", "«where they are cleaned and roasted»."],
+      ["The beans are left in the sun.", "Eso ocurre antes de llegar a la fábrica."],
+      ["The trees are planted.", "El texto no habla de plantar árboles en fábricas."]], "a": 0 },
+    { "q": "How did the Aztecs use chocolate?", "es": "¿Cómo usaban el chocolate los aztecas?", "o": [
+      ["They used to eat chocolate bars.", "Las tabletas se inventaron siglos después, en el siglo XIX."],
+      ["They used to sell it to factories.", "No se menciona."],
+      ["They used to drink it.", "«The Aztecs used to drink chocolate as a bitter drink»."]], "a": 2 }
+  ]
+}
+}

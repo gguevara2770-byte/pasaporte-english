@@ -1,0 +1,130 @@
+{
+"lesson": [
+  { "t": "El verbo to be", "p": "To be significa «ser» o «estar». En presente tiene tres formas: am, is y are. En conversación casi siempre se usa la forma corta (contracción). Ojo: la edad también se dice con to be: I'm 25 years old (tengo 25 años).",
+    "tbl": [["Sujeto", "Forma", "Contracción"], ["I", "am", "I'm"], ["he / she / it", "is", "she's, it's"], ["you / we / they", "are", "you're, they're"]],
+    "ex": [["I'm from Mexico.", "Soy de México."], ["She is tired today.", "Ella está cansada hoy."], ["Are you ready?", "¿Estás listo?"]] },
+  { "t": "Artículos a, an y the", "p": "A y an significan «un» o «una» y solo van con sustantivos singulares contables. Se elige por el sonido de la palabra siguiente, no por la letra. The equivale a «el, la, los, las» y se usa con algo concreto o ya mencionado. A diferencia del español, las profesiones llevan artículo: She is a doctor.",
+    "tbl": [["Artículo", "Cuándo", "Ejemplo"], ["a", "sonido consonante", "a car, a university"], ["an", "sonido vocal", "an apple, an hour"], ["the", "algo concreto o ya mencionado", "the car in the garage"]],
+    "ex": [["I have a dog. The dog is black.", "Tengo un perro. El perro es negro."], ["It takes an hour.", "Toma una hora."], ["My mother is a nurse.", "Mi madre es enfermera."]] },
+  { "t": "Present simple: rutinas y hábitos", "p": "Se usa para hábitos, rutinas y verdades generales. El verbo no cambia, salvo con he, she e it, donde se añade -s. Si el verbo termina en -o, -sh, -ch, -ss o -x se añade -es, y si termina en consonante + y, la y cambia a -ies.",
+    "tbl": [["Sujeto", "Verbo", "Ejemplo"], ["I / you / we / they", "work", "They work in a bank."], ["he / she / it", "works", "He works from home."], ["he / she / it (-o, -sh, -ch)", "goes, watches", "She watches TV at night."], ["he / she / it (consonante + y)", "studies", "My son studies English."]],
+    "ex": [["I get up at seven every day.", "Me levanto a las siete todos los días."], ["Water boils at 100 degrees.", "El agua hierve a 100 grados."], ["She goes to the gym on Mondays.", "Ella va al gimnasio los lunes."]] },
+  { "t": "Negaciones, preguntas y there is / there are", "p": "Para negar y preguntar en present simple se usa el auxiliar do o does. Con does, el verbo principal pierde la -s: she works → she doesn't work. «Hay» no se traduce con have: se dice there is (singular) o there are (plural).",
+    "tbl": [["", "I / you / we / they", "he / she / it"], ["Negativa", "I don't eat meat.", "She doesn't eat meat."], ["Pregunta", "Do you eat meat?", "Does she eat meat?"], ["Respuesta corta", "Yes, I do. / No, I don't.", "Yes, she does. / No, she doesn't."]],
+    "ex": [["Does he speak English?", "¿Él habla inglés?"], ["We don't have a car.", "No tenemos coche."], ["Is there a bank near here?", "¿Hay un banco cerca de aquí?"]] }
+],
+"grammar": [
+  { "q": "She ___ a teacher.", "es": "Ella es profesora.", "o": [
+    ["is", "Con he, she e it el verbo to be en presente es is."],
+    ["are", "Are va con you, we y they. She es tercera persona del singular."],
+    ["am", "Am se usa solo con I."],
+    ["be", "Be es la forma base. En presente siempre se conjuga: am, is o are."]], "a": 0, "r": "I am · he/she/it is · you/we/they are." },
+  { "q": "I ___ 30 years old.", "es": "Tengo 30 años.", "o": [
+    ["have", "Traducción literal del español. En inglés la edad se dice con to be."],
+    ["am", "La edad se expresa con to be: I am 30 years old."],
+    ["has", "Has es «tiene» y además es tercera persona. No sirve para la edad."],
+    ["is", "Is es para he, she e it. Con I se usa am."]], "a": 1, "r": "Edad = to be + número (+ years old): She's 12." },
+  { "q": "He ___ coffee every morning.", "es": "Él toma café todas las mañanas.", "o": [
+    ["drink", "Con he, she e it el verbo en present simple lleva -s: drinks."],
+    ["is drink", "No se mezcla to be con otro verbo en present simple. Es un error típico al traducir."],
+    ["drinks", "Hábito (every morning) en tercera persona singular: verbo + s."],
+    ["drinking", "La forma -ing necesita to be (he is drinking) y además hablaría de ahora, no de un hábito."]], "a": 2, "r": "Hábitos → present simple. He/she/it → verbo + s." },
+  { "q": "___ you like pizza?", "es": "¿Te gusta la pizza?", "o": [
+    ["Does", "Does solo va con he, she e it. Con you se usa do."],
+    ["Are", "Like es un verbo de acción: se pregunta con do, no con to be."],
+    ["Is", "Is es para he, she e it, y no sirve para preguntar con otros verbos."],
+    ["Do", "Las preguntas en present simple llevan el auxiliar do (does en tercera persona)."]], "a": 3, "r": "Do/Does + sujeto + verbo base: Do you like…? Does she like…?" },
+  { "q": "There ___ two books on the table.", "es": "Hay dos libros sobre la mesa.", "o": [
+    ["are", "Two books es plural, así que se dice there are."],
+    ["is", "There is es para singular: there is one book."],
+    ["have", "«Hay» no se traduce con have. Have significa «tener»."],
+    ["has", "Has es «tiene» (tercera persona), no «hay»."]], "a": 0, "r": "Hay + singular = there is · Hay + plural = there are." },
+  { "q": "They ___ work on Sundays.", "es": "Ellos no trabajan los domingos.", "o": [
+    ["not", "Not no puede negar un verbo de acción por sí solo. Necesita el auxiliar: don't."],
+    ["doesn't", "Doesn't es para he, she e it. They es plural."],
+    ["don't", "Negación en present simple con they: don't + verbo base."],
+    ["aren't", "Aren't niega el verbo to be (they aren't tired), no verbos como work."]], "a": 2, "r": "I/you/we/they don't + verbo · he/she/it doesn't + verbo." },
+  { "q": "My sister ___ to the gym on Mondays.", "es": "Mi hermana va al gimnasio los lunes.", "o": [
+    ["go", "Falta la terminación de tercera persona: my sister = she."],
+    ["gos", "Los verbos terminados en -o añaden -es, no solo -s."],
+    ["is go", "No se usa to be delante de otro verbo en present simple."],
+    ["goes", "Go termina en -o, así que en tercera persona añade -es: goes."]], "a": 3, "r": "-o, -sh, -ch, -ss, -x → -es: goes, watches, fixes." },
+  { "q": "___ she live near here?", "es": "¿Ella vive cerca de aquí?", "o": [
+    ["Does", "She es tercera persona: la pregunta se forma con does + verbo base."],
+    ["Do", "Do es para I, you, we y they."],
+    ["Is", "Live es un verbo de acción: no se pregunta con is."],
+    ["Has", "Has no es un auxiliar para preguntas en present simple."]], "a": 0, "r": "Con does, el verbo va sin -s: Does she live? (no «lives»)." }
+],
+"vocab": { "theme": "Personas, trabajo y rutina", "w": [
+  ["teacher", "profesor / profesora", "My teacher is very patient.", "Mi profesora es muy paciente."],
+  ["neighbor", "vecino / vecina", "Our neighbor has two cats.", "Nuestro vecino tiene dos gatos."],
+  ["breakfast", "desayuno", "I have breakfast at eight.", "Desayuno a las ocho."],
+  ["to wake up", "despertarse", "I wake up early every day.", "Me despierto temprano todos los días."],
+  ["job", "empleo, trabajo", "She has a new job.", "Ella tiene un trabajo nuevo."],
+  ["always", "siempre", "He always drinks tea.", "Él siempre toma té."],
+  ["never", "nunca", "We never watch TV.", "Nunca vemos la tele."],
+  ["busy", "ocupado / ocupada", "I'm very busy today.", "Hoy estoy muy ocupado."],
+  ["tired", "cansado / cansada", "They are tired after work.", "Están cansados después del trabajo."],
+  ["city", "ciudad", "Lima is a big city.", "Lima es una ciudad grande."],
+  ["weekend", "fin de semana", "What do you do on the weekend?", "¿Qué haces el fin de semana?"],
+  ["to live", "vivir", "I live with my parents.", "Vivo con mis padres."]
+]},
+"listen": [
+  { "s": "She works in a hospital.", "es": "Ella trabaja en un hospital.", "o": [
+    ["She works in a hospital.", "Se oye la -s final de works, que suena como «ks»."],
+    ["She work in a hospital.", "Sin la -s sería incorrecto con she. En el audio la «ks» final se oye clara."],
+    ["She worked in a hospital.", "Worked termina en un sonido «t» («workt»). Lo que se oye es «works»."]], "a": 0 },
+  { "s": "I live in a small town.", "es": "Vivo en un pueblo pequeño.", "o": [
+    ["I leave a small town.", "Leave tiene una i larga («liiv») y significa «salir de». En el audio la i es corta."],
+    ["I lived in a small town.", "Lived termina en «d». El audio está en presente."],
+    ["I live in a small town.", "Live tiene una i corta, casi como «liv». Además se oye in a, unido: «inə»."]], "a": 2 },
+  { "s": "Is there a park near here?", "es": "¿Hay un parque cerca de aquí?", "o": [
+    ["Is it a park near here?", "It suena «it», muy corto. En el audio se oye «ther», con la lengua entre los dientes."],
+    ["Is there a park near here?", "Is there se pronuncia unido: «izder». Es la pregunta para «¿hay…?»."],
+    ["Is that a park near here?", "That tiene una a abierta («dat»). En el audio el sonido es «der»."]], "a": 1 },
+  { "s": "He doesn't eat meat.", "es": "Él no come carne.", "o": [
+    ["He didn't eat meat.", "Didn't suena «didnt», con i. Lo que se oye es «dásent»."],
+    ["He does eat meat.", "Does eat es afirmativo y enfático. En el audio hay una negación: «dásent»."],
+    ["He doesn't eat meat.", "Doesn't se pronuncia «dásent» y la t final casi no se oye."]], "a": 2 }
+],
+"speak": {
+  "p": [
+    ["Hi, my name is Ana. Nice to meet you.", "Hola, me llamo Ana. Encantada de conocerte.", "«Nice to meet you» suena casi como una sola palabra: «náis-tu-mít-iu»."],
+    ["I'm from Colombia. Where are you from?", "Soy de Colombia. ¿De dónde eres?", "En la pregunta, from va al final y se pronuncia con fuerza."],
+    ["I work in an office in the city.", "Trabajo en una oficina en la ciudad.", "Une las palabras: «in an office» suena «inanófis»."],
+    ["I usually wake up at seven.", "Normalmente me despierto a las siete.", "Usually se pronuncia «iú-shu-a-li». Wake up suena unido: «ueikap»."],
+    ["She doesn't like coffee.", "A ella no le gusta el café.", "Doesn't suena «dásent». La t final es muy suave."],
+    ["Is there a supermarket near here?", "¿Hay un supermercado cerca de aquí?", "La th de there se hace con la punta de la lengua entre los dientes."]
+  ],
+  "q": [
+    { "q": "Tell me about yourself.", "es": "Háblame de ti.", "m": "My name is Carlos. I'm 30 years old and I'm from Peru. I'm an engineer and I live in Lima with my wife.", "mes": "Me llamo Carlos. Tengo 30 años y soy de Perú. Soy ingeniero y vivo en Lima con mi esposa." },
+    { "q": "What do you do on a normal day?", "es": "¿Qué haces en un día normal?", "m": "I wake up at seven and I have breakfast. I work from nine to five. In the evening I cook dinner and I watch TV.", "mes": "Me despierto a las siete y desayuno. Trabajo de nueve a cinco. Por la noche preparo la cena y veo la tele." }
+  ]
+},
+"order": [
+  ["She doesn't like coffee.", "A ella no le gusta el café.", "Sujeto + doesn't + verbo base + complemento. En inglés no hay «le»: el sujeto es she."],
+  ["Where are you from?", "¿De dónde eres?", "Pregunta con to be: palabra interrogativa + are + sujeto. From va al final."],
+  ["I always have breakfast at home.", "Siempre desayuno en casa.", "Always va antes del verbo principal (have)."],
+  ["Is there a bank near here?", "¿Hay un banco cerca de aquí?", "En preguntas, is va antes de there."],
+  ["My brother works in a big hotel.", "Mi hermano trabaja en un hotel grande.", "El adjetivo (big) va antes del sustantivo (hotel)."]
+],
+"read": {
+  "t": "My neighbor Lucy",
+  "en": "Lucy is my neighbor. She is 28 years old and she is a nurse. She works in a big hospital in the city center. Lucy wakes up at six every day because her job starts at seven. She doesn't have a car, so she takes the bus. On weekends she doesn't work. She likes to read and to walk in the park with her dog, Max.",
+  "es": "Lucy es mi vecina. Tiene 28 años y es enfermera. Trabaja en un hospital grande en el centro de la ciudad. Lucy se despierta a las seis todos los días porque su trabajo empieza a las siete. No tiene coche, así que toma el autobús. Los fines de semana no trabaja. Le gusta leer y pasear por el parque con su perro, Max.",
+  "qs": [
+    { "q": "What is Lucy's job?", "es": "¿En qué trabaja Lucy?", "o": [
+      ["She is a nurse.", "El texto dice «she is a nurse»: es enfermera."],
+      ["She is a doctor.", "Trabaja en un hospital, pero el texto dice que es enfermera (nurse), no médica."],
+      ["She is a teacher.", "El texto no menciona esa profesión."]], "a": 0 },
+    { "q": "Why does Lucy wake up at six?", "es": "¿Por qué Lucy se despierta a las seis?", "o": [
+      ["Because she walks her dog.", "Pasea a su perro los fines de semana. No es la razón de madrugar."],
+      ["Because her job starts at seven.", "El texto lo dice con because: «because her job starts at seven»."],
+      ["Because she drives to work.", "Lucy no tiene coche: va en autobús."]], "a": 1 },
+    { "q": "What does Lucy do on weekends?", "es": "¿Qué hace Lucy los fines de semana?", "o": [
+      ["She works at the hospital.", "El texto dice lo contrario: «on weekends she doesn't work»."],
+      ["She takes the bus to the city.", "El autobús lo toma para ir al trabajo, entre semana."],
+      ["She reads and walks in the park.", "Le gusta leer y pasear por el parque con Max."]], "a": 2 }
+  ]
+}
+}

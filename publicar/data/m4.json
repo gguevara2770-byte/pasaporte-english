@@ -1,0 +1,130 @@
+{
+"lesson": [
+  { "t": "Present perfect: experiencias y resultados", "p": "Se forma con have / has + participio (worked, been, seen). Conecta el pasado con el presente: experiencias de vida sin fecha (Have you ever…?), acciones recientes con resultado ahora (I've lost my keys) y acciones que siguen hasta hoy. Palabras típicas: ever, never, just, already, yet.",
+    "tbl": [["Palabra", "Significado", "Posición y ejemplo"], ["ever", "alguna vez", "Have you ever been to Brazil?"], ["never", "nunca", "I've never eaten sushi."], ["just", "acabar de", "She has just arrived."], ["already", "ya", "We've already finished."], ["yet", "ya (pregunta) / todavía (negativa)", "Have you finished yet? I haven't finished yet."]],
+    "ex": [["I've visited Mexico three times.", "He visitado México tres veces."], ["Has he called you yet?", "¿Ya te ha llamado?"], ["They've just had a baby.", "Acaban de tener un bebé."]] },
+  { "t": "Present perfect o past simple; for y since", "p": "Si dices cuándo pasó (yesterday, last year, in 2019, ago), usa past simple. Si no importa cuándo, o la acción sigue hasta ahora, usa present perfect. Para decir desde cuándo o durante cuánto tiempo: for + duración, since + punto de inicio. Ojo: «vivo aquí desde 2019» es I have lived here since 2019, nunca I live here since 2019.",
+    "tbl": [["", "Ejemplo", "Por qué"], ["Past simple", "I went to Paris in 2022.", "momento terminado y concreto"], ["Present perfect", "I've been to Paris.", "experiencia, sin fecha"], ["for", "for three years, for a week", "duración"], ["since", "since 2019, since Monday, since I was a child", "punto de inicio"]],
+    "ex": [["I have worked here for five years.", "Trabajo aquí desde hace cinco años."], ["We have known each other since school.", "Nos conocemos desde el colegio."], ["I saw her last week.", "La vi la semana pasada."]] },
+  { "t": "Primer condicional", "p": "Habla de situaciones reales o probables en el futuro y de su resultado. Estructura: If + present simple, will + verbo base. Aunque hable del futuro, después de if nunca va will. El orden puede cambiar: si el if va al final, no lleva coma. Lo mismo pasa con when, as soon as, before y after.",
+    "tbl": [["Condición", "Resultado"], ["If it rains,", "we'll stay at home."], ["If you study,", "you'll pass the exam."], ["When I get home,", "I'll call you."]],
+    "ex": [["If I have time, I'll help you.", "Si tengo tiempo, te ayudaré."], ["We'll miss the bus if we don't hurry.", "Perderemos el autobús si no nos damos prisa."], ["I'll text you as soon as I arrive.", "Te escribo en cuanto llegue."]] },
+  { "t": "Must, have to, should", "p": "Must y have to expresan obligación. Mustn't expresa prohibición. Cuidado con el falso amigo: don't have to no prohíbe, solo dice que no es necesario. Should da consejos. Todos van seguidos del verbo base, pero have to cambia con he/she/it (has to).",
+    "tbl": [["Forma", "Significado", "Ejemplo"], ["must / have to", "es obligatorio", "You must wear a seatbelt."], ["mustn't", "está prohibido", "You mustn't use your phone here."], ["don't have to", "no es necesario", "You don't have to come if you're tired."], ["should / shouldn't", "consejo", "You should see a doctor."]],
+    "ex": [["She has to work on Saturdays.", "Ella tiene que trabajar los sábados."], ["You shouldn't eat so much sugar.", "No deberías comer tanto azúcar."], ["We don't have to pay; it's free.", "No tenemos que pagar; es gratis."]] }
+],
+"grammar": [
+  { "q": "I have lived here ___ 2019.", "es": "Vivo aquí desde 2019.", "o": [
+    ["for", "For va con una duración (for five years), no con un punto de inicio."],
+    ["since", "Since va con el momento en que empezó algo: since 2019."],
+    ["from", "From necesita un final (from 2019 to 2022) y no se usa así con present perfect."],
+    ["during", "During significa «durante» un periodo, no «desde»."]], "a": 1, "r": "for + duración (for 3 years) · since + inicio (since 2019)." },
+  { "q": "Elige la pregunta correcta:", "es": "¿Alguna vez has estado en Japón?", "say": "Have you ever been to Japan?", "o": [
+    ["Did you ever been to Japan?", "Did va con verbo base, no con participio."],
+    ["Have you ever went to Japan?", "Went es pasado simple. Con have va el participio: been."],
+    ["Have you ever been to Japan?", "Experiencia: have + ever + participio. Been to = haber estado en."],
+    ["Are you ever been to Japan?", "El present perfect se forma con have, no con are."]], "a": 2, "r": "Experiencias → Have you ever + participio?" },
+  { "q": "I ___ him last week.", "es": "Lo vi la semana pasada.", "o": [
+    ["have seen", "Con un tiempo terminado y concreto (last week) no se usa present perfect."],
+    ["see", "Es presente. Last week pide pasado."],
+    ["have saw", "Saw es pasado simple; con have iría seen. Y aun así last week no lo admite."],
+    ["saw", "Momento terminado y concreto: past simple."]], "a": 3, "r": "Con yesterday, last…, ago, in 2020 → past simple." },
+  { "q": "If it ___ tomorrow, we will stay home.", "es": "Si llueve mañana, nos quedaremos en casa.", "o": [
+    ["rains", "Primer condicional: if + present simple, will en la otra parte."],
+    ["will rain", "En la parte del if no se usa will, aunque hable del futuro."],
+    ["rained", "If + pasado es el segundo condicional, para situaciones imaginarias."],
+    ["rain", "Falta la -s de tercera persona: it rains."]], "a": 0, "r": "If + presente, … will + verbo. Nunca will después de if." },
+  { "q": "You ___ smoke here. It's forbidden.", "es": "No puedes fumar aquí. Está prohibido.", "o": [
+    ["don't have to", "Falso amigo: don't have to significa «no es necesario», no «está prohibido»."],
+    ["shouldn't", "Shouldn't es un consejo. Forbidden indica prohibición."],
+    ["mustn't", "Prohibición clara: mustn't."],
+    ["needn't", "Needn't significa que no hace falta, igual que don't have to."]], "a": 2, "r": "mustn't = prohibido · don't have to = no es obligatorio." },
+  { "q": "I enjoy ___ in the morning.", "es": "Me gusta correr por la mañana.", "o": [
+    ["to run", "Enjoy no va con infinitivo con to."],
+    ["run", "Enjoy no va seguido del verbo base."],
+    ["to running", "No se combina to con -ing después de enjoy."],
+    ["running", "Enjoy siempre va seguido de verbo en -ing."]], "a": 3, "r": "Van con -ing: enjoy, finish, mind, avoid, suggest." },
+  { "q": "I haven't finished my homework ___.", "es": "Todavía no he terminado mi tarea.", "o": [
+    ["yet", "En negativas, yet va al final y significa «todavía»."],
+    ["already", "Already va en afirmativas y significa «ya»."],
+    ["just", "Just (acabar de) va entre have y el participio, y en afirmativas."],
+    ["still", "Still va antes del auxiliar: I still haven't finished."]], "a": 0, "r": "already → afirmativas · yet → preguntas y negativas, al final." },
+  { "q": "You look tired. You ___ go to bed early.", "es": "Te ves cansado. Deberías acostarte temprano.", "o": [
+    ["must", "Must es una obligación fuerte. Para un consejo amable se usa should."],
+    ["should", "Consejo: should + verbo base."],
+    ["have", "Faltaría to (have to) y sería una obligación, no un consejo."],
+    ["should to", "Después de should no va to."]], "a": 1, "r": "Consejo → should + verbo base (sin to)." }
+],
+"vocab": { "theme": "Experiencias, salud y normas", "w": [
+  ["to feel", "sentirse", "I don't feel well today.", "Hoy no me siento bien."],
+  ["headache", "dolor de cabeza", "I've had a headache all day.", "He tenido dolor de cabeza todo el día."],
+  ["advice", "consejo (incontable)", "Can you give me some advice?", "¿Me puedes dar un consejo?"],
+  ["to try", "probar, intentar", "Have you ever tried Thai food?", "¿Alguna vez has probado la comida tailandesa?"],
+  ["already", "ya", "I've already eaten.", "Ya he comido."],
+  ["yet", "todavía / ya (en preguntas)", "Has the bus arrived yet?", "¿Ya ha llegado el autobús?"],
+  ["rule", "regla, norma", "The rules are very strict.", "Las normas son muy estrictas."],
+  ["allowed", "permitido", "Dogs are not allowed in the store.", "No se permiten perros en la tienda."],
+  ["to forget", "olvidar", "I've forgotten his name.", "He olvidado su nombre."],
+  ["to lose", "perder (un objeto)", "She has lost her wallet.", "Ella ha perdido su cartera."],
+  ["to borrow", "pedir prestado", "Can I borrow your pen?", "¿Me prestas tu bolígrafo?"],
+  ["abroad", "en el extranjero", "Have you ever lived abroad?", "¿Alguna vez has vivido en el extranjero?"]
+]},
+"listen": [
+  { "s": "I've lost my keys.", "es": "He perdido mis llaves.", "o": [
+    ["I lost my keys.", "Sin I've no hay sonido «v» entre I y lost. En el audio se oye «aivlost»."],
+    ["I've lost my keys.", "I've (I have) + lost: resultado en el presente. La v es corta pero se oye."],
+    ["I love my keys.", "Love suena «lav» y no termina en «st»."]], "a": 1 },
+  { "s": "She's been to Paris.", "es": "Ella ha estado en París.", "o": [
+    ["She's been to Paris.", "Been suena «bin»: fue y volvió. Ha estado allí alguna vez."],
+    ["She's gone to Paris.", "Gone suena «gon»: se fue y sigue allí. En el audio se oye «bin»."],
+    ["She was in Paris.", "Was in suena «wazin». En el audio se oye she's been to."]], "a": 0 },
+  { "s": "If you call me, I'll come.", "es": "Si me llamas, vendré.", "o": [
+    ["If you call me, I come.", "Falta el sonido «l» de I'll: «ail»."],
+    ["If you called me, I'd come.", "Called termina en «d» y I'd suena «aid». Sería el segundo condicional."],
+    ["If you call me, I'll come.", "I'll se pronuncia «ail», con una l suave: primer condicional."]], "a": 2 },
+  { "s": "You don't have to pay.", "es": "No tienes que pagar.", "o": [
+    ["You have to pay.", "Falta don't. En el audio se oye la negación al principio."],
+    ["You don't have to pay.", "Don't have to suena «dont-háftu»: no es obligatorio."],
+    ["You mustn't pay.", "Mustn't suena «másent». En el audio se oye have to («háftu»)."]], "a": 1 }
+],
+"speak": {
+  "p": [
+    ["Have you ever tried sushi?", "¿Alguna vez has probado el sushi?", "Ever suena «éver». Tried termina en «d»: «traid»."],
+    ["I've lived here for five years.", "Vivo aquí desde hace cinco años.", "No digas «I live here for five years»: con duración hasta hoy va present perfect."],
+    ["I've just finished work.", "Acabo de terminar de trabajar.", "Just suena «yast», con una y fuerte al principio."],
+    ["If I have time, I'll call you.", "Si tengo tiempo, te llamaré.", "Une I'll call: «ailcól»."],
+    ["You should drink more water.", "Deberías beber más agua.", "En should la l no se pronuncia: «shud»."],
+    ["We don't have to wear a uniform.", "No tenemos que llevar uniforme.", "Have to suena «háftu», con f. Uniform: «iúniform»."]
+  ],
+  "q": [
+    { "q": "What is the most interesting place you have visited?", "es": "¿Cuál es el lugar más interesante que has visitado?", "m": "The most interesting place I've visited is Cusco. I went there in 2022 and I loved the food and the history.", "mes": "El lugar más interesante que he visitado es Cusco. Fui en 2022 y me encantaron la comida y la historia." },
+    { "q": "What are the rules at your job or school?", "es": "¿Cuáles son las normas en tu trabajo o escuela?", "m": "At my job we have to arrive at eight. We mustn't use our phones in meetings, but we don't have to wear a suit.", "mes": "En mi trabajo tenemos que llegar a las ocho. No podemos usar el teléfono en las reuniones, pero no tenemos que llevar traje." }
+  ]
+},
+"order": [
+  ["Have you ever been to Mexico?", "¿Alguna vez has estado en México?", "Have + sujeto + ever + participio. Ever va justo antes del participio."],
+  ["I have known her since 2015.", "La conozco desde 2015.", "Have + participio + objeto + since + punto de inicio."],
+  ["If it rains, we will stay at home.", "Si llueve, nos quedaremos en casa.", "If + presente, coma, will + verbo."],
+  ["You must not park here.", "No debes estacionar aquí.", "Must not (mustn't) + verbo base: prohibición."],
+  ["She has already finished the report.", "Ella ya ha terminado el informe.", "Already va entre has y el participio."]
+],
+"read": {
+  "t": "Ask the doctor",
+  "en": "Dear Dr. Smith, I have had headaches for two weeks. I have tried everything: I've stopped drinking coffee and I've slept more, but nothing has worked. What should I do? Paul. Dear Paul, you should see a doctor in person, because two weeks is a long time. Until then, you should drink more water and spend less time looking at screens. If the pain gets worse, you must go to the hospital immediately.",
+  "es": "Querido Dr. Smith: Tengo dolores de cabeza desde hace dos semanas. Lo he probado todo: he dejado de tomar café y he dormido más, pero nada ha funcionado. ¿Qué debería hacer? Paul. Querido Paul: deberías ver a un médico en persona, porque dos semanas es mucho tiempo. Mientras tanto, deberías beber más agua y pasar menos tiempo mirando pantallas. Si el dolor empeora, debes ir al hospital de inmediato.",
+  "qs": [
+    { "q": "How long has Paul had headaches?", "es": "¿Desde cuándo tiene Paul dolores de cabeza?", "o": [
+      ["Since yesterday.", "El texto dice «for two weeks», no desde ayer."],
+      ["For two months.", "Son semanas, no meses."],
+      ["For two weeks.", "«I have had headaches for two weeks»."]], "a": 2 },
+    { "q": "What has Paul already tried?", "es": "¿Qué ha probado Paul ya?", "o": [
+      ["He has stopped drinking coffee.", "«I've stopped drinking coffee and I've slept more»."],
+      ["He has gone to the hospital.", "Ir al hospital es un consejo para el futuro, si empeora."],
+      ["He has started drinking more water.", "Beber agua es un consejo del doctor, no algo que Paul ya hizo."]], "a": 0 },
+    { "q": "What must Paul do if the pain gets worse?", "es": "¿Qué debe hacer Paul si el dolor empeora?", "o": [
+      ["He should drink coffee.", "Paul dejó el café y el doctor no lo recomienda."],
+      ["He must go to the hospital.", "«If the pain gets worse, you must go to the hospital immediately»."],
+      ["He doesn't have to do anything.", "El doctor dice lo contrario: es obligatorio ir al hospital."]], "a": 1 }
+  ]
+}
+}

@@ -1,0 +1,130 @@
+{
+"lesson": [
+  { "t": "Was y were", "p": "Es el pasado del verbo to be: «era / estaba / fui / estuve». Solo tiene dos formas. Para negar se añade not (wasn't, weren't) y para preguntar se invierte el orden: Were you…?",
+    "tbl": [["Sujeto", "Afirmativa", "Negativa", "Pregunta"], ["I / he / she / it", "was", "wasn't", "Was she…?"], ["you / we / they", "were", "weren't", "Were they…?"]],
+    "ex": [["I was at home yesterday.", "Ayer estuve en casa."], ["Were you tired last night?", "¿Estabas cansado anoche?"], ["The movie wasn't very good.", "La película no fue muy buena."]] },
+  { "t": "Past simple: acciones terminadas", "p": "Se usa para acciones que empezaron y terminaron en un momento concreto del pasado (yesterday, last week, in 2020, two days ago). Los verbos regulares añaden -ed. Los irregulares tienen su propia forma y hay que memorizarlos. En negativas y preguntas se usa did, y el verbo vuelve a su forma base.",
+    "tbl": [["Tipo", "Base", "Pasado"], ["Regular", "work, play, study", "worked, played, studied"], ["Irregular", "go, have, see, buy", "went, had, saw, bought"], ["Negativa", "didn't + base", "I didn't go."], ["Pregunta", "Did + sujeto + base", "Did you go?"]],
+    "ex": [["We watched a movie last night.", "Anoche vimos una película."], ["I bought a new phone two days ago.", "Compré un teléfono nuevo hace dos días."], ["Did she call you?", "¿Te llamó?"]] },
+  { "t": "Preposiciones in, on y at", "p": "Las tres pueden traducirse por «en», pero no son intercambiables. Piensa en tamaño: in para espacios y periodos grandes, on para superficies y días, at para puntos exactos.",
+    "tbl": [["", "Tiempo", "Lugar"], ["in", "meses, años, estaciones: in May, in 2026", "dentro de algo: in the car, in Spain"], ["on", "días y fechas: on Friday, on May 5th", "sobre una superficie: on the table, on the wall"], ["at", "horas y momentos: at 8 pm, at night", "un punto: at home, at work, at the door"]],
+    "ex": [["The meeting is at ten on Monday.", "La reunión es a las diez el lunes."], ["I was born in 1995.", "Nací en 1995."], ["Your keys are on the table.", "Tus llaves están sobre la mesa."]] },
+  { "t": "Can y adverbios de frecuencia", "p": "Can expresa habilidad («saber», «poder») o posibilidad. Es igual para todas las personas y va seguido del verbo base, sin to. Los adverbios de frecuencia van antes del verbo principal, pero después del verbo to be.",
+    "tbl": [["Adverbio", "Significado", "Frecuencia"], ["always", "siempre", "100%"], ["usually", "normalmente", "80%"], ["often", "a menudo", "60%"], ["sometimes", "a veces", "40%"], ["never", "nunca", "0%"]],
+    "ex": [["I can speak two languages.", "Sé hablar dos idiomas."], ["He can't drive.", "Él no sabe manejar."], ["She is always happy, and she never complains.", "Ella siempre está feliz y nunca se queja."]] }
+],
+"grammar": [
+  { "q": "Yesterday I ___ to the cinema.", "es": "Ayer fui al cine.", "o": [
+    ["go", "Es presente. Yesterday pide pasado."],
+    ["went", "Go es irregular: su pasado es went."],
+    ["goed", "No existe. Go es irregular y no lleva -ed."],
+    ["gone", "Gone es el participio. Solo va con have: I have gone."]], "a": 1, "r": "Los irregulares se memorizan: go → went → gone." },
+  { "q": "Did you ___ the email?", "es": "¿Viste el correo?", "o": [
+    ["saw", "Did ya marca el pasado. Con saw, el pasado aparecería dos veces."],
+    ["seen", "Seen es participio y va con have, no con did."],
+    ["see", "Después de did el verbo vuelve a su forma base."],
+    ["seeing", "La forma -ing no va después de did."]], "a": 2, "r": "Did + sujeto + verbo base. El auxiliar lleva el pasado." },
+  { "q": "My birthday is ___ March.", "es": "Mi cumpleaños es en marzo.", "o": [
+    ["on", "On va con días y fechas: on Monday, on March 3rd."],
+    ["at", "At va con horas y momentos exactos: at 7 o'clock."],
+    ["to", "To indica dirección o destino, no un momento."],
+    ["in", "In va con meses, años y estaciones: in March, in summer."]], "a": 3, "r": "in (mes, año) · on (día, fecha) · at (hora)." },
+  { "q": "We ___ at home last night.", "es": "Anoche estuvimos en casa.", "o": [
+    ["were", "Pasado de to be con we, you y they: were."],
+    ["was", "Was es para I, he, she e it."],
+    ["are", "Es presente. Last night pide pasado."],
+    ["did", "Did es el auxiliar del pasado, pero aquí el verbo principal es to be (estar)."]], "a": 0, "r": "I/he/she/it was · you/we/they were." },
+  { "q": "She ___ swim very well.", "es": "Ella sabe nadar muy bien.", "o": [
+    ["cans", "Can nunca lleva -s, ni siquiera con she."],
+    ["can", "Can + verbo base expresa habilidad y es igual para todas las personas."],
+    ["can to", "Después de can no va to: can swim."],
+    ["is can", "Can ya es un verbo. No se combina con is."]], "a": 1, "r": "Can + verbo base, sin -s y sin to." },
+  { "q": "Elige el orden correcto:", "es": "Nunca llego tarde al trabajo.", "say": "I am never late for work.", "o": [
+    ["I never am late for work.", "Con el verbo to be el adverbio va después: am never."],
+    ["Never I am late for work.", "El adverbio de frecuencia no va antes del sujeto en frases normales."],
+    ["I am late never for work.", "El adverbio no va después del adjetivo."],
+    ["I am never late for work.", "Con to be el adverbio de frecuencia va justo después del verbo."]], "a": 3, "r": "Después de to be (I am never…) · antes de los demás verbos (I never drink…)." },
+  { "q": "I ___ my homework yesterday.", "es": "Ayer no hice mi tarea.", "o": [
+    ["didn't do", "Negación en pasado: didn't + verbo base. Aquí do es el verbo principal (hacer)."],
+    ["didn't did", "Doble pasado: después de didn't el verbo va en forma base."],
+    ["don't do", "Es presente. Yesterday pide pasado."],
+    ["not did", "En inglés la negación necesita el auxiliar: didn't."]], "a": 0, "r": "didn't + verbo base, aunque el verbo sea irregular." },
+  { "q": "Your keys are ___ the table.", "es": "Tus llaves están sobre la mesa.", "o": [
+    ["in", "In sería «dentro de». Las llaves están encima."],
+    ["at", "At indica un punto o lugar general (at home), no una superficie."],
+    ["on", "On se usa para cosas sobre una superficie."],
+    ["to", "To indica movimiento hacia un lugar."]], "a": 2, "r": "Sobre una superficie → on: on the table, on the floor, on the wall." }
+],
+"vocab": { "theme": "Tiempo libre y viajes", "w": [
+  ["yesterday", "ayer", "I called my mom yesterday.", "Ayer llamé a mi mamá."],
+  ["last night", "anoche", "Last night we went to a party.", "Anoche fuimos a una fiesta."],
+  ["ago", "hace (tiempo)", "I moved here five years ago.", "Me mudé aquí hace cinco años."],
+  ["trip", "viaje", "The trip was amazing.", "El viaje fue increíble."],
+  ["to travel", "viajar", "We travel every summer.", "Viajamos cada verano."],
+  ["beach", "playa", "The beach was very crowded.", "La playa estaba muy llena."],
+  ["to buy", "comprar", "I bought some souvenirs.", "Compré algunos recuerdos."],
+  ["ticket", "boleto, entrada", "The tickets were expensive.", "Los boletos eran caros."],
+  ["weather", "clima, tiempo", "The weather was perfect.", "El tiempo estuvo perfecto."],
+  ["to rent", "alquilar, rentar", "They rented a car.", "Alquilaron un coche."],
+  ["early", "temprano", "We left early in the morning.", "Salimos temprano por la mañana."],
+  ["to stay", "quedarse, alojarse", "We stayed at a nice hotel.", "Nos alojamos en un buen hotel."]
+]},
+"listen": [
+  { "s": "I worked yesterday.", "es": "Ayer trabajé.", "o": [
+    ["I work yesterday.", "Sin -ed no hay sonido final «t». En el audio se oye «workt»."],
+    ["I worked yesterday.", "La -ed después de k suena «t»: «workt»."],
+    ["I walked yesterday.", "Walked (caminé) suena «wokt», sin la r. En el audio se oye la r de work."]], "a": 1 },
+  { "s": "We were at the beach.", "es": "Estuvimos en la playa.", "o": [
+    ["We were at the beach.", "Were suena corto, «wer». Es el pasado de to be."],
+    ["We are at the beach.", "Are suena «ar», sin la w inicial. El audio empieza «wi-wer»."],
+    ["We went to the beach.", "Went termina en «nt» y va con to. En el audio se oye «at the beach»."]], "a": 0 },
+  { "s": "She can't swim.", "es": "Ella no sabe nadar.", "o": [
+    ["She can swim.", "En afirmativa, can suena débil y corto: «kən». En el audio la vocal es larga y fuerte."],
+    ["She can sing.", "Sing suena «sing», sin w. Lo que se oye es «swim»."],
+    ["She can't swim.", "Can't lleva la vocal larga y acentuada («kaant» o «kent») y una t muy suave al final."]], "a": 2 },
+  { "s": "I met him three years ago.", "es": "Lo conocí hace tres años.", "o": [
+    ["I met him two years ago.", "El número que se oye es three, con la th entre los dientes."],
+    ["I met him three years ago.", "Met es el pasado de meet. Three years ago = hace tres años."],
+    ["I meet him every year.", "Meet tiene una e larga («miit») y no hay ago al final."]], "a": 1 }
+],
+"speak": {
+  "p": [
+    ["I went to the beach last weekend.", "El fin de semana pasado fui a la playa.", "Went empieza con una u rápida: «uent». Beach tiene una e larga: «biich»."],
+    ["Where were you last night?", "¿Dónde estabas anoche?", "Where y were se parecen: «uer» y «uer». La diferencia está en el contexto."],
+    ["We stayed at a small hotel.", "Nos alojamos en un hotel pequeño.", "La -ed de stayed suena «d»: «steid». No digas «stei-ed»."],
+    ["I can't swim very well.", "No sé nadar muy bien.", "Alarga la vocal de can't para que no suene a can."],
+    ["My birthday is on May fifth.", "Mi cumpleaños es el cinco de mayo.", "Fifth termina en «fθ»: pon la lengua entre los dientes al final."],
+    ["I usually get up early on Mondays.", "Normalmente me levanto temprano los lunes.", "Get up suena unido: «getap». Early se pronuncia «érli»."]
+  ],
+  "q": [
+    { "q": "What did you do last weekend?", "es": "¿Qué hiciste el fin de semana pasado?", "m": "On Saturday I visited my parents and we had lunch together. On Sunday I stayed at home and watched a movie.", "mes": "El sábado visité a mis padres y almorzamos juntos. El domingo me quedé en casa y vi una película." },
+    { "q": "What can you do well?", "es": "¿Qué sabes hacer bien?", "m": "I can cook very well and I can play the guitar a little. I can't dance, but I can sing!", "mes": "Sé cocinar muy bien y sé tocar un poco la guitarra. No sé bailar, ¡pero sé cantar!" }
+  ]
+},
+"order": [
+  ["Did you see the game last night?", "¿Viste el partido anoche?", "Did + sujeto + verbo base + complemento + tiempo."],
+  ["We were very tired after the trip.", "Estábamos muy cansados después del viaje.", "Sujeto + were + adverbio (very) + adjetivo."],
+  ["I never drink coffee at night.", "Nunca tomo café por la noche.", "Never va antes del verbo principal (drink)."],
+  ["She bought a ticket two days ago.", "Ella compró un boleto hace dos días.", "Ago va después de la cantidad de tiempo: two days ago."],
+  ["Can you speak French?", "¿Sabes hablar francés?", "En preguntas, can va antes del sujeto."]
+],
+"read": {
+  "t": "A weekend in the mountains",
+  "en": "Last weekend, Tom and his friends went to the mountains. They rented a small house near a lake. On Saturday the weather was beautiful, so they walked for five hours. In the evening they cooked dinner and played cards. On Sunday it rained all day. They didn't go out; they stayed inside and talked. Tom says it was the best weekend of the year.",
+  "es": "El fin de semana pasado, Tom y sus amigos fueron a la montaña. Alquilaron una casa pequeña cerca de un lago. El sábado hizo un tiempo precioso, así que caminaron durante cinco horas. Por la noche prepararon la cena y jugaron a las cartas. El domingo llovió todo el día. No salieron; se quedaron dentro y conversaron. Tom dice que fue el mejor fin de semana del año.",
+  "qs": [
+    { "q": "Where did they stay?", "es": "¿Dónde se alojaron?", "o": [
+      ["In a hotel in the city.", "Fueron a la montaña, no a la ciudad, y no era un hotel."],
+      ["In a small house near a lake.", "El texto dice «they rented a small house near a lake»."],
+      ["In a tent in the mountains.", "No se menciona una tienda de campaña: alquilaron una casa."]], "a": 1 },
+    { "q": "What was the weather like on Sunday?", "es": "¿Qué tiempo hizo el domingo?", "o": [
+      ["It rained all day.", "El texto dice «on Sunday it rained all day»."],
+      ["It was sunny.", "El buen tiempo fue el sábado, no el domingo."],
+      ["It snowed.", "No se menciona la nieve."]], "a": 0 },
+    { "q": "What did they do on Saturday evening?", "es": "¿Qué hicieron el sábado por la noche?", "o": [
+      ["They walked for five hours.", "Caminaron durante el día, no por la noche."],
+      ["They went to a restaurant.", "No salieron a comer: cocinaron ellos mismos."],
+      ["They cooked dinner and played cards.", "«In the evening they cooked dinner and played cards»."]], "a": 2 }
+  ]
+}
+}
