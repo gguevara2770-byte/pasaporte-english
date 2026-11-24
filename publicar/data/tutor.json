@@ -689,5 +689,5 @@
   ],
   "additionalProperties": false
  },
- "customRole": "the same character, now talking with the student about this topic they chose, related to {topic}: {text}"
+ "customRole": "a friendly conversation partner who starts a conversation with the student about this topic related to {topic}: {text}. Open the conversation yourself with a friendly first line and a question about it"
 }

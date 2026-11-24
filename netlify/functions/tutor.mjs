@@ -139,11 +139,11 @@ async function askClaude(system, messages, D, budgetMs) {
     if (/^claude-(opus|sonnet|fable)-/.test(model)) { params.betas = ["server-side-fallback-2026-07-01"]; params.fallbacks = "default"; }
     let msg;
     try {
-      msg = await new Anthropic({ timeout: left, maxRetries: 0 }).beta.messages.create(params);
+      msg = await new Anthropic({ timeout: Math.min(left, 12000), maxRetries: 0 }).beta.messages.create(params);
     } catch (err) {
       if (err instanceof Anthropic.RateLimitError) throw new UpstreamError(429, "claude: límite de uso");
       if (err instanceof Anthropic.AuthenticationError) { console.error("ANTHROPIC_API_KEY no es válida."); throw new UpstreamError(503, "claude: clave no válida"); }
-      if (err instanceof Anthropic.APIError) { console.error(`Claude ${err.status}:`, err.message); last = new UpstreamError(502, `claude: HTTP ${err.status}`); continue; }
+      if (err instanceof Anthropic.APIError) { console.error(`Claude ${err.status}:`, err.message); last = new UpstreamError(502, `claude: ${err.constructor.name} ${err.status ?? ""}`.trim()); continue; }
       throw err;
     }
     DIAG.push({ stop: msg.stop_reason, details: msg.stop_details || null, types: msg.content.map(b => b.type), text: msg.content.filter(b => b.type === "text").map(b => b.text).join("").slice(0, 300) });
