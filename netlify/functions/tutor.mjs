@@ -1,8 +1,8 @@
 // Tutor IA incluido de Pasaporte English (función de Netlify).
 // Usa TU clave, guardada como variable de entorno en Netlify (nunca en el código ni en el navegador):
-//   GEMINI_API_KEY     → usa Gemini (Google). Tiene nivel gratuito.
-//   ANTHROPIC_API_KEY  → usa Claude (Anthropic). Si están las dos, se usa Claude.
-// Opcionales: GEMINI_MODEL (por defecto gemini-flash-latest) y CLAUDE_MODEL (por defecto claude-opus-5-5).
+//   GEMINI_API_KEY     → usa Gemini (Google) como motor principal.
+//   ANTHROPIC_API_KEY  → usa Claude (Anthropic) solo como respaldo opcional si falla Gemini.
+// Opcionales: GEMINI_MODEL (por defecto gemini-2.5-flash) y CLAUDE_MODEL (por defecto claude-opus-5-5).
 import Anthropic from "@anthropic-ai/sdk";
 
 export const config = { path: "/api/tutor" };
@@ -11,7 +11,7 @@ const JSON_HINT = '\n\nReply with ONLY a JSON object, no other text, with exactl
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let PROVIDER_USED = "";
 let DIAG = [];   // diagnóstico temporal
-const PROVIDER = () => PROVIDER_USED || (process.env.ANTHROPIC_API_KEY ? "claude" : "gemini");
+const PROVIDER = () => PROVIDER_USED || (process.env.GEMINI_API_KEY ? "gemini" : "claude");
 const reply = (status, body) => Response.json(body, { status, headers: { "Cache-Control": "no-store", "X-Tutor-Provider": PROVIDER() } });
 
 let DATA = null;
@@ -76,7 +76,7 @@ let lastWhy = "";
 
 async function askGemini(system, messages) {
   const key = process.env.GEMINI_API_KEY;
-  const models = [...new Set([process.env.GEMINI_MODEL, "gemini-flash-latest", "gemini-2.5-flash", "gemini-flash-lite-latest"].filter(Boolean))];
+  const models = [...new Set([process.env.GEMINI_MODEL, "gemini-2.5-flash", "gemini-flash-latest", "gemini-flash-lite-latest"].filter(Boolean))];
   const contents = [];
   for (const m of messages) {
     const role = m.role === "assistant" ? "model" : "user";
@@ -85,7 +85,7 @@ async function askGemini(system, messages) {
   }
   const body = JSON.stringify({ systemInstruction: { parts: [{ text: system + JSON_HINT }] }, contents, generationConfig: { responseMimeType: "application/json" } });
   let lastStatus = 502;
-  const deadline = Date.now() + (PROVIDER_USED === "gemini" && process.env.ANTHROPIC_API_KEY ? 11000 : 19000);   // responder antes de que Netlify corte la función
+  const deadline = Date.now() + (process.env.ANTHROPIC_API_KEY ? 14000 : 21000);   // responder antes de que Netlify corte la función
   for (const model of models) {
     for (let attempt = 0; attempt < 2; attempt++) {
       const left = deadline - Date.now();
@@ -130,7 +130,6 @@ async function askClaude(system, messages, D, budgetMs) {
   for (let attempt = 0; attempt < 3; attempt++) {
     const left = deadline - Date.now();
     if (left < 4000) break;
-    // En el segundo intento se recuerda que la respuesta no puede ir vacía.
     const sys = attempt === 0 ? system : system + "\n\nImportant: reply and reply_es must contain your line; never leave them empty.";
     const params = {
       model, max_tokens: 8000, system: sys, messages,
@@ -157,7 +156,7 @@ async function askClaude(system, messages, D, budgetMs) {
 
 export default async function handler(req) {
   if (req.method !== "POST") return reply(405, { error: "method_not_allowed" });
-  if (!process.env.ANTHROPIC_API_KEY && !process.env.GEMINI_API_KEY) {
+  if (!process.env.GEMINI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
     console.error("Falta la variable GEMINI_API_KEY (o ANTHROPIC_API_KEY) en Netlify.");
     return reply(503, { error: "no_api_key" });
   }
@@ -182,20 +181,19 @@ export default async function handler(req) {
   try {
     let data;
     PROVIDER_USED = "";
-    if (process.env.ANTHROPIC_API_KEY) {
+    if (process.env.GEMINI_API_KEY) {
       try {
-        PROVIDER_USED = "claude";
-        data = await askClaude(prompt.system, prompt.messages, D, process.env.GEMINI_API_KEY ? 14000 : 22000);
-      } catch (err) {
-        // Si también hay clave de Gemini, se prueba con Gemini antes de rendirse.
-        if (!(err instanceof UpstreamError) || !process.env.GEMINI_API_KEY || err.status === 429) throw err;
-        console.error("Claude falló (" + err.why + "); se prueba con Gemini.");
         PROVIDER_USED = "gemini";
         data = await askGemini(prompt.system, prompt.messages);
+      } catch (err) {
+        if (!(err instanceof UpstreamError) || !process.env.ANTHROPIC_API_KEY) throw err;
+        console.error("Gemini falló (" + err.why + "); se prueba con Claude.");
+        PROVIDER_USED = "claude";
+        data = await askClaude(prompt.system, prompt.messages, D, 8000);
       }
     } else {
-      PROVIDER_USED = "gemini";
-      data = await askGemini(prompt.system, prompt.messages);
+      PROVIDER_USED = "claude";
+      data = await askClaude(prompt.system, prompt.messages, D, 22000);
     }
     if (!data || typeof data.reply !== "string" || !data.reply.trim()) return reply(502, { error: "bad_output", detail: "respuesta sin texto" });
     return reply(200, data);
