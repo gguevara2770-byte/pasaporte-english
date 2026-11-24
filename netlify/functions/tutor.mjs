@@ -81,18 +81,29 @@ async function askGemini(system, messages) {
   }
   const body = JSON.stringify({ systemInstruction: { parts: [{ text: system + JSON_HINT }] }, contents, generationConfig: { responseMimeType: "application/json" } });
   let lastStatus = 502;
+  const deadline = Date.now() + 24000;   // Netlify corta la función a los 30 s
   for (const model of models) {
     for (let attempt = 0; attempt < 2; attempt++) {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-        method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, body
-      });
+      const left = deadline - Date.now();
+      if (left < 3000) throw new UpstreamError(lastStatus === 429 ? 429 : 503);
+      let res;
+      try {
+        res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+          method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, body,
+          signal: AbortSignal.timeout(Math.min(15000, left))
+        });
+      } catch (err) {
+        console.error(`Gemini ${model} no respondió a tiempo.`);
+        lastStatus = 503; continue;
+      }
       if (res.ok) {
         const d = await res.json();
         const parts = d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts;
-        if (!parts) throw new UpstreamError(d.promptFeedback && d.promptFeedback.blockReason ? 422 : 502);
+        if (!parts) { if (d.promptFeedback && d.promptFeedback.blockReason) throw new UpstreamError(422); lastStatus = 502; continue; }
         const data = parseReply(parts.map(p => p.text || "").join(""));
-        if (!data) throw new UpstreamError(502);
-        return data;
+        if (data && typeof data.reply === "string" && data.reply.trim()) return data;
+        console.error(`Gemini ${model} devolvió una respuesta vacía o sin formato; se reintenta.`);
+        lastStatus = 502; continue;
       }
       lastStatus = res.status;
       console.error(`Gemini ${model} respondió ${res.status}: ${(await res.text()).slice(0, 300)}`);
@@ -150,7 +161,7 @@ export default async function handler(req) {
     const data = process.env.ANTHROPIC_API_KEY
       ? await askClaude(prompt.system, prompt.messages, D)
       : await askGemini(prompt.system, prompt.messages);
-    if (!data || typeof data.reply !== "string") return reply(502, { error: "bad_output" });
+    if (!data || typeof data.reply !== "string" || !data.reply.trim()) return reply(502, { error: "bad_output" });
     return reply(200, data);
   } catch (err) {
     if (err instanceof UpstreamError) return reply(err.status, { error: "upstream" });
