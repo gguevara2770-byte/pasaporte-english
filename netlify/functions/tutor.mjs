@@ -9,7 +9,8 @@ export const config = { path: "/api/tutor" };
 
 const JSON_HINT = '\n\nReply with ONLY a JSON object, no other text, with exactly this shape: {"reply": "...", "reply_es": "...", "feedback": {"ok": true, "corrected": "...", "why_es": "..."}, "ideas": [{"en": "...", "es": "..."}, {"en": "...", "es": "..."}]}';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const reply = (status, body) => Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
+const PROVIDER = () => (process.env.ANTHROPIC_API_KEY ? "claude" : "gemini");
+const reply = (status, body) => Response.json(body, { status, headers: { "Cache-Control": "no-store", "X-Tutor-Provider": PROVIDER() } });
 
 let DATA = null;
 async function loadData(req) {
@@ -68,7 +69,8 @@ function parseReply(text) {
   return null;
 }
 
-class UpstreamError extends Error { constructor(status) { super("upstream " + status); this.status = status; } }
+class UpstreamError extends Error { constructor(status, why) { super("upstream " + status); this.status = status; this.why = why || ""; } }
+let lastWhy = "";
 
 async function askGemini(system, messages) {
   const key = process.env.GEMINI_API_KEY;
@@ -85,7 +87,7 @@ async function askGemini(system, messages) {
   for (const model of models) {
     for (let attempt = 0; attempt < 2; attempt++) {
       const left = deadline - Date.now();
-      if (left < 3000) throw new UpstreamError(lastStatus === 429 ? 429 : 503);
+      if (left < 3000) throw new UpstreamError(lastStatus === 429 ? 429 : 503, lastWhy + " · sin tiempo");
       let res;
       try {
         res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
@@ -93,26 +95,30 @@ async function askGemini(system, messages) {
           signal: AbortSignal.timeout(Math.min(9000, left))
         });
       } catch (err) {
-        console.error(`Gemini ${model} no respondió a tiempo.`);
+        lastWhy = `${model}: no respondió a tiempo`;
+        console.error(lastWhy);
         lastStatus = 503; continue;
       }
       if (res.ok) {
         const d = await res.json();
         const parts = d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts;
-        if (!parts) { if (d.promptFeedback && d.promptFeedback.blockReason) throw new UpstreamError(422); lastStatus = 502; continue; }
+        const finish = d.candidates && d.candidates[0] && d.candidates[0].finishReason;
+        if (!parts) { if (d.promptFeedback && d.promptFeedback.blockReason) throw new UpstreamError(422, "bloqueado: " + d.promptFeedback.blockReason); lastWhy = `${model}: sin texto (${finish || "?"})`; lastStatus = 502; continue; }
         const data = parseReply(parts.map(p => p.text || "").join(""));
         if (data && typeof data.reply === "string" && data.reply.trim()) return data;
+        lastWhy = `${model}: respuesta vacía o sin formato (${finish || "?"})`;
         console.error(`Gemini ${model} devolvió una respuesta vacía o sin formato; se reintenta.`);
         lastStatus = 502; continue;
       }
       lastStatus = res.status;
+      lastWhy = `${model}: HTTP ${res.status}`;
       console.error(`Gemini ${model} respondió ${res.status}: ${(await res.text()).slice(0, 300)}`);
       if (res.status === 503 || res.status === 500 || res.status === 429) { await sleep(1200); continue; }  // saturado: reintenta
       break;                                                                                                  // 404 u otro: siguiente modelo
     }
     if ([400, 401, 403].includes(lastStatus)) break;                                                         // clave mal: no seguir
   }
-  throw new UpstreamError(lastStatus === 429 ? 429 : 502);
+  throw new UpstreamError(lastStatus === 429 ? 429 : 502, lastWhy);
 }
 
 async function askClaude(system, messages, D) {
@@ -132,9 +138,9 @@ async function askClaude(system, messages, D) {
     if (err instanceof Anthropic.APIError) { console.error(`Claude ${err.status}:`, err.message); throw new UpstreamError(502); }
     throw err;
   }
-  if (msg.stop_reason === "refusal") throw new UpstreamError(422);
+  if (msg.stop_reason === "refusal") throw new UpstreamError(422, "claude: refusal");
   const data = parseReply(msg.content.filter(b => b.type === "text").map(b => b.text).join(""));
-  if (!data) throw new UpstreamError(502);
+  if (!data || typeof data.reply !== "string" || !data.reply.trim()) throw new UpstreamError(502, `claude ${model}: respuesta vacía (${msg.stop_reason})`);
   return data;
 }
 
@@ -161,10 +167,10 @@ export default async function handler(req) {
     const data = process.env.ANTHROPIC_API_KEY
       ? await askClaude(prompt.system, prompt.messages, D)
       : await askGemini(prompt.system, prompt.messages);
-    if (!data || typeof data.reply !== "string" || !data.reply.trim()) return reply(502, { error: "bad_output" });
+    if (!data || typeof data.reply !== "string" || !data.reply.trim()) return reply(502, { error: "bad_output", detail: "respuesta sin texto" });
     return reply(200, data);
   } catch (err) {
-    if (err instanceof UpstreamError) return reply(err.status, { error: "upstream" });
+    if (err instanceof UpstreamError) return reply(err.status, { error: "upstream", detail: err.why });
     console.error(err);
     return reply(502, { error: "upstream" });
   }
