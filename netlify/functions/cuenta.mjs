@@ -59,31 +59,69 @@ export default async function handler(req) {
   }
 
   // Panel del administrador: necesita la variable ADMIN_KEY en Netlify.
-  if (action === "admin_lista") {
+  if (typeof action === "string" && action.startsWith("admin_")) {
     const adminKey = process.env.ADMIN_KEY || "";
     if (adminKey.length < 12) return json(503, { error: "admin_not_configured" });
     const a = createHash("sha256").update(adminKey).digest();
     const g = createHash("sha256").update(String(b.adminKey || "")).digest();
     if (!timingSafeEqual(a, g)) { await new Promise(r => setTimeout(r, 800)); return json(401, { error: "admin" }); }
-    const { blobs } = await s.list({ prefix: "u/" });
-    const users = [];
-    for (let i = 0; i < blobs.length; i += 20) {
-      const chunk = await Promise.all(blobs.slice(i, i + 20).map(x => s.get(x.key, { type: "json" })));
-      for (const u of chunk) {
-        if (!u) continue;
-        const d = u.data || {};
-        const pf = u.perfil || cleanProfile(d.perfil) || {};
-        users.push({
-          email: u.email, names: pf.names || "", last: pf.last || "", phone: pf.phone || "",
-          nivel: d.nivel && d.nivel.level ? d.nivel.level : "", done: d.p ? Object.keys(d.p).length : 0,
-          created: u.created || 0, updated: u.updated || 0,
-          plan: u.plan && u.plan.hasta > Date.now() ? (u.plan.tipo || "premium") : "gratis",
-          planHasta: u.plan && u.plan.hasta || 0
-        });
+
+    if (action === "admin_lista") {
+      const { blobs } = await s.list({ prefix: "u/" });
+      const users = [];
+      for (let i = 0; i < blobs.length; i += 20) {
+        const chunk = await Promise.all(blobs.slice(i, i + 20).map(x => s.get(x.key, { type: "json" })));
+        for (const u of chunk) {
+          if (!u) continue;
+          const d = u.data || {};
+          const pf = u.perfil || cleanProfile(d.perfil) || {};
+          const plan = u.plan || {};
+          const porModulo = [0, 0, 0, 0, 0, 0];
+          for (const k of Object.keys(d.p || {})) { const m = Number(k.split(":")[0]); if (m >= 0 && m < 6) porModulo[m]++; }
+          users.push({
+            email: u.email, names: pf.names || "", last: pf.last || "", phone: pf.phone || "",
+            nivel: d.nivel && d.nivel.level ? d.nivel.level : "", nivelFecha: d.nivel && d.nivel.date || "",
+            nivelPor: d.nivel && Array.isArray(d.nivel.per) ? d.nivel.per : null,
+            done: d.p ? Object.keys(d.p).length : 0, porModulo,
+            created: u.created || 0, updated: u.updated || 0,
+            plan: plan.hasta > Date.now() ? (plan.tipo || "premium") : "gratis",
+            planHasta: plan.hasta || 0, planEstado: plan.estado || "gratis", mpPreapproval: plan.mpPreapproval || "",
+            historial: plan.historial || []
+          });
+        }
       }
+      users.sort((x, y) => y.created - x.created);
+      return json(200, { users });
     }
-    users.sort((x, y) => y.created - x.created);
-    return json(200, { users });
+
+    const email = cleanEmail(b.email);
+    if (!email) return json(400, { error: "email" });
+    const key = userKey(email);
+    const user = await s.get(key, { type: "json" });
+    if (!user) return json(404, { error: "not_found" });
+
+    if (action === "admin_plan") {
+      const dias = Math.round(Number(b.dias));
+      if (!(dias >= 0 && dias <= 400)) return json(400, { error: "dias" });
+      user.plan = user.plan || {};
+      user.plan.historial = user.plan.historial || [];
+      if (dias === 0) {
+        user.plan.hasta = 0; user.plan.estado = "gratis"; user.plan.tipo = null;
+        user.plan.historial.push({ fecha: Date.now(), tipo: "retirado", monto: 0, nota: "Premium retirado por el administrador" });
+      } else {
+        user.plan.hasta = Math.max(user.plan.hasta || 0, Date.now()) + dias * 864e5;
+        if (user.plan.estado !== "activa") { user.plan.tipo = "cortesia"; user.plan.estado = "activo"; }
+        user.plan.historial.push({ fecha: Date.now(), tipo: "cortesia", monto: 0, nota: dias + " días de cortesía" });
+      }
+      user.plan.historial = user.plan.historial.slice(-60);
+      await s.setJSON(key, user);
+      return json(200, { ok: true });
+    }
+    if (action === "admin_borrar") {
+      await s.delete(key);
+      return json(200, { ok: true });
+    }
+    return json(400, { error: "action" });
   }
 
   // Acciones con sesión iniciada

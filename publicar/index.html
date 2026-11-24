@@ -590,6 +590,27 @@ details.lesson:not([open]) { gap: 0; }
 .pay-faq p { color: var(--muted); margin-top: .4rem; }
 .phrase-cat.locked { background: var(--surface-2); border-style: dashed; justify-items: start; }
 
+/* Panel del administrador (ampliado) */
+.ad-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ad-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 760px) { .ad-two { grid-template-columns: 1fr; } }
+.ad-two h3, .ad-detail h3 { font-size: 1.1rem; margin-top: .4rem; }
+.ad-tabs { padding-top: 0; align-items: center; }
+.ad-tools select { font: inherit; padding: .5rem .7rem; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); }
+.ad-row { cursor: pointer; }
+.ad-row:hover td, .ad-row:focus td { background: var(--brand-soft); }
+.ad-row:focus { outline: none; }
+.ad-detail { gap: .9rem; }
+.ad-detail h2 { font-size: 1.6rem; }
+.ad-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+@media (max-width: 760px) { .ad-fields { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .ad-fields { grid-template-columns: 1fr; } }
+.ad-fields div { background: var(--surface-2); border-radius: 12px; padding: .7rem .8rem; display: grid; gap: .15rem; min-width: 0; overflow-wrap: anywhere; }
+.ad-actions { display: grid; gap: .7rem; background: var(--surface-2); border-radius: 12px; padding: 1rem; }
+.ad-num { width: 5.5rem; font: inherit; padding: .4rem .6rem; border: 1.5px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.linkbtn.danger { color: var(--bad); }
+.foot-admin { color: var(--muted); }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -815,7 +836,7 @@ details.lesson:not([open]) { gap: 0; }
 <footer>
   <div class="inner">
     <span><strong>Pasaporte English</strong> · Curso de inglés para hispanohablantes</span>
-    <span>Niveles según el Marco Común Europeo de Referencia (MCER)</span>
+    <span>Niveles según el Marco Común Europeo de Referencia (MCER) · <a href="#admin" class="foot-admin">Administración</a></span>
   </div>
 </footer>
 
@@ -2142,32 +2163,124 @@ function renderViajes() {
 
 /* ---------- Panel del administrador ---------- */
 const adEl = document.getElementById("admin");
-const AD = { key: "", users: null, q: "", err: "", loading: false };
+const AD = { key: "", users: null, q: "", filtro: "todos", err: "", loading: false, tab: "resumen", sel: null, msg: "", delArm: false };
 try { AD.key = sessionStorage.getItem("pasaporte-admin") || ""; } catch (e) {}
 function totalItems() { return DATA.length ? DATA.reduce((n, _, m) => n + keysFor(m).length, 0) : 264; }
+function moduleItems(m) { return DATA.length ? keysFor(m).length : 44; }
 function fmtDate(ms) { return ms ? new Date(ms).toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" }) : "—"; }
+function fmtDateTime(ms) { return ms ? new Date(ms).toLocaleString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "—"; }
 function pctOf(u) { return Math.min(100, Math.round(u.done / totalItems() * 100)); }
+function soles(v) { return "S/ " + Number(v || 0).toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+const PLAN_NAME = { gratis: "Gratis", mensual: "Mensual", semestral: "6 meses", cortesia: "Cortesía", premium: "Premium" };
+async function adminCall(body) { return accCall({ adminKey: AD.key, ...body }); }
 async function adminLoad() {
   AD.err = ""; AD.loading = true; renderAdmin();
-  const r = await accCall({ action: "admin_lista", adminKey: AD.key });
+  const r = await adminCall({ action: "admin_lista" });
   AD.loading = false;
-  if (r.status === 200) { AD.users = r.data.users || []; try { sessionStorage.setItem("pasaporte-admin", AD.key); } catch (e) {} }
-  else {
+  if (r.status === 200) {
+    AD.users = r.data.users || [];
+    if (AD.sel && !AD.users.some(u => u.email === AD.sel)) AD.sel = null;
+    try { sessionStorage.setItem("pasaporte-admin", AD.key); } catch (e) {}
+  } else {
     AD.users = null;
-    AD.err = { 401: "Clave de administrador incorrecta.", 503: "Falta configurar la variable ADMIN_KEY en Netlify (mínimo 12 caracteres).", 0: "No hay conexión a internet." }[r.status] || "No se pudo cargar la lista. Inténtalo de nuevo.";
+    AD.err = { 401: "Clave de administrador incorrecta.", 503: "Falta configurar la variable ADMIN_KEY en Netlify (mínimo 12 caracteres).", 0: "No hay conexión a internet." }[r.status] || "No se pudo cargar la información. Inténtalo de nuevo.";
     try { sessionStorage.removeItem("pasaporte-admin"); } catch (e) {}
   }
   renderAdmin();
 }
 function adminRows() {
   const q = AD.q.trim().toLowerCase();
-  return (AD.users || []).filter(u => !q || [u.names, u.last, u.email, u.phone, u.nivel].join(" ").toLowerCase().includes(q));
+  return (AD.users || []).filter(u =>
+    (AD.filtro === "todos" || (AD.filtro === "premium" ? u.plan !== "gratis" : u.plan === "gratis")) &&
+    (!q || [u.names, u.last, u.email, u.phone, u.nivel].join(" ").toLowerCase().includes(q)));
+}
+function allPayments() {
+  const list = [];
+  for (const u of AD.users || []) for (const h of u.historial || []) list.push({ ...h, email: u.email, nombre: [u.names, u.last].filter(Boolean).join(" ") || u.email });
+  return list.sort((a, b) => b.fecha - a.fecha);
 }
 function adminBody() {
   const rows = adminRows();
-  if (!rows.length) return `<tr><td colspan="9" class="note">${AD.users && AD.users.length ? "Ningún usuario coincide con la búsqueda." : "Todavía no hay usuarios registrados."}</td></tr>`;
-  return rows.map(u => `<tr><td>${esc(u.names || "—")}</td><td>${esc(u.last || "—")}</td><td>${esc(u.email)}</td><td>${esc(u.phone || "—")}</td>
-    <td>${u.nivel ? `<span class="lvl">${esc(u.nivel)}</span>` : "—"}</td><td class="num">${pctOf(u)}%</td><td class="num">${fmtDate(u.created)}</td><td class="num">${fmtDate(u.updated)}</td><td>${u.plan && u.plan !== "gratis" ? `<span class="rec-tag">${esc(u.plan)}</span>` : "Gratis"}</td></tr>`).join("");
+  if (!rows.length) return `<tr><td colspan="8" class="note">${AD.users && AD.users.length ? "Ningún cliente coincide con la búsqueda." : "Todavía no hay clientes registrados."}</td></tr>`;
+  return rows.map(u => `<tr class="ad-row" data-act="ad-sel" data-email="${esc(u.email)}" tabindex="0">
+    <td>${esc([u.names, u.last].filter(Boolean).join(" ") || "—")}</td><td>${esc(u.email)}</td><td>${esc(u.phone || "—")}</td>
+    <td>${u.nivel ? `<span class="lvl">${esc(u.nivel)}</span>` : "—"}</td><td class="num">${pctOf(u)}%</td>
+    <td>${u.plan !== "gratis" ? `<span class="rec-tag">${esc(PLAN_NAME[u.plan] || u.plan)}</span>` : "Gratis"}</td>
+    <td class="num">${fmtDate(u.created)}</td><td class="num">${fmtDate(u.updated)}</td></tr>`).join("");
+}
+function waLink(phone) { const d = String(phone || "").replace(/\D/g, ""); return d.length >= 8 ? "https://wa.me/" + d : ""; }
+function adminDetail(u) {
+  const per = u.porModulo || [];
+  const wa = waLink(u.phone);
+  const hist = (u.historial || []).slice().reverse();
+  return `<div class="card ad-detail">
+    <div class="row" style="justify-content:space-between"><button class="linkbtn" data-act="ad-back">← Volver a la lista</button><span class="note">Última actividad: ${fmtDateTime(u.updated)}</span></div>
+    <h2>${esc([u.names, u.last].filter(Boolean).join(" ") || u.email)}</h2>
+    <div class="ad-fields">
+      <div><span class="eyebrow">Correo</span><b>${esc(u.email)}</b></div>
+      <div><span class="eyebrow">Celular</span><b>${esc(u.phone || "—")}</b></div>
+      <div><span class="eyebrow">Registro</span><b>${fmtDateTime(u.created)}</b></div>
+      <div><span class="eyebrow">Nivel (test)</span><b>${esc(u.nivel || "Sin test")}</b>${u.nivelFecha ? `<span class="note">${esc(u.nivelFecha)}</span>` : ""}</div>
+      <div><span class="eyebrow">Plan</span><b>${esc(PLAN_NAME[u.plan] || u.plan)}</b><span class="note">${u.plan !== "gratis" ? "Hasta el " + fmtDate(u.planHasta) : ""}${u.planEstado && u.planEstado !== "gratis" ? " · " + esc(u.planEstado) : ""}</span></div>
+      <div><span class="eyebrow">Avance total</span><b>${pctOf(u)}%</b><span class="note">${u.done} actividades</span></div>
+    </div>
+    <div class="row">
+      ${wa ? `<a class="btn small" href="${wa}" target="_blank" rel="noopener">Escribir por WhatsApp</a>` : ""}
+      <button class="btn small" data-act="ad-copy" data-copy="${esc(u.email)}">Copiar correo</button>
+    </div>
+    <h3>Avance por módulo</h3>
+    <ul class="lt-bars">${MODS.map((M, m) => { const p = Math.min(100, Math.round((per[m] || 0) / moduleItems(m) * 100)); return `<li class="${p >= 100 ? "pass" : ""}"><span class="lvl">${M.level}</span><div class="bar"><i style="width:${p}%"></i></div><span class="n">${p}%</span></li>`; }).join("")}</ul>
+    ${u.nivelPor ? `<p class="note">Test de nivel por nivel: ${LV_CODES.map((c, k) => c + " " + u.nivelPor[k] + "/4").join(" · ")}</p>` : ""}
+    <h3>Pagos y cambios de plan</h3>
+    ${hist.length ? `<div class="tbl"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Monto</th><th>Detalle</th></tr></thead><tbody>
+      ${hist.map(h => `<tr><td class="num">${fmtDateTime(h.fecha)}</td><td>${esc(PLAN_NAME[h.tipo] || h.tipo)}</td><td class="num">${h.monto ? soles(h.monto) : "—"}</td><td>${esc(h.nota || (h.mpId ? "Mercado Pago #" + h.mpId : ""))}</td></tr>`).join("")}
+    </tbody></table></div>` : '<p class="note">Sin pagos registrados.</p>'}
+    <h3>Acciones</h3>
+    <div class="ad-actions">
+      <div class="row"><label for="adDays" class="note">Dar Premium de cortesía por</label><input id="adDays" type="number" min="1" max="400" value="30" class="ad-num"><span class="note">días</span>
+        <button class="btn small primary" data-act="ad-grant" data-email="${esc(u.email)}">Dar Premium</button></div>
+      <div class="row">${u.plan !== "gratis" ? `<button class="btn small" data-act="ad-revoke" data-email="${esc(u.email)}">Quitar Premium</button>` : ""}
+        <button class="linkbtn danger" data-act="ad-del" data-email="${esc(u.email)}">${AD.delArm ? "Pulsa otra vez para eliminar a este cliente. No se puede deshacer." : "Eliminar cliente"}</button></div>
+      ${u.mpPreapproval ? `<p class="note">Suscripción de Mercado Pago: ${esc(u.mpPreapproval)}. Para devoluciones, entra a tu cuenta de Mercado Pago.</p>` : ""}
+      ${AD.msg ? `<p class="ok-msg">${esc(AD.msg)}</p>` : ""}
+    </div>
+  </div>`;
+}
+function adminSummary() {
+  const u = AD.users, now = Date.now(), WEEK = 7 * 864e5;
+  const prem = u.filter(x => x.plan !== "gratis");
+  const pays = allPayments().filter(p => p.monto > 0);
+  const d = new Date(), monthStart = new Date(d.getFullYear(), d.getMonth(), 1).getTime();
+  const month = pays.filter(p => p.fecha >= monthStart).reduce((n, p) => n + p.monto, 0);
+  const total = pays.reduce((n, p) => n + p.monto, 0);
+  const levels = LV_CODES.concat(["Principiante"]).map(c => [c, u.filter(x => x.nivel === c).length]).filter(x => x[1] > 0);
+  const maxL = Math.max(1, ...levels.map(x => x[1]));
+  const byPlan = ["mensual", "semestral", "cortesia"].map(t => [PLAN_NAME[t], prem.filter(x => x.plan === t).length]);
+  return `<div class="ad-stats">
+      <div><b>${u.length}</b><span>clientes registrados</span></div>
+      <div><b>${u.filter(x => now - x.created < WEEK).length}</b><span>nuevos esta semana</span></div>
+      <div><b>${u.filter(x => now - x.updated < WEEK).length}</b><span>activos esta semana</span></div>
+      <div><b>${prem.length}</b><span>con Premium · ${u.length ? Math.round(prem.length / u.length * 100) : 0}% de conversión</span></div>
+      <div><b>${soles(month)}</b><span>ingresos de este mes</span></div>
+      <div><b>${soles(total)}</b><span>ingresos totales</span></div>
+      <div><b>${u.filter(x => x.phone).length}</b><span>con celular</span></div>
+      <div><b>${u.filter(x => x.nivel).length}</b><span>hicieron el test de nivel</span></div>
+    </div>
+    <div class="ad-two">
+      <div class="card"><h3>Premium por tipo</h3><ul class="lt-bars">${byPlan.map(([n, c]) => `<li><span class="lvl">${n}</span><div class="bar"><i style="width:${prem.length ? c / prem.length * 100 : 0}%"></i></div><span class="n">${c}</span></li>`).join("")}</ul></div>
+      <div class="card"><h3>Nivel de los clientes</h3>${levels.length ? `<ul class="lt-bars">${levels.map(([n, c]) => `<li><span class="lvl">${n}</span><div class="bar"><i style="width:${c / maxL * 100}%"></i></div><span class="n">${c}</span></li>`).join("")}</ul>` : '<p class="note">Aún nadie hizo el test.</p>'}</div>
+    </div>
+    <div class="card" style="margin-top:1rem"><h3>Últimos registros</h3>
+      ${u.slice(0, 5).map(x => `<p><button class="linkbtn" data-act="ad-sel" data-email="${esc(x.email)}">${esc([x.names, x.last].filter(Boolean).join(" ") || x.email)}</button> <span class="note">· ${fmtDate(x.created)} · ${esc(PLAN_NAME[x.plan] || x.plan)}</span></p>`).join("") || '<p class="note">Todavía no hay registros.</p>'}
+    </div>`;
+}
+function adminPayments() {
+  const pays = allPayments();
+  return `<div class="ad-tools"><span class="note">${pays.length} movimientos</span><button class="btn primary small" data-act="ad-csv-pays">Descargar Excel</button></div>
+    <div class="tbl ad-table"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Correo</th><th>Tipo</th><th>Monto</th><th>Detalle</th></tr></thead><tbody>
+    ${pays.length ? pays.map(p => `<tr class="ad-row" data-act="ad-sel" data-email="${esc(p.email)}" tabindex="0"><td class="num">${fmtDateTime(p.fecha)}</td><td>${esc(p.nombre)}</td><td>${esc(p.email)}</td><td>${esc(PLAN_NAME[p.tipo] || p.tipo)}</td><td class="num">${p.monto ? soles(p.monto) : "—"}</td><td>${esc(p.nota || (p.mpId ? "Mercado Pago #" + p.mpId : ""))}</td></tr>`).join("")
+      : '<tr><td colspan="6" class="note">Todavía no hay pagos registrados.</td></tr>'}
+    </tbody></table></div>`;
 }
 function renderAdmin() {
   let body;
@@ -2177,46 +2290,54 @@ function renderAdmin() {
         <p class="note">Escribe la clave que guardaste en Netlify como ADMIN_KEY.</p>
         <div class="field"><label for="adKey">Clave de administrador</label><input id="adKey" type="password" autocomplete="off" spellcheck="false"></div>
         ${AD.err ? `<p class="err">${esc(AD.err)}</p>` : ""}
-        <div class="row"><button class="btn primary" type="submit" ${AD.loading ? "disabled" : ""}>${AD.loading ? "Cargando…" : "Ver usuarios"}</button></div>
+        <div class="row"><button class="btn primary" type="submit" ${AD.loading ? "disabled" : ""}>${AD.loading ? "Cargando…" : "Entrar"}</button></div>
       </form>`;
+  } else if (AD.sel) {
+    const u = AD.users.find(x => x.email === AD.sel);
+    body = u ? adminDetail(u) : "";
   } else {
-    const u = AD.users, week = u.filter(x => Date.now() - x.created < 7 * 864e5).length;
-    const active = u.filter(x => Date.now() - x.updated < 7 * 864e5).length, withPhone = u.filter(x => x.phone).length;
-    body = `<div class="ad-stats">
-        <div><b>${u.length}</b><span>usuarios registrados</span></div>
-        <div><b>${week}</b><span>nuevos esta semana</span></div>
-        <div><b>${active}</b><span>activos esta semana</span></div>
-        <div><b>${u.filter(x => x.plan && x.plan !== "gratis").length}</b><span>con Premium</span></div>
-      </div>
+    const tabs = [["resumen", "Resumen"], ["clientes", "Clientes"], ["pagos", "Pagos"]];
+    body = `<div class="tabs ad-tabs">${tabs.map(([id, n]) => `<button class="tab" data-act="ad-tab" data-tab="${id}" aria-selected="${AD.tab === id}">${n}</button>`).join("")}
+        <span style="margin-left:auto" class="row"><button class="btn small" data-act="ad-refresh">Actualizar</button><button class="linkbtn" data-act="ad-out">Salir</button></span></div>
+      ${AD.tab === "resumen" ? adminSummary() : AD.tab === "pagos" ? adminPayments() : `
       <div class="ad-tools">
-        <input id="adSearch" type="search" placeholder="Buscar por nombre, correo, celular o nivel" value="${esc(AD.q)}" aria-label="Buscar usuarios">
+        <input id="adSearch" type="search" placeholder="Buscar por nombre, correo, celular o nivel" value="${esc(AD.q)}" aria-label="Buscar clientes">
+        <select id="adFilter" aria-label="Filtrar por plan"><option value="todos" ${AD.filtro === "todos" ? "selected" : ""}>Todos</option><option value="premium" ${AD.filtro === "premium" ? "selected" : ""}>Premium</option><option value="gratis" ${AD.filtro === "gratis" ? "selected" : ""}>Gratis</option></select>
         <button class="btn primary small" data-act="ad-csv">Descargar Excel</button>
-        <button class="btn small" data-act="ad-refresh">Actualizar</button>
-        <button class="linkbtn" data-act="ad-out">Salir</button>
       </div>
+      <p class="note" style="margin-bottom:.6rem">Toca un cliente para ver su ficha completa.</p>
       <div class="tbl ad-table"><table>
-        <thead><tr><th>Nombres</th><th>Apellidos</th><th>Correo</th><th>Celular</th><th>Nivel</th><th>Avance</th><th>Registro</th><th>Última actividad</th><th>Plan</th></tr></thead>
+        <thead><tr><th>Nombre</th><th>Correo</th><th>Celular</th><th>Nivel</th><th>Avance</th><th>Plan</th><th>Registro</th><th>Última actividad</th></tr></thead>
         <tbody id="adBody">${adminBody()}</tbody>
-      </table></div>
-      <p class="privacy" style="margin-top:1rem">Estos datos son personales. Úsalos solo para lo que tus usuarios aceptaron y no los compartas con terceros.</p>`;
+      </table></div>`}
+      <p class="privacy" style="margin-top:1rem">Estos datos son personales. Úsalos solo para lo que tus clientes aceptaron y no los compartas con terceros.</p>`;
   }
   adEl.innerHTML = `<div class="mhead"><div class="inner">
       <nav class="crumbs"><a href="#inicio">Inicio</a> / Administración</nav>
       <h1>Panel de administración</h1>
-      <p class="goal">Personas registradas en Pasaporte English y su avance en el curso.</p>
+      <p class="goal">Clientes, planes, pagos y avance en el curso de Pasaporte English.</p>
     </div></div>
     <div class="inner tutor-body">${body}</div>`;
 }
-function adminCSV() {
+function downloadCSV(name, rows) {
   const safe = v => { const s = String(v ?? ""); return /^[=+\-@]/.test(s) ? "'" + s : s; };
   const q = v => '"' + safe(v).replace(/"/g, '""') + '"';
-  const rows = [["Nombres", "Apellidos", "Correo", "Celular", "Nivel", "Avance %", "Registro", "Última actividad", "Plan"]]
-    .concat(adminRows().map(u => [u.names, u.last, u.email, u.phone, u.nivel, pctOf(u), fmtDate(u.created), fmtDate(u.updated), u.plan || "gratis"]));
   const csv = "﻿" + rows.map(r => r.map(q).join(";")).join("\r\n");
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
-  a.download = "usuarios-pasaporte-" + new Date().toISOString().slice(0, 10) + ".csv";
+  a.download = name + "-" + new Date().toISOString().slice(0, 10) + ".csv";
   document.body.appendChild(a); a.click(); a.remove();
+}
+function adminCSV() {
+  downloadCSV("clientes-pasaporte", [["Nombres", "Apellidos", "Correo", "Celular", "Nivel", "Avance %", "Plan", "Premium hasta", "Registro", "Última actividad"]]
+    .concat(adminRows().map(u => [u.names, u.last, u.email, u.phone, u.nivel, pctOf(u), PLAN_NAME[u.plan] || u.plan, u.plan !== "gratis" ? fmtDate(u.planHasta) : "", fmtDate(u.created), fmtDate(u.updated)])));
+}
+async function adminAction(body, okMsg) {
+  AD.msg = "Guardando…"; renderAdmin();
+  const r = await adminCall(body);
+  AD.msg = r.status === 200 ? okMsg : "No se pudo completar la acción. Inténtalo de nuevo.";
+  if (r.status === 200 && body.action === "admin_borrar") AD.sel = null;
+  await adminLoad();
 }
 document.addEventListener("submit", e => {
   if (e.target.id === "adForm") { e.preventDefault(); AD.key = document.getElementById("adKey").value.trim(); if (AD.key) adminLoad(); }
@@ -2224,11 +2345,29 @@ document.addEventListener("submit", e => {
 document.addEventListener("input", e => {
   if (e.target.id === "adSearch") { AD.q = e.target.value; const tb = document.getElementById("adBody"); if (tb) tb.innerHTML = adminBody(); }
 });
+document.addEventListener("change", e => {
+  if (e.target.id === "adFilter") { AD.filtro = e.target.value; const tb = document.getElementById("adBody"); if (tb) tb.innerHTML = adminBody(); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.classList && e.target.classList.contains("ad-row")) e.target.click();
+});
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
-  if (b.dataset.act === "ad-csv") adminCSV();
-  if (b.dataset.act === "ad-refresh") adminLoad();
-  if (b.dataset.act === "ad-out") { AD.key = ""; AD.users = null; AD.q = ""; try { sessionStorage.removeItem("pasaporte-admin"); } catch (err) {} renderAdmin(); }
+  const act = b.dataset.act;
+  if (act === "ad-tab") { AD.tab = b.dataset.tab; renderAdmin(); }
+  if (act === "ad-sel") { AD.sel = b.dataset.email; AD.msg = ""; AD.delArm = false; renderAdmin(); window.scrollTo(0, 0); }
+  if (act === "ad-back") { AD.sel = null; AD.msg = ""; renderAdmin(); }
+  if (act === "ad-csv") adminCSV();
+  if (act === "ad-csv-pays") downloadCSV("pagos-pasaporte", [["Fecha", "Cliente", "Correo", "Tipo", "Monto", "Moneda", "Detalle"]].concat(allPayments().map(p => [fmtDateTime(p.fecha), p.nombre, p.email, PLAN_NAME[p.tipo] || p.tipo, p.monto || 0, p.moneda || "PEN", p.nota || (p.mpId ? "Mercado Pago #" + p.mpId : "")])));
+  if (act === "ad-refresh") adminLoad();
+  if (act === "ad-out") { AD.key = ""; AD.users = null; AD.q = ""; AD.sel = null; try { sessionStorage.removeItem("pasaporte-admin"); } catch (err) {} renderAdmin(); }
+  if (act === "ad-copy") { const t = b.dataset.copy; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { b.textContent = "Copiado"; }).catch(() => { b.textContent = t; }); }
+  if (act === "ad-grant") { const dias = Math.round(Number(document.getElementById("adDays").value)); if (!(dias >= 1 && dias <= 400)) { AD.msg = "Escribe un número de días entre 1 y 400."; renderAdmin(); return; } adminAction({ action: "admin_plan", email: b.dataset.email, dias }, `Listo: se añadieron ${dias} días de Premium.`); }
+  if (act === "ad-revoke") adminAction({ action: "admin_plan", email: b.dataset.email, dias: 0 }, "Se quitó el Premium a este cliente.");
+  if (act === "ad-del") {
+    if (!AD.delArm) { AD.delArm = true; renderAdmin(); setTimeout(() => { if (AD.delArm) { AD.delArm = false; if (location.hash === "#admin") renderAdmin(); } }, 5000); return; }
+    AD.delArm = false; adminAction({ action: "admin_borrar", email: b.dataset.email }, "Cliente eliminado.");
+  }
 });
 
 /* ---------- Premium y pagos (Mercado Pago) ---------- */

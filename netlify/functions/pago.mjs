@@ -53,8 +53,10 @@ async function updatePlan(s, key, fn) {
   if (!user) return null;
   user.plan = user.plan || {};
   user.plan.pagos = user.plan.pagos || [];
+  user.plan.historial = user.plan.historial || [];
   fn(user.plan);
   user.plan.pagos = user.plan.pagos.slice(-60);
+  user.plan.historial = user.plan.historial.slice(-60);
   await s.setJSON(key, user);
   return user;
 }
@@ -68,6 +70,7 @@ async function applyPayment(s, payment) {
     const mark = "p" + payment.id;
     if (plan.pagos.includes(mark)) return;
     plan.pagos.push(mark);
+    plan.historial.push({ fecha: Date.now(), tipo: "semestral", monto: Number(payment.transaction_amount) || 0, moneda: payment.currency_id || "PEN", mpId: String(payment.id) });
     plan.hasta = Math.max(plan.hasta || 0, Date.now()) + 183 * DAY;
     if (plan.estado !== "activa") { plan.tipo = "semestral"; plan.estado = "activo"; }
   });
@@ -101,6 +104,7 @@ async function applyAuthorizedPayment(s, ap) {
     const mark = "a" + ap.id;
     if (plan.pagos.includes(mark)) return;
     plan.pagos.push(mark);
+    plan.historial.push({ fecha: Date.now(), tipo: "mensual", monto: Number(ap.transaction_amount) || 0, moneda: ap.currency_id || "PEN", mpId: String((ap.payment && ap.payment.id) || ap.id) });
     plan.tipo = "mensual"; plan.estado = "activa"; plan.mpPreapproval = pre.id;
     plan.hasta = Math.max(plan.hasta || 0, Date.now()) + 32 * DAY;
   });
