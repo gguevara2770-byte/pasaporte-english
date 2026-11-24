@@ -16,6 +16,11 @@ function cleanEmail(value) {
   const e = String(value || "").trim().toLowerCase();
   return e.length <= 120 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e) ? e : null;
 }
+function cleanProfile(p) {
+  if (!p || typeof p !== "object") return null;
+  const f = v => String(v ?? "").trim().slice(0, 100);
+  return { names: f(p.names), last: f(p.last), phone: f(p.phone), email: f(p.email) };
+}
 function cleanData(data) {
   if (data == null) return null;
   const str = JSON.stringify(data);
@@ -41,7 +46,7 @@ export default async function handler(req) {
       const data = cleanData(b.data);
       if (data === undefined) return json(413, { error: "too_large" });
       const salt = randomBytes(16).toString("hex");
-      user = { email, salt, hash: hashPw(pw, salt), created: Date.now(), updated: Date.now(), data };
+      user = { email, salt, hash: hashPw(pw, salt), created: Date.now(), updated: Date.now(), data, perfil: cleanProfile(b.perfil || (data && data.perfil)) };
       await s.setJSON(key, user);
     } else {
       if (!user) return json(401, { error: "credentials" });
@@ -51,6 +56,32 @@ export default async function handler(req) {
     const token = randomBytes(24).toString("hex");
     await s.setJSON("s/" + token, { key, exp: Date.now() + SESSION_MS });
     return json(200, { token, email: user.email, data: user.data || null, updated: user.updated || 0 });
+  }
+
+  // Panel del administrador: necesita la variable ADMIN_KEY en Netlify.
+  if (action === "admin_lista") {
+    const adminKey = process.env.ADMIN_KEY || "";
+    if (adminKey.length < 12) return json(503, { error: "admin_not_configured" });
+    const a = createHash("sha256").update(adminKey).digest();
+    const g = createHash("sha256").update(String(b.adminKey || "")).digest();
+    if (!timingSafeEqual(a, g)) { await new Promise(r => setTimeout(r, 800)); return json(401, { error: "admin" }); }
+    const { blobs } = await s.list({ prefix: "u/" });
+    const users = [];
+    for (let i = 0; i < blobs.length; i += 20) {
+      const chunk = await Promise.all(blobs.slice(i, i + 20).map(x => s.get(x.key, { type: "json" })));
+      for (const u of chunk) {
+        if (!u) continue;
+        const d = u.data || {};
+        const pf = u.perfil || cleanProfile(d.perfil) || {};
+        users.push({
+          email: u.email, names: pf.names || "", last: pf.last || "", phone: pf.phone || "",
+          nivel: d.nivel && d.nivel.level ? d.nivel.level : "", done: d.p ? Object.keys(d.p).length : 0,
+          created: u.created || 0, updated: u.updated || 0
+        });
+      }
+    }
+    users.sort((x, y) => y.created - x.created);
+    return json(200, { users });
   }
 
   // Acciones con sesión iniciada
@@ -66,6 +97,7 @@ export default async function handler(req) {
     const data = cleanData(b.data);
     if (data === undefined) return json(413, { error: "too_large" });
     user.data = data; user.updated = Date.now();
+    if (data && data.perfil) user.perfil = cleanProfile(data.perfil);
     await s.setJSON(sess.key, user);
     return json(200, { updated: user.updated });
   }

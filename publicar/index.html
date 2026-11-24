@@ -542,6 +542,31 @@ details.lesson:not([open]) { gap: 0; }
 .acc { border-top: 4px solid var(--brand); }
 .prof-grid .acc { grid-column: 1 / -1; }
 
+/* Necesidades */
+.needs-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 960px) { .needs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .needs-grid { grid-template-columns: 1fr; } }
+.need { display: grid; gap: .5rem; align-content: start; text-align: left; font: inherit; cursor: pointer; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--brand-2); border-radius: 14px; padding: 1.1rem 1.2rem; box-shadow: var(--shadow); min-width: 0; transition: transform .15s, border-color .15s; }
+.need:hover { transform: translateY(-2px); border-color: var(--brand); }
+.need b { font-family: var(--f-display); font-size: 1.2rem; }
+.need span { color: var(--muted); font-size: .94rem; }
+.need em { font-style: normal; font-weight: 700; color: var(--brand); }
+.need-travel { border-left-color: #0284C7; background: linear-gradient(120deg, #F0F9FF, #FFFFFF); }
+.countdown { margin-top: 1.6rem; border-left: 4px solid #0284C7; }
+
+/* Panel del administrador */
+.ad-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.4rem; }
+@media (max-width: 760px) { .ad-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.ad-stats div { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; display: grid; }
+.ad-stats b { font-family: var(--f-display); font-size: 2rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.ad-stats span { color: var(--muted); font-size: .88rem; }
+.ad-tools { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: 1rem; }
+.ad-tools input { flex: 1 1 260px; min-width: 0; font: inherit; padding: .55rem .8rem; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); }
+.ad-table { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.ad-table table { min-width: 860px; }
+.ad-table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ad-table td:first-child { font-weight: 700; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -593,6 +618,24 @@ details.lesson:not([open]) { gap: 0; }
     </div>
   </section>
 
+  <section class="block needs" id="necesidades">
+    <div class="inner">
+      <div class="sec-head">
+        <span class="eyebrow">¿Para qué necesitas el inglés?</span>
+        <h2>Empieza por lo que más te urge</h2>
+        <p>Cada meta pide practicar cosas distintas. Elige la tuya y te llevamos directo a la práctica que necesitas.</p>
+      </div>
+      <div class="needs-grid">
+        <a class="need need-travel" href="#viajes"><b>¿Viajas pronto?</b><span>No esperes a estar en el aeropuerto. Practica hoy lo que vas a decir en migración, en el hotel y en el restaurante, y llega con confianza.</span><em>Prepararme para mi viaje →</em></a>
+        <button class="need" data-act="tu-topic" data-topic="entrevista"><b>¿Tienes una entrevista en inglés?</b><span>Ensaya las preguntas más comunes con una reclutadora y recibe correcciones al instante, antes del día importante.</span><em>Ensayar mi entrevista →</em></button>
+        <button class="need" data-act="tu-topic" data-topic="oficina"><b>¿Quieres crecer en tu trabajo?</b><span>Reuniones, correos y presentaciones: el inglés que te abre la puerta a mejores puestos y mejores sueldos.</span><em>Practicar inglés de oficina →</em></button>
+        <button class="need" data-act="tu-topic" data-topic="extranjeros"><b>¿Conoces o atiendes a extranjeros?</b><span>Haz amigos, ayuda a turistas y habla de tu país sin quedarte en blanco.</span><em>Conversar con extranjeros →</em></button>
+        <a class="need" href="#karaoke"><b>¿Quieres entender canciones y series?</b><span>Entrena el oído con la música que ya escuchas y deja de depender de los subtítulos.</span><em>Ir al karaoke →</em></a>
+        <a class="need" href="#nivel"><b>¿No sabes cuál es tu nivel?</b><span>En 10 minutos te decimos desde qué módulo empezar, para que no pierdas tiempo repitiendo lo que ya sabes.</span><em>Hacer el test de nivel →</em></a>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="programas">
     <div class="inner">
       <div class="sec-head">
@@ -614,7 +657,7 @@ details.lesson:not([open]) { gap: 0; }
       <div class="travel-copy">
         <span class="eyebrow">Inglés para viajar</span>
         <h2>Tu próximo viaje, sin miedo a hablar</h2>
-        <p>Practica las situaciones reales de cualquier viaje: migración, check-in, pedir comida, moverte por la ciudad y hacer amigos de otros países.</p>
+        <p>¿Viajas en los próximos meses? No esperes a estar frente al oficial de migración para practicar. Ensaya hoy las conversaciones reales de tu viaje: check-in, pedir comida, moverte por la ciudad y hacer amigos de otros países.</p>
         <div class="cta"><a class="btn primary" href="#viajes">Ver frases para viajar</a><button class="btn" data-act="tu-topic" data-topic="viajar">Simular mi viaje con Sofía</button></div>
       </div>
       <ol class="travel-steps">
@@ -731,6 +774,7 @@ details.lesson:not([open]) { gap: 0; }
 <main id="perfil" hidden></main>
 <main id="nivel" hidden></main>
 <main id="viajes" hidden></main>
+<main id="admin" hidden></main>
 
 <footer>
   <div class="inner">
@@ -1940,6 +1984,11 @@ function accountCardHtml() {
       <p class="note">Guarda tu progreso en la nube y continúa donde te quedaste desde cualquier dispositivo.</p>
       <div class="field"><label for="accEmail">Correo electrónico</label><input id="accEmail" type="email" inputmode="email" autocomplete="email" placeholder="ana@correo.com"></div>
       <div class="field"><label for="accPass">Contraseña</label><input id="accPass" type="password" autocomplete="current-password" placeholder="Mínimo 8 caracteres"></div>
+      <div id="accExtra" hidden>
+        <div class="field"><label for="accNames">Nombres</label><input id="accNames" autocomplete="given-name" placeholder="Ana María" value="${esc(PROFILE && PROFILE.names || "")}"></div>
+        <div class="field"><label for="accLast">Apellidos</label><input id="accLast" autocomplete="family-name" placeholder="García López" value="${esc(PROFILE && PROFILE.last || "")}"></div>
+        <div class="field"><label for="accPhone">Número de celular</label><input id="accPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+51 987 654 321" value="${esc(PROFILE && PROFILE.phone || "")}"></div>
+      </div>
       <p class="err" id="accErr" hidden></p>
       <div class="row"><button class="btn primary" type="submit">Iniciar sesión</button><button class="btn" type="button" data-act="acc-register">Crear cuenta nueva</button></div>
       <p class="privacy">Al crear una cuenta guardamos tu correo, tu progreso y los datos de tu perfil para sincronizarlos. La contraseña se guarda cifrada y nadie puede verla.</p>
@@ -1952,8 +2001,18 @@ async function accLogin(mode) {
   const show = m => { err.textContent = m; err.hidden = !m; };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return show("Escribe un correo válido. Por ejemplo: ana@correo.com.");
   if (password.length < 8) return show("La contraseña debe tener al menos 8 caracteres.");
+  let perfil;
+  if (mode === "registro") {
+    const v = id => document.getElementById(id).value.trim();
+    perfil = { names: v("accNames"), last: v("accLast"), phone: v("accPhone"), email };
+    if (perfil.names.length < 2) return show("Escribe tus nombres.");
+    if (perfil.last.length < 2) return show("Escribe tus apellidos.");
+    if (!/^\+?[0-9\s()-]{7,20}$/.test(perfil.phone) || perfil.phone.replace(/\D/g, "").length < 7) return show("Escribe un número de celular válido, con el código de país. Por ejemplo: +51 987 654 321.");
+    PROFILE = perfil;
+    try { localStorage.setItem(PROF_STORE, JSON.stringify(PROFILE)); } catch (e) {}
+  }
   show(mode === "registro" ? "Creando tu cuenta…" : "Iniciando sesión…");
-  const r = await accCall({ action: mode, email, password, data: mode === "registro" ? cloudData() : undefined });
+  const r = await accCall({ action: mode, email, password, perfil, data: mode === "registro" ? cloudData() : undefined });
   if (r.status === 200 && r.data.token) {
     ACC = { token: r.data.token, email: r.data.email }; saveAcc();
     mergeCloud(r.data.data);
@@ -1969,7 +2028,15 @@ document.addEventListener("submit", e => { if (e.target.id === "accCard") { e.pr
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act;
-  if (act === "acc-register") accLogin("registro");
+  if (act === "acc-register") {
+    const ex = document.getElementById("accExtra");
+    if (ex && ex.hidden) {
+      ex.hidden = false; b.textContent = "Crear mi cuenta";
+      const h = document.querySelector("#accCard h2"); if (h) h.textContent = "Crea tu cuenta";
+      document.getElementById("accNames").focus(); return;
+    }
+    accLogin("registro");
+  }
   if (act === "acc-sync") pushSync();
   if (act === "acc-out") {
     const token = ACC.token; ACC = {}; saveAcc(); syncMsg = "";
@@ -2000,6 +2067,20 @@ function renderViajes() {
         <button class="travel-card" data-act="tu-topic" data-topic="viajar">${avatar("viajar")}<span><b>Simula tu viaje con Sofía</b><span>Migración, hotel, taxi, restaurante, emergencias… 11 situaciones reales.</span></span></button>
         <button class="travel-card" data-act="tu-topic" data-topic="extranjeros">${avatar("extranjeros")}<span><b>Conversa con Jake, un viajero</b><span>Haz amigos, ayuda a turistas y habla de tu país.</span></span></button>
       </div>
+      <div class="card countdown">
+        <span class="eyebrow">¿Tu viaje es en pocos días?</span>
+        <h2>Plan exprés de 7 días</h2>
+        <p class="note">Quince minutos al día bastan para llegar con las frases clave dominadas.</p>
+        <ol class="lt-rules">
+          <li><b>Día 1:</b> repite en voz alta las frases de aeropuerto y migración.</li>
+          <li><b>Día 2:</b> simula «En migración al llegar» con Sofía.</li>
+          <li><b>Día 3:</b> practica el check-in en el hotel.</li>
+          <li><b>Día 4:</b> pide comida y paga en un restaurante.</li>
+          <li><b>Día 5:</b> pide direcciones y compra un boleto de metro.</li>
+          <li><b>Día 6:</b> repasa las frases de emergencia.</li>
+          <li><b>Día 7:</b> conversa con Jake como si ya estuvieras de viaje.</li>
+        </ol>
+      </div>
       <h2 class="sub-h" style="margin-top:2.2rem">Frases esenciales <span class="note">· toca una frase para escucharla</span></h2>
       ${!VIAJES ? '<p class="note">Cargando frases…</p>' : `<div class="phrase-grid">${cats.map(c => `<section class="phrase-cat"><h3>${esc(c.nombre)}</h3>
         ${c.frases.map(f => `<button class="vphrase" data-act="say" data-say="${esc(f[0])}" data-g="f"><span class="en">${esc(f[0])}</span><span class="tr">${esc(f[1])}</span></button>`).join("")}</section>`).join("")}</div>`}
@@ -2014,6 +2095,97 @@ function renderViajes() {
       </div>
     </div>`;
 }
+
+/* ---------- Panel del administrador ---------- */
+const adEl = document.getElementById("admin");
+const AD = { key: "", users: null, q: "", err: "", loading: false };
+try { AD.key = sessionStorage.getItem("pasaporte-admin") || ""; } catch (e) {}
+function totalItems() { return DATA.length ? DATA.reduce((n, _, m) => n + keysFor(m).length, 0) : 264; }
+function fmtDate(ms) { return ms ? new Date(ms).toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" }) : "—"; }
+function pctOf(u) { return Math.min(100, Math.round(u.done / totalItems() * 100)); }
+async function adminLoad() {
+  AD.err = ""; AD.loading = true; renderAdmin();
+  const r = await accCall({ action: "admin_lista", adminKey: AD.key });
+  AD.loading = false;
+  if (r.status === 200) { AD.users = r.data.users || []; try { sessionStorage.setItem("pasaporte-admin", AD.key); } catch (e) {} }
+  else {
+    AD.users = null;
+    AD.err = { 401: "Clave de administrador incorrecta.", 503: "Falta configurar la variable ADMIN_KEY en Netlify (mínimo 12 caracteres).", 0: "No hay conexión a internet." }[r.status] || "No se pudo cargar la lista. Inténtalo de nuevo.";
+    try { sessionStorage.removeItem("pasaporte-admin"); } catch (e) {}
+  }
+  renderAdmin();
+}
+function adminRows() {
+  const q = AD.q.trim().toLowerCase();
+  return (AD.users || []).filter(u => !q || [u.names, u.last, u.email, u.phone, u.nivel].join(" ").toLowerCase().includes(q));
+}
+function adminBody() {
+  const rows = adminRows();
+  if (!rows.length) return `<tr><td colspan="8" class="note">${AD.users && AD.users.length ? "Ningún usuario coincide con la búsqueda." : "Todavía no hay usuarios registrados."}</td></tr>`;
+  return rows.map(u => `<tr><td>${esc(u.names || "—")}</td><td>${esc(u.last || "—")}</td><td>${esc(u.email)}</td><td>${esc(u.phone || "—")}</td>
+    <td>${u.nivel ? `<span class="lvl">${esc(u.nivel)}</span>` : "—"}</td><td class="num">${pctOf(u)}%</td><td class="num">${fmtDate(u.created)}</td><td class="num">${fmtDate(u.updated)}</td></tr>`).join("");
+}
+function renderAdmin() {
+  let body;
+  if (!AD.users) {
+    body = `<form class="card" id="adForm" novalidate style="max-width:520px">
+        <h2>Acceso de administrador</h2>
+        <p class="note">Escribe la clave que guardaste en Netlify como ADMIN_KEY.</p>
+        <div class="field"><label for="adKey">Clave de administrador</label><input id="adKey" type="password" autocomplete="off" spellcheck="false"></div>
+        ${AD.err ? `<p class="err">${esc(AD.err)}</p>` : ""}
+        <div class="row"><button class="btn primary" type="submit" ${AD.loading ? "disabled" : ""}>${AD.loading ? "Cargando…" : "Ver usuarios"}</button></div>
+      </form>`;
+  } else {
+    const u = AD.users, week = u.filter(x => Date.now() - x.created < 7 * 864e5).length;
+    const active = u.filter(x => Date.now() - x.updated < 7 * 864e5).length, withPhone = u.filter(x => x.phone).length;
+    body = `<div class="ad-stats">
+        <div><b>${u.length}</b><span>usuarios registrados</span></div>
+        <div><b>${week}</b><span>nuevos esta semana</span></div>
+        <div><b>${active}</b><span>activos esta semana</span></div>
+        <div><b>${withPhone}</b><span>con celular</span></div>
+      </div>
+      <div class="ad-tools">
+        <input id="adSearch" type="search" placeholder="Buscar por nombre, correo, celular o nivel" value="${esc(AD.q)}" aria-label="Buscar usuarios">
+        <button class="btn primary small" data-act="ad-csv">Descargar Excel</button>
+        <button class="btn small" data-act="ad-refresh">Actualizar</button>
+        <button class="linkbtn" data-act="ad-out">Salir</button>
+      </div>
+      <div class="tbl ad-table"><table>
+        <thead><tr><th>Nombres</th><th>Apellidos</th><th>Correo</th><th>Celular</th><th>Nivel</th><th>Avance</th><th>Registro</th><th>Última actividad</th></tr></thead>
+        <tbody id="adBody">${adminBody()}</tbody>
+      </table></div>
+      <p class="privacy" style="margin-top:1rem">Estos datos son personales. Úsalos solo para lo que tus usuarios aceptaron y no los compartas con terceros.</p>`;
+  }
+  adEl.innerHTML = `<div class="mhead"><div class="inner">
+      <nav class="crumbs"><a href="#inicio">Inicio</a> / Administración</nav>
+      <h1>Panel de administración</h1>
+      <p class="goal">Personas registradas en Pasaporte English y su avance en el curso.</p>
+    </div></div>
+    <div class="inner tutor-body">${body}</div>`;
+}
+function adminCSV() {
+  const safe = v => { const s = String(v ?? ""); return /^[=+\-@]/.test(s) ? "'" + s : s; };
+  const q = v => '"' + safe(v).replace(/"/g, '""') + '"';
+  const rows = [["Nombres", "Apellidos", "Correo", "Celular", "Nivel", "Avance %", "Registro", "Última actividad"]]
+    .concat(adminRows().map(u => [u.names, u.last, u.email, u.phone, u.nivel, pctOf(u), fmtDate(u.created), fmtDate(u.updated)]));
+  const csv = "﻿" + rows.map(r => r.map(q).join(";")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = "usuarios-pasaporte-" + new Date().toISOString().slice(0, 10) + ".csv";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+document.addEventListener("submit", e => {
+  if (e.target.id === "adForm") { e.preventDefault(); AD.key = document.getElementById("adKey").value.trim(); if (AD.key) adminLoad(); }
+});
+document.addEventListener("input", e => {
+  if (e.target.id === "adSearch") { AD.q = e.target.value; const tb = document.getElementById("adBody"); if (tb) tb.innerHTML = adminBody(); }
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  if (b.dataset.act === "ad-csv") adminCSV();
+  if (b.dataset.act === "ad-refresh") adminLoad();
+  if (b.dataset.act === "ad-out") { AD.key = ""; AD.users = null; AD.q = ""; try { sessionStorage.removeItem("pasaporte-admin"); } catch (err) {} renderAdmin(); }
+});
 
 /* ---------- Karaoke ---------- */
 const kaEl = document.getElementById("karaoke");
@@ -2048,7 +2220,7 @@ function renderKaraoke() {
 const landEl = document.getElementById("landing");
 const profEl = document.getElementById("perfil");
 const viEl = document.getElementById("viajes");
-const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl, viajes: viEl };
+const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl, viajes: viEl, admin: adEl };
 function showView(name) {
   Object.entries(VIEWS).forEach(([k, el]) => { el.hidden = k !== name; });
   document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.v === name));
@@ -2068,6 +2240,7 @@ function route() {
   else if (h === "#perfil") { view.m = null; showView("perfil"); renderProfile(); window.scrollTo(0, 0); }
   else if (h === "#cuenta") { view.m = null; showView("perfil"); renderProfile(); const a = document.getElementById("accCard"); if (a) a.scrollIntoView(); else window.scrollTo(0, 0); }
   else if (h === "#viajes") { view.m = null; showView("viajes"); renderViajes(); window.scrollTo(0, 0); }
+  else if (h === "#admin") { view.m = null; showView("admin"); if (AD.key && !AD.users) adminLoad(); else renderAdmin(); window.scrollTo(0, 0); }
   else if (h === "#nivel") { view.m = null; showView("nivel"); renderLevel(); window.scrollTo(0, 0); }
   else {
     view.m = null; showView(h === "#programa" ? "module" : "landing");
