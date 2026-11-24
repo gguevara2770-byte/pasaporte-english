@@ -76,7 +76,9 @@ export default async function handler(req) {
         users.push({
           email: u.email, names: pf.names || "", last: pf.last || "", phone: pf.phone || "",
           nivel: d.nivel && d.nivel.level ? d.nivel.level : "", done: d.p ? Object.keys(d.p).length : 0,
-          created: u.created || 0, updated: u.updated || 0
+          created: u.created || 0, updated: u.updated || 0,
+          plan: u.plan && u.plan.hasta > Date.now() ? (u.plan.tipo || "premium") : "gratis",
+          planHasta: u.plan && u.plan.hasta || 0
         });
       }
     }

@@ -3,9 +3,21 @@
 //   GEMINI_API_KEY     → usa Gemini (Google) como motor principal.
 //   ANTHROPIC_API_KEY  → usa Claude (Anthropic) solo como respaldo opcional si falla Gemini.
 // Opcionales: GEMINI_MODEL (por defecto gemini-2.5-flash) y CLAUDE_MODEL (por defecto claude-opus-5-5).
+// Plan gratuito: hace falta una cuenta y hay un límite diario de mensajes (MENSAJES_GRATIS, por defecto 5).
 import Anthropic from "@anthropic-ai/sdk";
+import { getStore } from "@netlify/blobs";
 
 export const config = { path: "/api/tutor" };
+
+const FREE_MSGS = () => Number(process.env.MENSAJES_GRATIS || 5);
+const FREE_OPENS = 10;   // conversaciones nuevas por día en el plan gratuito
+async function userFromToken(s, token) {
+  if (!/^[0-9a-f]{48}$/.test(String(token || ""))) return null;
+  const sess = await s.get("s/" + token, { type: "json" });
+  if (!sess || sess.exp < Date.now()) return null;
+  const user = await s.get(sess.key, { type: "json" });
+  return user ? { key: sess.key, user } : null;
+}
 
 const JSON_HINT = '\n\nReply with ONLY a JSON object, no other text, with exactly this shape: {"reply": "...", "reply_es": "...", "feedback": {"ok": true, "corrected": "...", "why_es": "..."}, "ideas": [{"en": "...", "es": "..."}, {"en": "...", "es": "..."}]}';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -171,6 +183,19 @@ export default async function handler(req) {
     return reply(502, { error: "server" });
   }
 
+  // Cuenta y límite del plan gratuito
+  const s = getStore({ name: "pasaporte-cuentas", consistency: "strong" });
+  const who = await userFromToken(s, body.token);
+  if (!who) return reply(401, { error: "login" });
+  const premium = !!(who.user.plan && who.user.plan.hasta > Date.now());
+  const isOpen = !Array.isArray(body.history) || body.history.length === 0;
+  let qKey = null, q = null;
+  if (!premium) {
+    qKey = "q/" + who.key.slice(2) + "/" + new Date().toISOString().slice(0, 10);
+    q = (await s.get(qKey, { type: "json" })) || { msgs: 0, opens: 0 };
+    if (isOpen ? q.opens >= FREE_OPENS : q.msgs >= FREE_MSGS()) return reply(402, { error: "limit", limit: FREE_MSGS() });
+  }
+
   try {
     let data;
     PROVIDER_USED = "";
@@ -189,6 +214,11 @@ export default async function handler(req) {
       data = await askClaude(prompt.system, prompt.messages, D, 22000);
     }
     if (!data || typeof data.reply !== "string" || !data.reply.trim()) return reply(502, { error: "bad_output", detail: "respuesta sin texto" });
+    if (!premium) {
+      if (isOpen) q.opens++; else q.msgs++;
+      await s.setJSON(qKey, q);
+      data._quedan = Math.max(0, FREE_MSGS() - q.msgs);
+    }
     return reply(200, data);
   } catch (err) {
     if (err instanceof UpstreamError) return reply(err.status, { error: "upstream", detail: err.why });

@@ -567,6 +567,29 @@ details.lesson:not([open]) { gap: 0; }
 .ad-table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ad-table td:first-child { font-weight: 700; }
 
+/* Premium */
+.nav-premium { color: var(--brand) !important; font-weight: 700; }
+.lock-tag { background: #FEF3C7; color: #92400E; }
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; align-items: stretch; }
+@media (max-width: 900px) { .plans { grid-template-columns: 1fr; } }
+.plan { position: relative; display: grid; grid-template-rows: auto auto 1fr auto; gap: .7rem; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 1.4rem; box-shadow: var(--shadow); min-width: 0; }
+.plan .price { font-family: var(--f-display); font-weight: 800; font-size: 2.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.plan .price small { font-size: .95rem; font-weight: 500; color: var(--muted); }
+.plan ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; font-size: .95rem; }
+.plan .btn, .plan .badge, .plan .note { justify-self: start; }
+.plan-best { border: 2px solid var(--brand); }
+.plan-flag { position: absolute; top: -12px; right: 16px; background: var(--brand); color: #FFFFFF; font-weight: 700; font-size: .8rem; border-radius: 99px; padding: .2rem .7rem; }
+.mhead-premium { background: linear-gradient(120deg, #EAF0FF 0%, #FFF4E5 100%); }
+.lock-card { border-left: 4px solid #D97706; margin-bottom: 1.2rem; gap: .4rem; }
+.plan-status { margin-bottom: 1.2rem; }
+.pay-msg { margin-bottom: 1rem; font-size: 1rem; }
+.mp-email { max-width: 520px; margin-top: 1.2rem; }
+.pay-faq { margin-top: 1.6rem; gap: .6rem; }
+.pay-faq details { border-top: 1px solid var(--line); padding-top: .6rem; }
+.pay-faq summary { cursor: pointer; font-weight: 700; }
+.pay-faq p { color: var(--muted); margin-top: .4rem; }
+.phrase-cat.locked { background: var(--surface-2); border-style: dashed; justify-items: start; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -580,6 +603,7 @@ details.lesson:not([open]) { gap: 0; }
       <a href="#tutor">Tutor IA</a>
       <a href="#viajes">Viajes</a>
       <a href="#karaoke">Karaoke</a>
+      <a href="#premium" class="nav-premium">Premium</a>
     </nav>
     <div class="nav-right">
       <button class="btn small" id="installBtn" hidden>Instalar app</button>
@@ -750,6 +774,17 @@ details.lesson:not([open]) { gap: 0; }
     </div>
   </section>
 
+  <section class="block" id="planes">
+    <div class="inner">
+      <div class="sec-head">
+        <span class="eyebrow">Planes</span>
+        <h2>Empieza gratis. Pasa a Premium cuando quieras</h2>
+        <p>Prueba el método con el módulo 1, el test de nivel y el tutor. Cuando estés listo, desbloquea todo.</p>
+      </div>
+      <div id="landingPlans"></div>
+    </div>
+  </section>
+
   <section class="block" id="preguntas">
     <div class="inner">
       <div class="sec-head">
@@ -775,6 +810,7 @@ details.lesson:not([open]) { gap: 0; }
 <main id="nivel" hidden></main>
 <main id="viajes" hidden></main>
 <main id="admin" hidden></main>
+<main id="premium" hidden></main>
 
 <footer>
   <div class="inner">
@@ -933,7 +969,7 @@ function renderProgram() {
     const p = DATA.length ? pct(m) : 0; const n = Math.round(p * 100);
     return `<article class="mcard ${p === 1 ? "complete" : ""}">
       ${p === 1 ? '<span class="mstamp">COMPLETADO</span>' : ""}
-      <div class="top"><span class="eyebrow">Módulo ${m + 1} · Semanas ${m * 4 + 1}–${m * 4 + 4}</span>${LV && LV.start === m ? '<span class="rec-tag">Recomendado para ti</span>' : ""}</div>
+      <div class="top"><span class="eyebrow">Módulo ${m + 1} · Semanas ${m * 4 + 1}–${m * 4 + 4}</span>${LV && LV.start === m ? '<span class="rec-tag">Recomendado para ti</span>' : ""}${m > 0 && !isPremium() ? '<span class="rec-tag lock-tag">Premium</span>' : ""}</div>
       <div class="top"><h3>${M.title}</h3><span class="lvl">${M.level}</span></div>
       <p class="goal">${M.goal}</p>
       <ol>${M.weeks.map(w => `<li>${w}</li>`).join("")}</ol>
@@ -1372,12 +1408,14 @@ async function callTutor() {
     const custom = TU.topic.id === "custom";
     const ctx = {
       system: buildSystem(), history: TU.turns,
-      appBody: { topic: TU.topic.id, scene: custom || TU.scen.custom ? TU.scen.t : TU.topic.scen.indexOf(TU.scen), level: TU.level, history: TU.turns }
+      appBody: { topic: TU.topic.id, scene: custom || TU.scen.custom ? TU.scen.t : TU.topic.scen.indexOf(TU.scen), level: TU.level, history: TU.turns, token: ACC.token || "" }
     };
     const r = await askWithFallback(ctx, ctl.signal);
     if (ctl !== TU.ctl) return;
     if (!r || typeof r.reply !== "string" || !r.reply.trim()) throw new AIError("format");
+    const quedan = r._quedan; delete r._quedan;
     TU.turns.push({ role: "assistant", content: JSON.stringify(r) });
+    if (typeof quedan === "number") TU.notice = quedan > 0 ? `Plan gratis: te quedan ${quedan} ${quedan === 1 ? "mensaje" : "mensajes"} hoy. Con Premium conversas sin límite.` : "Usaste tus mensajes gratis de hoy. Con Premium conversas sin límite.";
     const last = TU.msgs[TU.msgs.length - 1];
     if (last && last.who === "me" && r.feedback && typeof r.feedback === "object") last.fb = { ok: !!r.feedback.ok, corrected: String(r.feedback.corrected || ""), why: String(r.feedback.why_es || "") };
     TU.msgs.push({ who: "tutor", en: r.reply, es: String(r.reply_es || "") });
@@ -1395,13 +1433,15 @@ async function callTutor() {
       refusal: ["La IA no quiso responder a ese mensaje. Prueba a decirlo de otra forma.", false, false],
       busy: ["El tutor está muy solicitado en este momento. Vuelve a intentarlo en unos segundos.", true, false],
       appbad: ["No se pudo continuar esta conversación. Elige otra situación para empezar de nuevo.", false, false],
+      login: ["Crea tu cuenta gratis o inicia sesión para conversar con el tutor. Tienes 5 mensajes gratis cada día.", false, true, "#cuenta", "Iniciar sesión"],
+      limit: ["Usaste tus mensajes gratis de hoy. Hazte Premium para conversar sin límite, o vuelve mañana.", false, true, "#premium", "Ver Premium"],
       network: ["No hay conexión a internet. El tutor necesita conexión para responder.", true, false],
       appoff: ["El tutor no está disponible en este momento. Vuelve a intentarlo en unos minutos.", true, false],
       format: ["La IA respondió en un formato inesperado. Vuelve a intentarlo o prueba otro modelo.", true, false],
       bad: ["La IA rechazó la petición. Prueba otro modelo en Mi perfil.", false, true]
     }[e && e.kind] || ["El tutor no pudo responder esta vez.", true, false];
     const detail = e && e.detail && ["model", "bad", "server", "format", "busy"].includes(e.kind) ? " Detalle: " + String(e.detail).slice(0, 180) : "";
-    TU.err = { msg: M[0] + detail, retry: M[1], link: M[2] };
+    TU.err = { msg: M[0] + detail, retry: M[1], link: M[2], href: M[3] || "#perfil", linkText: M[4] || "Ir a Mi perfil" };
     renderChat();
   }
 }
@@ -1464,7 +1504,7 @@ function renderChat() {
         : `<p class="fb fix"><b>Mejor así:</b> «${esc(m.fb.corrected)}» ${esc(m.fb.why)}</p>`}</div>`).join("");
   if (TU.notice) html += `<p class="note">${esc(TU.notice)}</p>`;
   if (TU.busy) html += `<p class="typing">${esc(charOf(TU.topic.id).n)} ${TU.msgs.length ? "está escribiendo…" : "está preparando la conversación…"}</p>`;
-  if (TU.err) html += `<p class="err">${esc(TU.err.msg)} ${TU.err.retry ? '<button class="linkbtn" data-act="tu-retry">Reintentar</button>' : ""}${TU.err.link ? ' <a class="btn small" href="#perfil">Ir a Mi perfil</a>' : ""}</p>`;
+  if (TU.err) html += `<p class="err">${esc(TU.err.msg)} ${TU.err.retry ? '<button class="linkbtn" data-act="tu-retry">Reintentar</button>' : ""}${TU.err.link ? ` <a class="btn small primary" href="${TU.err.href}">${esc(TU.err.linkText)}</a>` : ""}</p>`;
   chat.innerHTML = html;
   const lastEl = chat.lastElementChild; if (lastEl && TU.msgs.length) lastEl.scrollIntoView({ block: "nearest" });
   document.getElementById("ideas").innerHTML = TU.ideas.length && !TU.busy
@@ -1505,7 +1545,7 @@ class AIError extends Error { constructor(kind) { super(kind); this.kind = kind;
 function aiProv() { return AI.provider || "app"; }
 function aiReady() { return aiProv() === "app" || !!(PROVIDERS[AI.provider] && AI.key && AI.model && (AI.provider !== "compatible" || AI.base)); }
 function aiLabel() { return aiProv() === "app" ? "Tutor incluido" : aiReady() ? PROVIDERS[AI.provider].short + (AI.model ? " · " + AI.model : "") : "sin conectar"; }
-function kindFromStatus(s) { return s === 401 || s === 403 ? "auth" : s === 429 ? "rate" : s === 404 ? "model" : s === 400 ? "bad" : s === 422 ? "refusal" : s === 503 || s === 529 ? "busy" : "server"; }
+function kindFromStatus(s) { return s === 401 || s === 403 ? "auth" : s === 402 ? "limit" : s === 429 ? "rate" : s === 404 ? "model" : s === 400 ? "bad" : s === 422 ? "refusal" : s === 503 || s === 529 ? "busy" : "server"; }
 function anthropicKind(e) {
   const A = AnthropicSDK;
   if (A.AuthenticationError && (e instanceof A.AuthenticationError || e instanceof A.PermissionDeniedError)) return "auth";
@@ -1613,7 +1653,7 @@ async function askAI(ctx, signal) {
   const turns = [{ role: "user", content: TD.start }, ...ctx.history];
   if (p === "app") {
     try { return await httpJSON("api/tutor", { method: "POST", signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify(ctx.appBody) }); }
-    catch (e) { if (e && (e.kind === "model" || e.kind === "server" || e.kind === "busy")) throw new AIError("appoff"); if (e && e.kind === "bad") throw new AIError("appbad"); throw e; }
+    catch (e) { if (e && (e.kind === "model" || e.kind === "server" || e.kind === "busy")) throw new AIError("appoff"); if (e && e.kind === "bad") throw new AIError("appbad"); if (e && e.kind === "auth") throw new AIError("login"); throw e; }
   }
   if (p === "claude") {
     const client = await anthropicClient(AI.key);
@@ -1975,6 +2015,7 @@ function accountCardHtml() {
   if (ACC.token) return `<div class="card acc" id="accCard">
       <h2>Tu cuenta</h2>
       <p>Sesión iniciada como <strong>${esc(ACC.email)}</strong>.</p>
+      <p>Plan: <strong>${esc(planLabel())}</strong> · <a href="#premium">${isPremium() ? "Ver mi plan" : "Hazte Premium"}</a></p>
       <p class="note">Tu progreso, tu nivel y tu perfil se guardan en la nube. Entra con tu correo desde cualquier celular o computadora y continúa donde te quedaste.</p>
       <p class="ok-msg" id="accSync">${esc(syncMsg)}</p>
       <div class="row"><button class="btn small" data-act="acc-sync">Guardar ahora</button><button class="linkbtn" data-act="acc-out">Cerrar sesión</button></div>
@@ -2018,7 +2059,7 @@ async function accLogin(mode) {
     mergeCloud(r.data.data);
     syncMsg = mode === "registro" ? "Cuenta creada. Tu progreso ya está en la nube." : "Sesión iniciada. Recuperamos tu progreso.";
     updateProfileBtn(); updateProgress(); renderProfile();
-    pushSync();
+    pushSync(); loadPlan();
     return;
   }
   show({ 409: "Ya existe una cuenta con ese correo. Pulsa «Iniciar sesión».", 401: "Correo o contraseña incorrectos.", 400: "Revisa el correo y la contraseña (mínimo 8 caracteres).", 0: "No hay conexión a internet." }[r.status]
@@ -2041,7 +2082,8 @@ document.addEventListener("click", e => {
   if (act === "acc-out") {
     const token = ACC.token; ACC = {}; saveAcc(); syncMsg = "";
     if (token) accCall({ action: "salir", token });
-    updateProfileBtn(); renderProfile();
+    PLAN = { ...PLAN, premium: false, tipo: null, hasta: 0, estado: "gratis" };
+    updateProfileBtn(); renderProfile(); refreshPlanViews();
   }
 });
 // Al abrir la app con sesión iniciada, recupera lo guardado en la nube.
@@ -2082,7 +2124,9 @@ function renderViajes() {
         </ol>
       </div>
       <h2 class="sub-h" style="margin-top:2.2rem">Frases esenciales <span class="note">· toca una frase para escucharla</span></h2>
-      ${!VIAJES ? '<p class="note">Cargando frases…</p>' : `<div class="phrase-grid">${cats.map(c => `<section class="phrase-cat"><h3>${esc(c.nombre)}</h3>
+      ${!VIAJES ? '<p class="note">Cargando frases…</p>' : `<div class="phrase-grid">${cats.map((c, i) => i >= 3 && !isPremium()
+        ? `<section class="phrase-cat locked"><h3>${esc(c.nombre)}</h3><p class="note">${c.frases.length} frases con audio y traducción.</p><a class="btn small primary" href="#premium">Desbloquear con Premium</a></section>`
+        : `<section class="phrase-cat"><h3>${esc(c.nombre)}</h3>
         ${c.frases.map(f => `<button class="vphrase" data-act="say" data-say="${esc(f[0])}" data-g="f"><span class="en">${esc(f[0])}</span><span class="tr">${esc(f[1])}</span></button>`).join("")}</section>`).join("")}</div>`}
       <div class="travel-tips card">
         <h2>Consejos antes de viajar</h2>
@@ -2121,9 +2165,9 @@ function adminRows() {
 }
 function adminBody() {
   const rows = adminRows();
-  if (!rows.length) return `<tr><td colspan="8" class="note">${AD.users && AD.users.length ? "Ningún usuario coincide con la búsqueda." : "Todavía no hay usuarios registrados."}</td></tr>`;
+  if (!rows.length) return `<tr><td colspan="9" class="note">${AD.users && AD.users.length ? "Ningún usuario coincide con la búsqueda." : "Todavía no hay usuarios registrados."}</td></tr>`;
   return rows.map(u => `<tr><td>${esc(u.names || "—")}</td><td>${esc(u.last || "—")}</td><td>${esc(u.email)}</td><td>${esc(u.phone || "—")}</td>
-    <td>${u.nivel ? `<span class="lvl">${esc(u.nivel)}</span>` : "—"}</td><td class="num">${pctOf(u)}%</td><td class="num">${fmtDate(u.created)}</td><td class="num">${fmtDate(u.updated)}</td></tr>`).join("");
+    <td>${u.nivel ? `<span class="lvl">${esc(u.nivel)}</span>` : "—"}</td><td class="num">${pctOf(u)}%</td><td class="num">${fmtDate(u.created)}</td><td class="num">${fmtDate(u.updated)}</td><td>${u.plan && u.plan !== "gratis" ? `<span class="rec-tag">${esc(u.plan)}</span>` : "Gratis"}</td></tr>`).join("");
 }
 function renderAdmin() {
   let body;
@@ -2142,7 +2186,7 @@ function renderAdmin() {
         <div><b>${u.length}</b><span>usuarios registrados</span></div>
         <div><b>${week}</b><span>nuevos esta semana</span></div>
         <div><b>${active}</b><span>activos esta semana</span></div>
-        <div><b>${withPhone}</b><span>con celular</span></div>
+        <div><b>${u.filter(x => x.plan && x.plan !== "gratis").length}</b><span>con Premium</span></div>
       </div>
       <div class="ad-tools">
         <input id="adSearch" type="search" placeholder="Buscar por nombre, correo, celular o nivel" value="${esc(AD.q)}" aria-label="Buscar usuarios">
@@ -2151,7 +2195,7 @@ function renderAdmin() {
         <button class="linkbtn" data-act="ad-out">Salir</button>
       </div>
       <div class="tbl ad-table"><table>
-        <thead><tr><th>Nombres</th><th>Apellidos</th><th>Correo</th><th>Celular</th><th>Nivel</th><th>Avance</th><th>Registro</th><th>Última actividad</th></tr></thead>
+        <thead><tr><th>Nombres</th><th>Apellidos</th><th>Correo</th><th>Celular</th><th>Nivel</th><th>Avance</th><th>Registro</th><th>Última actividad</th><th>Plan</th></tr></thead>
         <tbody id="adBody">${adminBody()}</tbody>
       </table></div>
       <p class="privacy" style="margin-top:1rem">Estos datos son personales. Úsalos solo para lo que tus usuarios aceptaron y no los compartas con terceros.</p>`;
@@ -2166,8 +2210,8 @@ function renderAdmin() {
 function adminCSV() {
   const safe = v => { const s = String(v ?? ""); return /^[=+\-@]/.test(s) ? "'" + s : s; };
   const q = v => '"' + safe(v).replace(/"/g, '""') + '"';
-  const rows = [["Nombres", "Apellidos", "Correo", "Celular", "Nivel", "Avance %", "Registro", "Última actividad"]]
-    .concat(adminRows().map(u => [u.names, u.last, u.email, u.phone, u.nivel, pctOf(u), fmtDate(u.created), fmtDate(u.updated)]));
+  const rows = [["Nombres", "Apellidos", "Correo", "Celular", "Nivel", "Avance %", "Registro", "Última actividad", "Plan"]]
+    .concat(adminRows().map(u => [u.names, u.last, u.email, u.phone, u.nivel, pctOf(u), fmtDate(u.created), fmtDate(u.updated), u.plan || "gratis"]));
   const csv = "﻿" + rows.map(r => r.map(q).join(";")).join("\r\n");
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
@@ -2186,6 +2230,150 @@ document.addEventListener("click", e => {
   if (b.dataset.act === "ad-refresh") adminLoad();
   if (b.dataset.act === "ad-out") { AD.key = ""; AD.users = null; AD.q = ""; try { sessionStorage.removeItem("pasaporte-admin"); } catch (err) {} renderAdmin(); }
 });
+
+/* ---------- Premium y pagos (Mercado Pago) ---------- */
+const prEl = document.getElementById("premium");
+let PLAN = { premium: false, tipo: null, hasta: 0, estado: "gratis", precios: { mensual: 29, semestral: 129, moneda: "PEN" } };
+let PAY = { busy: false, msg: "", err: "" };
+function isPremium() { return !!PLAN.premium; }
+function money(v) { return (PLAN.precios.moneda === "PEN" ? "S/ " : PLAN.precios.moneda + " ") + Number(v).toLocaleString("es-PE", { minimumFractionDigits: 0, maximumFractionDigits: 2 }); }
+function planLabel() {
+  if (!PLAN.premium) return PLAN.estado === "pendiente" ? "Gratis (pago pendiente)" : "Gratis";
+  const until = " hasta el " + fmtDate(PLAN.hasta);
+  if (PLAN.tipo === "mensual") return (PLAN.estado === "cancelada" ? "Premium mensual (cancelada, activa" : "Premium mensual (se renueva cada mes, pagado") + until + ")";
+  return "Premium 6 meses (activo" + until + ")";
+}
+async function payCall(body) {
+  let res;
+  try { res = await fetch("api/pago", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
+  catch (e) { return { status: 0, data: {} }; }
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  return { status: res.status, data };
+}
+function applyPlan(d) {
+  if (!d || typeof d !== "object") return;
+  if (d.precios) PLAN.precios = d.precios;
+  if ("premium" in d) Object.assign(PLAN, { premium: !!d.premium, tipo: d.tipo || null, hasta: d.hasta || 0, estado: d.estado || "gratis" });
+}
+function refreshPlanViews() {
+  renderProgram(); renderLandingPlans();
+  const h = location.hash;
+  if (h === "#premium") renderPremium();
+  else if (h === "#viajes") renderViajes();
+  else if (/^#modulo-/.test(h)) route();
+  else if (h === "#perfil" || h === "#cuenta") renderProfile();
+}
+async function loadPlan() {
+  const r = ACC.token ? await payCall({ action: "estado", token: ACC.token }) : await payCall({ action: "precios" });
+  if (r.status === 200) applyPlan(ACC.token ? r.data : { precios: r.data });
+  else if (!ACC.token || r.status === 401) PLAN = { ...PLAN, premium: false, tipo: null, hasta: 0, estado: "gratis" };
+  refreshPlanViews();
+}
+function planCardsHtml() {
+  const P = PLAN.precios, save = Math.max(0, Math.round((1 - P.semestral / (P.mensual * 6)) * 100));
+  const btn = (plan, label) => !ACC.token
+    ? `<a class="btn primary" href="#cuenta">Crea tu cuenta para continuar</a>`
+    : isPremium() ? `<span class="badge ok">Tu plan está activo</span>`
+    : `<button class="btn primary" data-act="pay" data-plan="${plan}" ${PAY.busy ? "disabled" : ""}>${PAY.busy ? "Abriendo Mercado Pago…" : label}</button>`;
+  return `<div class="plans">
+    <div class="plan">
+      <span class="eyebrow">Gratis</span><div class="price">${money(0)}</div>
+      <ul><li>Test de nivel</li><li>Módulo 1 completo</li><li>Tutor IA: 5 mensajes al día</li><li>3 categorías de frases para viajar</li><li>Karaoke</li></ul>
+      ${ACC.token ? '<span class="note">Ya lo tienes.</span>' : '<a class="btn" href="#cuenta">Crear cuenta gratis</a>'}
+    </div>
+    <div class="plan">
+      <span class="eyebrow">Premium mensual</span><div class="price">${money(P.mensual)} <small>/ mes</small></div>
+      <ul><li>Los 6 módulos (A1 → B1+)</li><li>Tutor IA sin límite</li><li>Inglés para viajar completo</li><li>Todos los temas y personajes</li><li>Cancela cuando quieras</li></ul>
+      ${btn("mensual", "Suscribirme")}
+    </div>
+    <div class="plan plan-best">
+      <span class="plan-flag">Ahorra ${save}%</span>
+      <span class="eyebrow">Premium 6 meses</span><div class="price">${money(P.semestral)} <small>pago único</small></div>
+      <ul><li>Todo lo del plan mensual</li><li>6 meses de acceso</li><li>Sin renovaciones automáticas</li><li>Ideal para completar el curso</li></ul>
+      ${btn("semestral", "Pagar 6 meses")}
+    </div>
+  </div>`;
+}
+function renderLandingPlans() { const el = document.getElementById("landingPlans"); if (el) el.innerHTML = planCardsHtml(); }
+function renderPremium(lockMsg) {
+  const active = isPremium();
+  prEl.innerHTML = `<div class="mhead mhead-premium"><div class="inner">
+      <nav class="crumbs"><a href="#inicio">Inicio</a> / Premium</nav>
+      <h1>${active ? "Eres Premium" : "Hazte Premium"}</h1>
+      <p class="goal">${active ? "Tienes acceso a todo el curso, al tutor sin límite y al contenido completo de viajes." : "Todos los módulos, el tutor IA sin límite y todo el contenido para viajar. Pagas de forma segura con Mercado Pago."}</p>
+    </div></div>
+    <div class="inner tutor-body">
+      ${lockMsg ? `<div class="card lock-card">${lockMsg}</div>` : ""}
+      ${PAY.msg ? `<p class="ok-msg pay-msg">${esc(PAY.msg)}</p>` : ""}
+      ${PAY.err ? `<p class="err pay-msg">${esc(PAY.err)}</p>` : ""}
+      ${ACC.token ? `<div class="card plan-status"><span class="eyebrow">Tu plan</span><h2>${esc(planLabel())}</h2>
+        <div class="row">
+          <button class="btn small" data-act="pay-check">Actualizar estado del pago</button>
+          ${PLAN.tipo === "mensual" && PLAN.estado === "activa" ? '<button class="linkbtn" data-act="pay-cancel" id="payCancel">Cancelar la suscripción</button>' : ""}
+        </div></div>` : ""}
+      ${planCardsHtml()}
+      ${ACC.token && !active ? `<div class="field mp-email"><label for="mpEmail">Correo de tu cuenta de Mercado Pago (solo para la suscripción mensual)</label>
+        <input id="mpEmail" type="email" inputmode="email" value="${esc(ACC.email || "")}"><span class="note">Mercado Pago pide que la suscripción esté a nombre del correo con el que inicias sesión en Mercado Pago.</span></div>` : ""}
+      <div class="card pay-faq">
+        <h2>Preguntas frecuentes</h2>
+        <details><summary>¿Cómo pago?</summary><p>Al elegir un plan vas a la página segura de Mercado Pago. Puedes pagar con tarjeta de crédito o débito y con los demás medios que Mercado Pago tenga disponibles. Nosotros nunca vemos los datos de tu tarjeta.</p></details>
+        <details><summary>¿Puedo cancelar la suscripción mensual?</summary><p>Sí, cuando quieras, desde esta página. Conservas el acceso hasta el final del mes que ya pagaste y no se te vuelve a cobrar.</p></details>
+        <details><summary>¿El plan de 6 meses se renueva solo?</summary><p>No. Es un pago único. Cuando termine, puedes volver a comprarlo o pasarte al plan mensual.</p></details>
+        <details><summary>Ya pagué y no veo Premium</summary><p>Pulsa «Actualizar estado del pago». Si el pago fue aprobado, se activa al momento. Algunos medios de pago pueden tardar unos minutos en confirmarse.</p></details>
+      </div>
+    </div>`;
+}
+function renderPaywall(m) {
+  showView("premium");
+  renderPremium(`<span class="eyebrow">Módulo ${m + 1} · ${esc(MODS[m].level)}</span><h2>${esc(MODS[m].title)}</h2>
+    <p>Este módulo es parte de <strong>Premium</strong>. El módulo 1 es gratis para que pruebes el método; con Premium desbloqueas los seis.</p>`);
+}
+async function startPayment(plan) {
+  if (!ACC.token) { location.hash = "#cuenta"; return; }
+  const mpEmail = (document.getElementById("mpEmail") || {}).value || ACC.email;
+  PAY = { busy: true, msg: "", err: "" }; renderPremium();
+  const r = await payCall({ action: "crear", token: ACC.token, plan, mpEmail });
+  if (r.status === 200 && r.data.url) { location.href = r.data.url; return; }
+  PAY = { busy: false, msg: "", err: { 503: "Los pagos todavía no están activados en este sitio.", 401: "Tu sesión expiró. Vuelve a iniciar sesión.", 400: "Revisa el correo de Mercado Pago.", 0: "No hay conexión a internet." }[r.status] || "Mercado Pago no respondió. Inténtalo de nuevo en unos minutos." };
+  renderPremium(); renderLandingPlans();
+}
+async function checkPayment(params) {
+  if (!ACC.token) return;
+  PAY = { busy: false, msg: "Comprobando tu pago con Mercado Pago…", err: "" }; if (location.hash === "#premium") renderPremium();
+  const r = await payCall({ action: "verificar", token: ACC.token, ...(params || {}) });
+  if (r.status === 200) {
+    applyPlan(r.data);
+    PAY.msg = PLAN.premium ? "¡Listo! Tu Premium está activo. Gracias por confiar en Pasaporte English." : (PLAN.estado === "pendiente" ? "Tu pago aún está pendiente. Si ya pagaste, vuelve a comprobar en unos minutos." : "Todavía no vemos un pago aprobado.");
+  } else PAY = { busy: false, msg: "", err: "No se pudo comprobar el pago ahora. Inténtalo de nuevo en unos minutos." };
+  refreshPlanViews();
+}
+let payCancelArm = false;
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "pay") startPayment(b.dataset.plan);
+  if (act === "pay-check") checkPayment();
+  if (act === "pay-cancel") {
+    if (!payCancelArm) { payCancelArm = true; b.textContent = "Pulsa otra vez para cancelar la renovación"; setTimeout(() => { payCancelArm = false; const c = document.getElementById("payCancel"); if (c) c.textContent = "Cancelar la suscripción"; }, 5000); return; }
+    payCancelArm = false;
+    payCall({ action: "cancelar", token: ACC.token }).then(r => {
+      if (r.status === 200) { applyPlan(r.data); PAY = { busy: false, msg: "Suscripción cancelada. Conservas Premium hasta el " + fmtDate(PLAN.hasta) + ".", err: "" }; }
+      else PAY = { busy: false, msg: "", err: "No se pudo cancelar ahora. Inténtalo de nuevo en unos minutos." };
+      refreshPlanViews();
+    });
+  }
+});
+// Vuelta desde Mercado Pago: ?pago=volver&payment_id=… o &preapproval_id=…
+(function handlePaymentReturn() {
+  const q = new URLSearchParams(location.search);
+  if (!q.has("pago")) return;
+  const params = {};
+  const pid = q.get("payment_id") || q.get("collection_id"); if (pid && /^\d+$/.test(pid)) params.payment_id = pid;
+  const pre = q.get("preapproval_id"); if (pre && /^[\w-]+$/.test(pre)) params.preapproval_id = pre;
+  history.replaceState(null, "", location.pathname + "#premium");
+  setTimeout(() => checkPayment(params), 300);
+})();
 
 /* ---------- Karaoke ---------- */
 const kaEl = document.getElementById("karaoke");
@@ -2220,7 +2408,7 @@ function renderKaraoke() {
 const landEl = document.getElementById("landing");
 const profEl = document.getElementById("perfil");
 const viEl = document.getElementById("viajes");
-const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl, viajes: viEl, admin: adEl };
+const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl, viajes: viEl, admin: adEl, premium: prEl };
 function showView(name) {
   Object.entries(VIEWS).forEach(([k, el]) => { el.hidden = k !== name; });
   document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.v === name));
@@ -2233,6 +2421,7 @@ function route() {
     showView("module");
     if (!DATA.length) { modEl.innerHTML = '<div class="inner loading">Cargando el módulo…</div>'; return; }
     const m = +mm[1] - 1; const st = S.tab[m];
+    if (m > 0 && !isPremium()) { view.m = null; renderPaywall(m); window.scrollTo(0, 0); return; }
     view.m = m; view.tab = TABS.some(t => t[0] === st) ? st : "leccion"; T.tr = false;
     renderModule(); window.scrollTo(0, 0);
   } else if (h === "#tutor") { view.m = null; showView("tutor"); renderTutor(); window.scrollTo(0, 0); }
@@ -2240,6 +2429,7 @@ function route() {
   else if (h === "#perfil") { view.m = null; showView("perfil"); renderProfile(); window.scrollTo(0, 0); }
   else if (h === "#cuenta") { view.m = null; showView("perfil"); renderProfile(); const a = document.getElementById("accCard"); if (a) a.scrollIntoView(); else window.scrollTo(0, 0); }
   else if (h === "#viajes") { view.m = null; showView("viajes"); renderViajes(); window.scrollTo(0, 0); }
+  else if (h === "#premium") { view.m = null; showView("premium"); renderPremium(); window.scrollTo(0, 0); }
   else if (h === "#admin") { view.m = null; showView("admin"); if (AD.key && !AD.users) adminLoad(); else renderAdmin(); window.scrollTo(0, 0); }
   else if (h === "#nivel") { view.m = null; showView("nivel"); renderLevel(); window.scrollTo(0, 0); }
   else {
@@ -2255,6 +2445,8 @@ window.addEventListener("hashchange", route);
 /* ---------- Arranque ---------- */
 document.getElementById("demo").innerHTML = demoCard();
 updateProfileBtn();
+renderLandingPlans();
+loadPlan();
 renderProgram();
 renderTopicGroups();
 route();

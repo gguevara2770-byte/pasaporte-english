@@ -41,6 +41,24 @@ Botón **Iniciar sesión** (o **Perfil → Tu cuenta**): el usuario crea una cue
 - La función está en `netlify/functions/cuenta.mjs`. Las contraseñas se guardan con hash PBKDF2, nunca en texto.
 - Antes de abrir la app al público, publica una **política de privacidad**, porque guardas correo, nombre y celular. Más adelante conviene añadir un límite de intentos de inicio de sesión y la opción de recuperar la contraseña.
 
+## Cobros con Mercado Pago (Premium)
+
+- **Gratis:** test de nivel, módulo 1, 5 mensajes de tutor al día (con cuenta), 3 categorías de frases de viaje y karaoke.
+- **Premium mensual** (suscripción que se renueva sola) y **Premium 6 meses** (pago único).
+- Servidor: `netlify/functions/pago.mjs` (`/api/pago` y `/api/mp-webhook`). El tutor revisa el plan y el límite diario en `tutor.mjs`.
+
+Variables en Netlify:
+| Variable | Valor |
+|---|---|
+| `MP_ACCESS_TOKEN` | Access Token de tu aplicación de Mercado Pago (primero el de prueba, `TEST-…`; luego el de producción) |
+| `PRECIO_MENSUAL` | Opcional. Por defecto 29 |
+| `PRECIO_SEMESTRAL` | Opcional. Por defecto 129 |
+| `MENSAJES_GRATIS` | Opcional. Mensajes diarios del plan gratis, por defecto 5 |
+
+En Mercado Pago → **Tus integraciones → tu aplicación → Webhooks**, configura la URL `https://TU-SITIO.netlify.app/api/mp-webhook` con los eventos **Pagos** y **Planes y suscripciones**.
+
+Importante: los módulos 2–6 se bloquean dentro de la app, pero sus archivos de datos son públicos. Es suficiente para empezar a vender; más adelante se pueden servir solo a usuarios Premium.
+
 ## Costos y límites
 
 - **Gemini gratis:** el límite diario se reparte entre todos tus usuarios. Si se agota o el modelo está saturado, el tutor avisa y reintenta solo.
