@@ -39,6 +39,7 @@ async function userFromToken(s, token) {
   const sess = await s.get("s/" + token, { type: "json" });
   if (!sess || sess.exp < Date.now()) return null;
   const user = await s.get(sess.key, { type: "json" });
+  if (user && user.pwChanged && (sess.at || 0) < user.pwChanged) return null;   // contraseña cambiada después de abrir la sesión
   return user ? { key: sess.key, user } : null;
 }
 

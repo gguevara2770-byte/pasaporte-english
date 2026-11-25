@@ -701,6 +701,13 @@ details.lesson:not([open]) { gap: 0; }
 @keyframes cineClap { 0%, 60% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) { .cine *, .cine-screen * { animation: none !important; } .cine-clap { display: none; } }
 
+.pw-wrap { position: relative; display: flex; }
+.pw-wrap input { flex: 1; padding-right: 6.2rem; }
+.pw-eye { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; background: var(--surface-2); color: var(--brand); font: inherit; font-size: .85rem; font-weight: 700; padding: .3rem .6rem; border-radius: 8px; cursor: pointer; }
+.pw-eye:hover { background: var(--brand-soft); }
+.acc-forgot { justify-self: start; }
+.ad-temp { font-family: var(--f-mono); font-size: 1.15rem; font-weight: 700; background: var(--mark); color: var(--mark-ink); padding: .2rem .6rem; border-radius: 6px; letter-spacing: .05em; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -2026,7 +2033,66 @@ async function pushSync() {
   else syncMsg = "No se pudo guardar en la nube ahora. Se volverá a intentar con tu próximo avance.";
   const el = document.getElementById("accSync"); if (el) el.textContent = syncMsg;
 }
+function pwInput(id, ac, ph) {
+  return `<div class="pw-wrap"><input id="${id}" type="password" autocomplete="${ac}" placeholder="${ph || "Mínimo 8 caracteres"}"><button type="button" class="pw-eye" data-act="pw-toggle" data-for="${id}" aria-label="Mostrar contraseña" aria-pressed="false">👁 Mostrar</button></div>`;
+}
+// Recuperar contraseña: paso "email" (pedir código), "code" (escribir código y clave nueva) o "manual" (sin correo configurado)
+const RC = { step: null, email: "", msg: "", err: "", busy: false, soporte: "" };
+function recoverHtml() {
+  const head = `<h2>Recupera tu contraseña</h2>`;
+  const back = `<button type="button" class="linkbtn" data-act="rc-cancel">← Volver a iniciar sesión</button>`;
+  const msg = (RC.msg ? `<p class="ok-msg">${esc(RC.msg)}</p>` : "") + `<p class="err" id="rcErr" ${RC.err ? "" : "hidden"}>${esc(RC.err)}</p>`;
+  if (RC.step === "manual") return `<div class="card acc" id="accCard">${head}
+      <p>Escríbenos y te ayudamos a crear una contraseña nueva. Indica el correo con el que te registraste.</p>
+      ${RC.soporte ? `<a class="btn primary" href="https://wa.me/${esc(RC.soporte)}?text=${encodeURIComponent("Hola, olvidé mi contraseña de Pasaporte English. Mi correo es: " + RC.email)}" target="_blank" rel="noopener">Pedir ayuda por WhatsApp</a>` : `<p class="note">Comunícate con el administrador de la app para que te dé una contraseña temporal.</p>`}
+      ${back}</div>`;
+  if (RC.step === "code") return `<form class="card acc" id="rcCodeForm" novalidate>${head}
+      <p class="note">Te enviamos un código de 6 dígitos a <strong>${esc(RC.email)}</strong>. Revisa también la carpeta de spam o promociones.</p>
+      <div class="field"><label for="rcCode">Código</label><input id="rcCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456"></div>
+      <div class="field"><label for="rcPass">Contraseña nueva</label>${pwInput("rcPass", "new-password")}</div>
+      ${msg}
+      <div class="row"><button class="btn primary" type="submit" ${RC.busy ? "disabled" : ""}>${RC.busy ? "Guardando…" : "Cambiar contraseña"}</button><button type="button" class="linkbtn" data-act="rc-resend">Enviar otro código</button></div>
+      ${back}</form>`;
+  return `<form class="card acc" id="rcEmailForm" novalidate>${head}
+      <p class="note">Escribe el correo con el que creaste tu cuenta y te enviaremos un código para crear una contraseña nueva.</p>
+      <div class="field"><label for="rcEmail">Correo electrónico</label><input id="rcEmail" type="email" inputmode="email" autocomplete="email" placeholder="ana@correo.com" value="${esc(RC.email)}"></div>
+      ${msg}
+      <div class="row"><button class="btn primary" type="submit" ${RC.busy ? "disabled" : ""}>${RC.busy ? "Enviando…" : "Enviarme el código"}</button></div>
+      ${back}</form>`;
+}
+function rcRender() { const c = document.getElementById("accCard") || document.getElementById("rcEmailForm") || document.getElementById("rcCodeForm"); if (!c) return; const t = document.createElement("div"); t.innerHTML = accountCardHtml(); c.replaceWith(t.firstElementChild); }
+async function rcSend(email) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { RC.err = "Escribe un correo válido. Por ejemplo: ana@correo.com."; rcRender(); return; }
+  Object.assign(RC, { email, busy: true, err: "", msg: "" }); rcRender();
+  const r = await accCall({ action: "recuperar", email });
+  RC.busy = false;
+  if (r.status === 200 && r.data.modo === "manual") { RC.step = "manual"; RC.soporte = r.data.soporte || ""; }
+  else if (r.status === 200) { RC.step = "code"; RC.msg = "Si ese correo tiene una cuenta, ya te llegó el código."; }
+  else RC.err = { 429: "Pediste demasiados códigos. Espera una hora e inténtalo de nuevo.", 400: "Escribe un correo válido.", 502: "No pudimos enviar el correo. Inténtalo de nuevo en unos minutos.", 0: "No hay conexión a internet." }[r.status] || "No se pudo conectar con el servidor. Inténtalo de nuevo.";
+  rcRender();
+}
+async function rcReset() {
+  const code = document.getElementById("rcCode").value.replace(/\D/g, ""), password = document.getElementById("rcPass").value;
+  if (code.length !== 6) { RC.err = "El código tiene 6 dígitos."; RC.msg = ""; rcRender(); return; }
+  if (password.length < 8) { RC.err = "La contraseña nueva debe tener al menos 8 caracteres."; RC.msg = ""; rcRender(); return; }
+  Object.assign(RC, { busy: true, err: "", msg: "" }); rcRender();
+  const r = await accCall({ action: "restablecer", email: RC.email, code, password });
+  RC.busy = false;
+  if (r.status === 200 && r.data.token) {
+    ACC = { token: r.data.token, email: r.data.email }; saveAcc();
+    mergeCloud(r.data.data);
+    Object.assign(RC, { step: null, msg: "", err: "" });
+    syncMsg = "Contraseña cambiada. Ya iniciaste sesión.";
+    updateProfileBtn(); updateProgress(); renderProfile(); pushSync();
+    return;
+  }
+  RC.err = r.data && r.data.error === "code" ? `Código incorrecto. Te quedan ${r.data.left} intentos.`
+    : r.data && r.data.error === "code_expired" ? "El código venció o ya no es válido. Pide uno nuevo."
+    : r.status === 0 ? "No hay conexión a internet." : "No se pudo cambiar la contraseña. Inténtalo de nuevo.";
+  rcRender();
+}
 function accountCardHtml() {
+  if (!ACC.token && RC.step) return recoverHtml();
   if (ACC.token) return `<div class="card acc" id="accCard">
       <h2>Tu cuenta</h2>
       <p>Sesión iniciada como <strong>${esc(ACC.email)}</strong>.</p>
@@ -2038,7 +2104,8 @@ function accountCardHtml() {
       <h2>Inicia sesión</h2>
       <p class="note">Guarda tu progreso en la nube y continúa donde te quedaste desde cualquier dispositivo.</p>
       <div class="field"><label for="accEmail">Correo electrónico</label><input id="accEmail" type="email" inputmode="email" autocomplete="email" placeholder="ana@correo.com"></div>
-      <div class="field"><label for="accPass">Contraseña</label><input id="accPass" type="password" autocomplete="current-password" placeholder="Mínimo 8 caracteres"></div>
+      <div class="field"><label for="accPass">Contraseña</label>${pwInput("accPass", "current-password")}</div>
+      <button type="button" class="linkbtn acc-forgot" data-act="acc-forgot">¿Olvidaste tu contraseña?</button>
       <div id="accExtra" hidden>
         <div class="field"><label for="accNames">Nombres</label><input id="accNames" autocomplete="given-name" placeholder="Ana María" value="${esc(PROFILE && PROFILE.names || "")}"></div>
         <div class="field"><label for="accLast">Apellidos</label><input id="accLast" autocomplete="family-name" placeholder="García López" value="${esc(PROFILE && PROFILE.last || "")}"></div>
@@ -2079,7 +2146,11 @@ async function accLogin(mode) {
   show({ 409: "Ya existe una cuenta con ese correo. Pulsa «Iniciar sesión».", 401: "Correo o contraseña incorrectos.", 400: "Revisa el correo y la contraseña (mínimo 8 caracteres).", 0: "No hay conexión a internet." }[r.status]
     || "No se pudo conectar con el servidor. Inténtalo de nuevo en unos minutos.");
 }
-document.addEventListener("submit", e => { if (e.target.id === "accCard") { e.preventDefault(); accLogin("entrar"); } });
+document.addEventListener("submit", e => {
+  if (e.target.id === "accCard") { e.preventDefault(); accLogin("entrar"); }
+  if (e.target.id === "rcEmailForm") { e.preventDefault(); rcSend(document.getElementById("rcEmail").value.trim()); }
+  if (e.target.id === "rcCodeForm") { e.preventDefault(); rcReset(); }
+});
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act;
@@ -2093,6 +2164,17 @@ document.addEventListener("click", e => {
     accLogin("registro");
   }
   if (act === "acc-sync") pushSync();
+  if (act === "pw-toggle") {
+    const inp = document.getElementById(b.dataset.for); if (!inp) return;
+    const show = inp.type === "password";
+    inp.type = show ? "text" : "password";
+    b.textContent = show ? "🙈 Ocultar" : "👁 Mostrar";
+    b.setAttribute("aria-pressed", String(show)); b.setAttribute("aria-label", show ? "Ocultar contraseña" : "Mostrar contraseña");
+    inp.focus();
+  }
+  if (act === "acc-forgot") { const em = document.getElementById("accEmail"); Object.assign(RC, { step: "email", email: em ? em.value.trim() : "", msg: "", err: "" }); rcRender(); const f = document.getElementById("rcEmail"); if (f) f.focus(); }
+  if (act === "rc-cancel") { Object.assign(RC, { step: null, msg: "", err: "" }); rcRender(); }
+  if (act === "rc-resend") rcSend(RC.email);
   if (act === "acc-out") {
     const token = ACC.token; ACC = {}; saveAcc(); syncMsg = "";
     if (token) accCall({ action: "salir", token });
@@ -2230,9 +2312,11 @@ function adminDetail(u) {
     </tbody></table></div>` : '<p class="note">Sin pagos registrados.</p>'}
     <h3>Acciones</h3>
     <div class="ad-actions">
-      <div class="row"><label for="adDays" class="note">Dar Premium de cortesía por</label><input id="adDays" type="number" min="1" max="400" value="30" class="ad-num"><span class="note">días</span>
-        <button class="btn small primary" data-act="ad-grant" data-email="${esc(u.email)}">Dar Premium</button></div>
-      <div class="row">${u.plan !== "gratis" ? `<button class="btn small" data-act="ad-revoke" data-email="${esc(u.email)}">Quitar Premium</button>` : ""}
+      <div class="row"><button class="btn small primary" data-act="ad-pass" data-email="${esc(u.email)}">Crear contraseña temporal</button>
+        <span class="note">Para un cliente que olvidó su contraseña y no recibe el correo.</span></div>
+      ${AD.temp && AD.temp.email === u.email ? `<p>Contraseña temporal: <span class="ad-temp">${esc(AD.temp.clave)}</span> <button class="btn small" data-act="ad-copy" data-copy="${esc(AD.temp.clave)}">Copiar</button></p>
+        <p class="note">Dásela al cliente por un medio privado. Al entrar, puede quedarse con ella o pedir otra con «¿Olvidaste tu contraseña?». Las sesiones que tenía abiertas se cerraron.</p>` : ""}
+      <div class="row">
         <button class="linkbtn danger" data-act="ad-del" data-email="${esc(u.email)}">${AD.delArm ? "Pulsa otra vez para eliminar a este cliente. No se puede deshacer." : "Eliminar cliente"}</button></div>
       ${u.mpPreapproval ? `<p class="note">Suscripción de Mercado Pago: ${esc(u.mpPreapproval)}. Para devoluciones, entra a tu cuenta de Mercado Pago.</p>` : ""}
       ${AD.msg ? `<p class="ok-msg">${esc(AD.msg)}</p>` : ""}
@@ -2356,6 +2440,14 @@ document.addEventListener("click", e => {
   if (act === "ad-out") { AD.key = ""; AD.users = null; AD.q = ""; AD.sel = null; try { sessionStorage.removeItem("pasaporte-admin"); } catch (err) {} renderAdmin(); }
   if (act === "ad-copy") { const t = b.dataset.copy; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => { b.textContent = "Copiado"; }).catch(() => { b.textContent = t; }); }
   if (act === "ad-grant") { const dias = Math.round(Number(document.getElementById("adDays").value)); if (!(dias >= 1 && dias <= 400)) { AD.msg = "Escribe un número de días entre 1 y 400."; renderAdmin(); return; } adminAction({ action: "admin_plan", email: b.dataset.email, dias }, `Listo: se añadieron ${dias} días de Premium.`); }
+  if (act === "ad-pass") {
+    AD.msg = "Creando contraseña…"; AD.temp = null; renderAdmin();
+    adminCall({ action: "admin_clave", email: b.dataset.email }).then(r => {
+      if (r.status === 200 && r.data.clave) { AD.temp = { email: b.dataset.email, clave: r.data.clave }; AD.msg = ""; }
+      else AD.msg = "No se pudo crear la contraseña. Inténtalo de nuevo.";
+      renderAdmin();
+    });
+  }
   if (act === "ad-revoke") adminAction({ action: "admin_plan", email: b.dataset.email, dias: 0 }, "Se quitó el Premium a este cliente.");
   if (act === "ad-del") {
     if (!AD.delArm) { AD.delArm = true; renderAdmin(); setTimeout(() => { if (AD.delArm) { AD.delArm = false; if (location.hash === "#admin") renderAdmin(); } }, 5000); return; }
