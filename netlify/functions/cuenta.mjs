@@ -162,7 +162,7 @@ export default async function handler(req) {
             email: u.email, names: pf.names || "", last: pf.last || "", phone: pf.phone || "",
             nivel: d.nivel && d.nivel.level ? d.nivel.level : "", nivelFecha: d.nivel && d.nivel.date || "",
             nivelPor: d.nivel && Array.isArray(d.nivel.per) ? d.nivel.per : null,
-            done: d.p ? Object.keys(d.p).length : 0, porModulo,
+            done: d.p ? Object.keys(d.p).length : 0, porModulo, ex: d.ex && typeof d.ex === "object" ? d.ex : {}, ex: d.ex && typeof d.ex === "object" ? d.ex : {},
             created: u.created || 0, updated: u.updated || 0,
             plan: plan.hasta > Date.now() ? (plan.tipo || "premium") : "gratis",
             planHasta: plan.hasta || 0, planEstado: plan.estado || "gratis", mpPreapproval: plan.mpPreapproval || "",

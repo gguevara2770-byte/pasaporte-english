@@ -708,6 +708,22 @@ details.lesson:not([open]) { gap: 0; }
 .acc-forgot { justify-self: start; }
 .ad-temp { font-family: var(--f-mono); font-size: 1.15rem; font-weight: 700; background: var(--mark); color: var(--mark-ink); padding: .2rem .6rem; border-radius: 6px; letter-spacing: .05em; }
 
+.opt.picked { border-color: var(--brand); background: var(--brand-soft); box-shadow: inset 0 0 0 1px var(--brand); }
+.locked-wrap { opacity: .55; filter: grayscale(.4); user-select: none; }
+.lock-banner { border-left: 5px solid #E0A800; background: #FFF8E1; margin-bottom: 1.2rem; }
+.lock-banner h2 { font-size: 1.25rem; }
+.ex-submit { position: sticky; bottom: 76px; display: flex; justify-content: space-between; align-items: center; gap: .8rem; flex-wrap: wrap; margin-top: 1rem; z-index: 5; }
+@media (min-width: 721px) { .ex-submit { bottom: 1rem; } }
+.ex-result { text-align: center; justify-items: center; }
+.ex-result.pass { border-color: var(--ok); background: var(--ok-soft); }
+.ex-result.fail { border-color: var(--bad); background: var(--bad-soft); }
+.ex-score { font-family: var(--f-display); font-size: 3.6rem; font-weight: 800; line-height: 1; }
+.ex-score small { font-size: 1.4rem; color: var(--muted); }
+.ex-status { margin-bottom: 1rem; font-weight: 600; }
+.ex-status.ok { color: var(--ok); }
+.ex-line { font-size: .85rem; color: var(--muted); }
+.ex-line.ok { color: var(--ok); font-weight: 700; }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -746,7 +762,7 @@ details.lesson:not([open]) { gap: 0; }
         <div class="stats">
           <div><b>6</b><span>módulos</span></div>
           <div><b>24</b><span>lecciones</span></div>
-          <div><b>240</b><span>ejercicios</span></div>
+          <div><b>438</b><span>ejercicios</span></div>
           <div><b>45</b><span>frases de películas</span></div>
         </div>
       </div>
@@ -792,7 +808,7 @@ details.lesson:not([open]) { gap: 0; }
       <div class="sec-head">
         <span class="eyebrow">El programa</span>
         <h2>Seis módulos, un nivel por mes</h2>
-        <p>Cada módulo dura cuatro semanas y sube un escalón del Marco Común Europeo (MCER). Avanza al siguiente cuando completes el anterior.</p>
+        <p>Cada módulo dura cuatro semanas y sube un escalón del Marco Común Europeo (MCER). Al final de cada uno hay un examen: con una nota mayor a 16 (de 20) desbloqueas el siguiente.</p>
       </div>
       <div class="program" id="program"></div>
     </div>
@@ -858,7 +874,8 @@ const TABS = [
   ["vocabulario", "Vocabulario", "Las 12 palabras clave del módulo. Estúdialas con su ejemplo y luego ponte a prueba."],
   ["practica", "Práctica", "Elige la opción correcta y verás por qué cada opción es correcta o incorrecta. Después, ordena frases en inglés."],
   ["voz", "Escucha y habla", "Escucha frases y elige lo que oíste, repítelas en voz alta y responde preguntas reales."],
-  ["lectura", "Lectura", "Un texto corto del nivel del módulo, con audio, traducción y preguntas de comprensión."]
+  ["lectura", "Lectura", "Un texto largo del nivel del módulo, con audio, traducción y 20 preguntas de comprensión."],
+  ["examen", "Examen final", "20 preguntas sobre todo el módulo. Con una nota mayor a 16 (de 20) desbloqueas el módulo siguiente."]
 ];
 const DEMO = { q: "It's raining and I don't have one. I need ___ umbrella.", es: "Está lloviendo y no tengo uno. Necesito un paraguas.", o: [
   ["a", "A va delante de sonido consonante (a book). Umbrella empieza con sonido vocal."],
@@ -945,7 +962,8 @@ function keysFor(m, tab) {
     vocabulario: d.vocab.w.map((_, k) => `${m}:v:${k}`),
     practica: d.grammar.map((_, k) => `${m}:g:${k}`).concat(d.order.map((_, k) => `${m}:o:${k}`)),
     voz: d.listen.map((_, k) => `${m}:li:${k}`).concat(d.speak.p.map((_, k) => `${m}:sp:${k}`), d.speak.q.map((_, k) => `${m}:sq:${k}`)),
-    lectura: d.read.qs.map((_, k) => `${m}:r:${k}`)
+    lectura: d.read.qs.map((_, k) => `${m}:rd:${k}`),
+    examen: []
   };
   return tab ? map[tab] : Object.values(map).flat();
 }
@@ -957,7 +975,8 @@ function updateProgress() {
   if (!DATA.length) return;
   const o = Math.round(overall() * 100);
   document.getElementById("navPct").textContent = `${o}% del curso`;
-  let next = MODS.findIndex((_, m) => pct(m) < 1); if (next < 0) next = 5;
+  let next = MODS.findIndex((_, m) => !passed(m)); if (next < 0) next = 5;
+  if (LV && LV.start > next) next = LV.start;
   const started = Object.keys(S.p).length > 0;
   if (!started && LV) next = LV.start;
   const nav = document.getElementById("navCta");
@@ -988,14 +1007,15 @@ function renderProgram() {
     const p = DATA.length ? pct(m) : 0; const n = Math.round(p * 100);
     return `<article class="mcard ${p === 1 ? "complete" : ""}">
       ${p === 1 ? '<span class="mstamp">COMPLETADO</span>' : ""}
-      <div class="top"><span class="eyebrow">Módulo ${m + 1} · Semanas ${m * 4 + 1}–${m * 4 + 4}</span>${LV && LV.start === m ? '<span class="rec-tag">Recomendado para ti</span>' : ""}${m > 0 && !isPremium() ? '<span class="rec-tag lock-tag">Premium</span>' : ""}</div>
+      <div class="top"><span class="eyebrow">Módulo ${m + 1} · Semanas ${m * 4 + 1}–${m * 4 + 4}</span>${LV && LV.start === m ? '<span class="rec-tag">Recomendado para ti</span>' : ""}${!unlocked(m) ? '<span class="rec-tag lock-tag">🔒 Bloqueado</span>' : ""}</div>
       <div class="top"><h3>${M.title}</h3><span class="lvl">${M.level}</span></div>
       <p class="goal">${M.goal}</p>
       <ol>${M.weeks.map(w => `<li>${w}</li>`).join("")}</ol>
       <div class="foot">
         <div class="bar"><i style="width:${n}%"></i></div>
-        <div class="meta"><span>${n}% completado</span><span>40 ejercicios</span></div>
-        <a class="btn ${n > 0 && n < 100 ? "primary" : ""}" href="#modulo-${m + 1}">${n === 0 ? "Abrir módulo" : n === 100 ? "Repasar" : "Continuar"}</a>
+        <div class="meta"><span>${n}% completado</span><span>${DATA.length ? keysFor(m).length : 73} ejercicios</span></div>
+        <span class="ex-line ${passed(m) ? "ok" : ""}">${exOf(m) ? `Examen final: ${exOf(m).best}/20${passed(m) ? " · aprobado ✓" : " · necesitas más de 16"}` : unlocked(m) ? "Examen final pendiente" : `Aprueba el examen del módulo ${m} para empezar`}</span>
+        <a class="btn ${unlocked(m) && n > 0 && n < 100 ? "primary" : ""}" href="#modulo-${m + 1}">${!unlocked(m) ? "Ver contenido" : n === 0 ? "Abrir módulo" : n === 100 ? "Repasar" : "Continuar"}</a>
       </div>
     </article>`;
   }).join("");
@@ -1005,8 +1025,10 @@ function renderProgram() {
 function sentence(q, fill) {
   const parts = esc(q).split("___");
   if (parts.length < 2) return esc(q);
-  return parts[0] + (fill != null ? `<span class="gap filled">${esc(fill)}</span>` : '<span class="gap" aria-label="espacio en blanco"></span>') + parts[1];
+  const fills = fill == null ? [] : parts.length > 2 ? String(fill).split(" / ") : [fill];
+  return parts.map((p, i) => i === 0 ? p : (fill != null ? `<span class="gap filled">${esc(fills[i - 1] || "")}</span>` : '<span class="gap" aria-label="espacio en blanco"></span>') + p).join("");
 }
+function fillQ(q, ans) { const parts = q.split("___"); const f = parts.length > 2 ? String(ans).split(" / ") : [ans]; return parts.map((p, i) => i === 0 ? p : (f[i - 1] || "") + p).join(""); }
 function getChosen(key) { return key === "demo" ? T.demo : S.p[key]; }
 function mcq(o) {
   const ch = getChosen(o.key); const ans = ch != null;
@@ -1053,7 +1075,7 @@ function lessonCard(m, j) {
 }
 function grammarCard(m, k) {
   const q = DATA[m].grammar[k]; const key = `${m}:g:${k}`; const ans = S.p[key] != null;
-  const full = q.say || q.q.replace("___", q.o[q.a][0]);
+  const full = q.say || fillQ(q.q, q.o[q.a][0]);
   return mcq({ key, label: `Pregunta ${k + 1} de ${DATA[m].grammar.length}`, opts: q.o, a: q.a, rule: q.r, sayText: full, stack: q.o.some(o => o[0].length > 22),
     top: `<p class="q-text">${q.q.includes("___") ? sentence(q.q, ans ? q.o[q.a][0] : null) : esc(q.q)}</p>${q.h ? `<p class="note">${esc(q.h)}</p>` : ""}<p class="es">${esc(q.es)}</p>` });
 }
@@ -1076,7 +1098,7 @@ function listenCard(m, k) {
     reveal: `<div class="reveal"><span class="eyebrow">Lo que se dijo</span><span class="en">${esc(L.s)}</span><span class="es">${esc(L.es)}</span></div>` });
 }
 function readQCard(m, k) {
-  const q = DATA[m].read.qs[k]; const key = `${m}:r:${k}`;
+  const q = DATA[m].read.qs[k]; const key = `${m}:rd:${k}`;
   return mcq({ key, label: `Comprensión ${k + 1} de ${DATA[m].read.qs.length}`, opts: q.o, a: q.a, stack: true,
     top: `<p class="q-text">${esc(q.q)}</p><p class="es">${esc(q.es)}</p>` });
 }
@@ -1186,6 +1208,84 @@ function refresh(key) {
   if (key !== "demo") updateProgress();
 }
 
+/* ---------- Examen final y bloqueo de módulos ---------- */
+const PASS_MARK = 16;   // hay que sacar MÁS de 16 de 20 (17 o más)
+function exOf(m) { const e = (S.ex || {})[m]; return e && typeof e.best === "number" ? e : null; }
+function passed(m) { const e = exOf(m); return !!e && e.best > PASS_MARK; }
+function hasProgress(m) { return Object.keys(S.p).some(k => k.startsWith(m + ":")); }
+function unlocked(m) { return m === 0 || passed(m - 1) || !!(LV && LV.start >= m) || hasProgress(m); }
+function lockBanner(m) {
+  return `<div class="card lock-banner"><span class="eyebrow">🔒 Módulo bloqueado</span>
+    <h2>Desarrolla la prueba para pasar a este nivel</h2>
+    <p>Saca más de 16 (de 20) en el examen final del módulo ${m} para empezar el módulo ${m + 1}. Mientras tanto, puedes ver el contenido, pero no resolverlo.</p>
+    <div class="row"><a class="btn primary" href="#modulo-${m}" data-exam="${m - 1}">Ir a la prueba del módulo ${m}</a></div></div>`;
+}
+const EX = { m: null, ans: {}, done: false, score: 0 };
+function examPanel(m) {
+  const qs = DATA[m].exam || [];
+  if (EX.m !== m) Object.assign(EX, { m, ans: {}, done: false, score: 0 });
+  const e = exOf(m);
+  if (EX.done) {
+    const ok = EX.score > PASS_MARK;
+    return `<div class="card ex-result ${ok ? "pass" : "fail"}">
+        <span class="eyebrow">Resultado del examen · Módulo ${m + 1}</span>
+        <div class="ex-score">${EX.score}<small>/20</small></div>
+        <p class="verdict ${ok ? "ok" : "no"}">${ok ? (m < 5 ? `¡Aprobaste! Desbloqueaste el módulo ${m + 2}.` : "¡Aprobaste el último examen! Terminaste el curso.") : "Todavía no. Necesitas más de 16 (17 o más). Revisa las preguntas falladas y vuelve a intentarlo."}</p>
+        <div class="row">${ok && m < 5 ? `<a class="btn primary" href="#modulo-${m + 2}">Ir al módulo ${m + 2} →</a>` : ""}<button class="btn ${ok ? "" : "primary"}" data-act="ex-retry">Volver a dar el examen</button></div>
+      </div>
+      <h3 class="sub-h" style="margin-top:2rem">Revisa tus respuestas</h3>
+      <div class="grid one">${qs.map(exReview).join("")}</div>`;
+  }
+  const n = Object.keys(EX.ans).length;
+  return `${e ? `<p class="ex-status ${passed(m) ? "ok" : ""}">Tu mejor nota: ${e.best}/20 ${passed(m) ? "· Aprobado ✓" : "· Necesitas más de 16 para avanzar"}</p>` : ""}
+    <div class="card"><b>Instrucciones</b><ul class="lt-rules">
+      <li>Son 20 preguntas y cada una vale 1 punto.</li>
+      <li>Para pasar al módulo siguiente necesitas <b>más de 16</b> (17 o más).</li>
+      <li>Las respuestas y sus explicaciones aparecen al entregar.</li>
+      <li>Puedes repetirlo cuantas veces quieras. Se guarda tu mejor nota.</li></ul></div>
+    <div class="grid one" style="margin-top:1rem">${qs.map(exQ).join("")}</div>
+    <div class="card ex-submit"><span id="exCount">Respondidas: ${n} de ${qs.length}</span><button class="btn primary" data-act="ex-submit" ${n < qs.length ? "disabled" : ""}>Entregar examen</button></div>`;
+}
+function exQ(q, i) {
+  const ch = EX.ans[i];
+  return `<article class="card q" id="exq-${i}"><div class="card-top"><span class="eyebrow">Pregunta ${i + 1} de 20</span></div>
+    <p class="q-text">${q.q.includes("___") ? sentence(q.q, null) : esc(q.q)}</p>
+    <div class="opts stack">${q.o.map((o, j) => `<button class="opt ${ch === j ? "picked" : ""}" data-act="ex-pick" data-i="${i}" data-o="${j}" aria-pressed="${ch === j}"><span class="key">${KEYS[j]}</span><span>${esc(o[0])}</span></button>`).join("")}</div></article>`;
+}
+function exReview(q, i) {
+  const ch = EX.ans[i], ok = ch === q.a;
+  return `<article class="card q"><div class="card-top"><span class="eyebrow">Pregunta ${i + 1}</span><span class="badge ${ok ? "ok" : "no"}">${ok ? "Correcta" : "Incorrecta"}</span></div>
+    <p class="q-text">${q.q.includes("___") ? sentence(q.q, q.o[q.a][0]) : esc(q.q)}</p><p class="es">${esc(q.es)}</p>
+    <ul class="expl">${q.o.map((o, j) => j === q.a || j === ch ? `<li class="${j === q.a ? "is-ok" : ""} ${j === ch ? "mine" : ""}"><span class="tag">${j === q.a ? "Correcta" : "Tu respuesta"}</span><span><strong>${esc(o[0])}</strong>: ${esc(o[1])}</span></li>` : "").join("")}</ul>
+    ${q.r ? `<p class="rule"><strong>Regla:</strong> ${esc(q.r)}</p>` : ""}</article>`;
+}
+document.addEventListener("click", e => {
+  const ex = e.target.closest("a[data-exam]");
+  if (ex) { const m = +ex.dataset.exam; S.tab[m] = "examen"; save(); if (view.m === m) { view.tab = "examen"; renderTabs(); renderPanel(); } return; }
+  const b = e.target.closest("[data-act]"); if (!b || view.m == null || !b.dataset.act.startsWith("ex-")) return;
+  const m = view.m, qs = DATA[m].exam || [];
+  if (!unlocked(m)) return;
+  if (b.dataset.act === "ex-pick") {
+    EX.ans[+b.dataset.i] = +b.dataset.o;
+    const card = document.getElementById("exq-" + b.dataset.i);
+    if (card) { const t = document.createElement("div"); t.innerHTML = exQ(qs[+b.dataset.i], +b.dataset.i); card.replaceWith(t.firstElementChild); }
+    const n = Object.keys(EX.ans).length, c = document.getElementById("exCount"), s = document.querySelector('[data-act="ex-submit"]');
+    if (c) c.textContent = `Respondidas: ${n} de ${qs.length}`;
+    if (s) s.disabled = n < qs.length;
+  } else if (b.dataset.act === "ex-submit") {
+    if (Object.keys(EX.ans).length < qs.length) return;
+    const score = qs.reduce((t, q, i) => t + (EX.ans[i] === q.a ? 1 : 0), 0);
+    S.ex = S.ex || {}; const prev = S.ex[m];
+    S.ex[m] = { best: Math.max(prev ? prev.best : 0, score), last: score, date: Date.now(), tries: (prev && prev.tries || 0) + 1 };
+    save(); EX.done = true; EX.score = score;
+    renderTabs(); renderPanel(); renderProgram();
+    document.getElementById("tabs").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else if (b.dataset.act === "ex-retry") {
+    Object.assign(EX, { ans: {}, done: false, score: 0 }); renderPanel();
+    document.getElementById("tabs").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+});
+
 /* ---------- Vista de módulo ---------- */
 const modEl = document.getElementById("module");
 function renderModule() {
@@ -1200,6 +1300,7 @@ function renderModule() {
       <div class="mprog"><div class="bar light"><i id="mBar"></i></div><span id="mPct"></span></div>
     </div></div>
     <div class="inner">
+      ${!unlocked(m) ? lockBanner(m) : ""}
       <div class="tabs" role="tablist" aria-label="Tipos de práctica" id="tabs"></div>
       <div id="panel" role="tabpanel"></div>
       <p style="padding-bottom:3rem"><button class="linkbtn" data-act="reset" id="resetBtn">Reiniciar el progreso de este módulo</button></p>
@@ -1209,6 +1310,7 @@ function renderModule() {
 function renderTabs() {
   const el = document.getElementById("tabs"); if (!el) return;
   el.innerHTML = TABS.map(([id, name]) => {
+    if (id === "examen") { const e = exOf(view.m); return `<button class="tab ${passed(view.m) ? "full" : ""}" role="tab" aria-selected="${view.tab === id}" data-act="tab" data-tab="${id}">${name}<span class="n">${e ? e.best + "/20" : "—"}</span></button>`; }
     const ks = keysFor(view.m, id); const d = doneOf(ks);
     return `<button class="tab ${d === ks.length ? "full" : ""}" role="tab" aria-selected="${view.tab === id}" data-act="tab" data-tab="${id}">${name}<span class="n">${d}/${ks.length}</span></button>`;
   }).join("");
@@ -1235,10 +1337,10 @@ function renderPanel() {
       ${T.tr ? `<p class="text-es">${esc(d.read.es)}</p>` : ""}
     </article>
     ${d.read.qs.map((_, k) => readQCard(m, k)).join("")}</div>`;
+  if (view.tab === "examen") html += examPanel(m);
   const ti = TABS.findIndex(t => t[0] === view.tab);
-  html += `<div class="next-step">${ti < TABS.length - 1
-    ? `<button class="btn primary" data-act="tab" data-tab="${TABS[ti + 1][0]}" data-scroll="1">Siguiente: ${TABS[ti + 1][1]} →</button>`
-    : m < 5 ? `<a class="btn primary" href="#modulo-${m + 2}">Siguiente: módulo ${m + 2} · ${MODS[m + 1].title} →</a>` : `<a class="btn primary" href="#practicar">¡Curso terminado! Sigue practicando →</a>`}</div>`;
+  if (ti < TABS.length - 1) html += `<div class="next-step"><button class="btn primary" data-act="tab" data-tab="${TABS[ti + 1][0]}" data-scroll="1">Siguiente: ${TABS[ti + 1][1]} →</button></div>`;
+  if (!unlocked(m)) html = `<div class="locked-wrap" inert>${html}</div>`;
   document.getElementById("panel").innerHTML = html;
 }
 
@@ -2004,7 +2106,7 @@ let ACC = {};
 try { ACC = JSON.parse(localStorage.getItem(ACC_STORE) || "{}") || {}; } catch (e) {}
 let syncTimer = null, syncMsg = "";
 function saveAcc() { try { localStorage.setItem(ACC_STORE, JSON.stringify(ACC)); } catch (e) {} }
-function cloudData() { return { v: 1, p: S.p, tab: S.tab, voice: S.voice, nivel: LV, perfil: PROFILE, esc: S.esc || {}, vi: S.vi || {}, ka: S.ka || {}, tuN: S.tuN || 0 }; }
+function cloudData() { return { v: 1, p: S.p, tab: S.tab, voice: S.voice, nivel: LV, perfil: PROFILE, esc: S.esc || {}, vi: S.vi || {}, ka: S.ka || {}, tuN: S.tuN || 0, ex: S.ex || {} }; }
 function mergeCloud(d) {
   if (!d || typeof d !== "object") return;
   if (d.p && typeof d.p === "object") for (const k in d.p) if (S.p[k] == null) S.p[k] = d.p[k];
@@ -2012,6 +2114,7 @@ function mergeCloud(d) {
   if (typeof d.voice === "boolean" && S.voice == null) S.voice = d.voice;
   ["esc", "vi", "ka"].forEach(k => { if (d[k] && typeof d[k] === "object") S[k] = Object.assign({}, d[k], S[k] || {}); });
   if (typeof d.tuN === "number") S.tuN = Math.max(S.tuN || 0, d.tuN);
+  if (d.ex && typeof d.ex === "object") { S.ex = S.ex || {}; for (const k in d.ex) { const a = S.ex[k], b = d.ex[k]; if (b && (!a || (b.best || 0) > (a.best || 0))) S.ex[k] = b; } }
   try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {}
   if (d.nivel && !LV) { LV = d.nivel; try { localStorage.setItem(LV_STORE, JSON.stringify(LV)); } catch (e) {} }
   if (d.perfil && !PROFILE) { PROFILE = d.perfil; try { localStorage.setItem(PROF_STORE, JSON.stringify(PROFILE)); } catch (e) {} }
@@ -2296,7 +2399,7 @@ function adminDetail(u) {
       <div><span class="eyebrow">Celular</span><b>${esc(u.phone || "—")}</b></div>
       <div><span class="eyebrow">Registro</span><b>${fmtDateTime(u.created)}</b></div>
       <div><span class="eyebrow">Nivel (test)</span><b>${esc(u.nivel || "Sin test")}</b>${u.nivelFecha ? `<span class="note">${esc(u.nivelFecha)}</span>` : ""}</div>
-      <div><span class="eyebrow">Plan</span><b>${esc(PLAN_NAME[u.plan] || u.plan)}</b><span class="note">${u.plan !== "gratis" ? "Hasta el " + fmtDate(u.planHasta) : ""}${u.planEstado && u.planEstado !== "gratis" ? " · " + esc(u.planEstado) : ""}</span></div>
+      <div><span class="eyebrow">Exámenes finales</span><b>${MODS.map((_, m) => { const e = (u.ex || {})[m]; return e ? `M${m + 1}: ${Number(e.best) || 0}/20${e.best > 16 ? " ✓" : ""}` : ""; }).filter(Boolean).join(" · ") || "Ninguno"}</b></div>
       <div><span class="eyebrow">Avance total</span><b>${pctOf(u)}%</b><span class="note">${u.done} actividades</span></div>
     </div>
     <div class="row">
