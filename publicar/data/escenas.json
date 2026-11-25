@@ -1,87 +1,933 @@
 {
-  "groups": [
-    { "id": "caricaturas", "name": "Caricaturas", "shows": ["bob", "simpson", "ppg", "scooby"] },
-    { "id": "anime", "name": "Anime", "shows": ["dbz", "pokemon", "naruto"] },
-    { "id": "peliculas", "name": "Películas", "shows": ["shrek", "toy", "intensamente", "spider", "minions"] },
-    { "id": "series", "name": "Series en tendencia", "shows": ["merlina", "stranger"] }
-  ],
-  "shows": {
-    "bob": { "name": "Bob Esponja", "emoji": "🧽", "color": "#F5C400", "scenes": [
-      { "who": "Bob Esponja", "g": "m", "lvl": "A1", "scene": "Bob llega temprano al Crustáceo Crujiente, feliz de empezar su turno.", "en": "I love my job at the restaurant!", "es": "¡Amo mi trabajo en el restaurante!", "why": "Sujeto (I) + verbo (love) + lo que amas (my job). El lugar va al final: at the restaurant." },
-      { "who": "Bob Esponja", "g": "m", "lvl": "A1", "scene": "Bob toca la puerta de la roca de Patricio con su red en la mano.", "en": "Do you want to catch jellyfish today?", "es": "¿Quieres atrapar medusas hoy?", "why": "Las preguntas en presente empiezan con Do + sujeto (you) + verbo (want). Después va to + verbo (to catch). El tiempo (today) va al final." },
-      { "who": "Calamardo", "g": "m", "lvl": "A2", "scene": "Calamardo cierra la ventana porque lo interrumpen mientras ensaya.", "en": "I am practicing my clarinet right now.", "es": "Estoy practicando mi clarinete ahora mismo.", "why": "Presente continuo: am + verbo con -ing (practicing) para algo que pasa en este momento. Right now va al final." },
-      { "who": "Don Cangrejo", "g": "m", "lvl": "A2", "scene": "Don Cangrejo cuenta sus monedas una por una en su oficina.", "en": "Money is the most important thing for me.", "es": "El dinero es lo más importante para mí.", "why": "Superlativo con adjetivos largos: the most + adjetivo (important) + sustantivo (thing)." },
-      { "who": "Bob Esponja", "g": "m", "lvl": "B1", "scene": "Patricio está parado frente a su roca, confundido, sin saber cuál es su casa.", "en": "Patrick forgot where he lives again.", "es": "Patricio olvidó dónde vive otra vez.", "why": "Forgot es el pasado irregular de forget. En una pregunta indirecta (where he lives) el sujeto va antes del verbo, sin does." }
-    ] },
-    "simpson": { "name": "Los Simpson", "emoji": "🍩", "color": "#FFD90F", "scenes": [
-      { "who": "Homero", "g": "m", "lvl": "A1", "scene": "Homero abre una caja en la cocina y sus ojos brillan.", "en": "There are twelve donuts in the box.", "es": "Hay doce donas en la caja.", "why": "There are + cantidad + sustantivo en plural para decir «hay». El lugar (in the box) va al final." },
-      { "who": "Bart", "g": "m", "lvl": "A2", "scene": "Bart escribe una y otra vez en la pizarra después de clases.", "en": "I will not talk in class again.", "es": "No volveré a hablar en clase.", "why": "Para una promesa sobre el futuro: will not + verbo base (talk). Again va al final." },
-      { "who": "Marge", "g": "f", "lvl": "A1", "scene": "Marge escucha el saxofón desde la sala y sonríe.", "en": "Lisa plays the saxophone every afternoon.", "es": "Lisa toca el saxofón todas las tardes.", "why": "Con he, she o un nombre, el verbo lleva -s: plays. La frecuencia (every afternoon) va al final." },
-      { "who": "Marge", "g": "f", "lvl": "A2", "scene": "Marge ve que Homero sigue en el sofá y la bolsa de basura está llena.", "en": "Homer, can you take out the trash?", "es": "Homero, ¿puedes sacar la basura?", "why": "Para pedir algo: Can + sujeto (you) + verbo. Take out es un phrasal verb: «sacar»." },
-      { "who": "Lisa", "g": "f", "lvl": "B1", "scene": "Lisa le cuenta a Marge lo que pasó en la planta nuclear.", "en": "Dad fell asleep at work this morning.", "es": "Papá se quedó dormido en el trabajo esta mañana.", "why": "Fell es el pasado irregular de fall. Fall asleep = quedarse dormido. Primero el lugar (at work) y después el tiempo (this morning)." }
-    ] },
-    "ppg": { "name": "Las Chicas Superpoderosas", "emoji": "💥", "color": "#FF5FA2", "scenes": [
-      { "who": "Bombón", "g": "f", "lvl": "A1", "scene": "Suena la línea directa del alcalde. Bombón reúne a sus hermanas.", "en": "Girls, the city needs our help!", "es": "¡Chicas, la ciudad necesita nuestra ayuda!", "why": "Sujeto (the city) + verbo con -s (needs) + objeto (our help). Our = nuestra." },
-      { "who": "Bellota", "g": "f", "lvl": "A2", "scene": "Bellota abraza a Burbuja después de que ella ayuda a un gatito.", "en": "Bubbles is the sweetest of the three sisters.", "es": "Burbuja es la más dulce de las tres hermanas.", "why": "Superlativo de adjetivos cortos: the + adjetivo + -est (sweetest). «De las tres» = of the three." },
-      { "who": "Burbuja", "g": "f", "lvl": "A1", "scene": "Bellota golpea el piso con el pie porque la fila es muy larga.", "en": "Buttercup does not like to wait.", "es": "A Bellota no le gusta esperar.", "why": "Negativo en presente con she o un nombre: does not + verbo base (like). Después va to + verbo (to wait)." },
-      { "who": "Bombón", "g": "f", "lvl": "A2", "scene": "Desde el cielo, Bombón ve humo saliendo del volcán de Mojo Jojo.", "en": "Mojo Jojo is planning something terrible again.", "es": "Mojo Jojo está planeando algo terrible otra vez.", "why": "Presente continuo: is + verbo con -ing (planning). En inglés el adjetivo va después de something: something terrible." }
-    ] },
-    "scooby": { "name": "Scooby-Doo", "emoji": "🐶", "color": "#7B5CC4", "scenes": [
-      { "who": "Shaggy", "g": "m", "lvl": "A1", "scene": "Shaggy ve una sombra en la pared detrás de Scooby.", "en": "Scooby, there is a ghost behind you!", "es": "¡Scooby, hay un fantasma detrás de ti!", "why": "There is + a + sustantivo en singular para decir «hay». Behind you = detrás de ti." },
-      { "who": "Fred", "g": "m", "lvl": "A2", "scene": "La pandilla llega a una mansión abandonada. Fred tiene un plan.", "en": "Let's split up and look for clues.", "es": "Separémonos y busquemos pistas.", "why": "Let's + verbo para proponer algo. Split up = separarse y look for = buscar son phrasal verbs." },
-      { "who": "Vilma", "g": "f", "lvl": "B1", "scene": "Vilma le quita la máscara al monstruo y todos se sorprenden.", "en": "The monster was the old janitor all along.", "es": "El monstruo era el viejo conserje desde el principio.", "why": "Was es el pasado de is. El adjetivo (old) va antes del sustantivo (janitor). All along = desde el principio, al final de la frase." }
-    ] },
-    "dbz": { "name": "Dragon Ball Z", "emoji": "🐉", "color": "#FF7A00", "scenes": [
-      { "who": "Krilin", "g": "m", "lvl": "A2", "scene": "Goku termina de entrenar y pide cinco platos de comida.", "en": "Goku is always hungry after training.", "es": "Goku siempre tiene hambre después de entrenar.", "why": "Los adverbios de frecuencia (always) van después del verbo to be (is). After + verbo con -ing (training)." },
-      { "who": "Vegeta", "g": "m", "lvl": "A2", "scene": "Vegeta se transforma y mira a Goku con orgullo.", "en": "I am stronger than you, Kakarot!", "es": "¡Soy más fuerte que tú, Kakaroto!", "why": "Comparativo de adjetivos cortos: adjetivo + -er (stronger) + than. Than = que." },
-      { "who": "Milk", "g": "f", "lvl": "A2", "scene": "Milk le quita la espada a Gohan y le da sus libros.", "en": "Gohan has to study before he trains.", "es": "Gohan tiene que estudiar antes de entrenar.", "why": "Have to (has to con he) + verbo base para una obligación. Before + sujeto + verbo: before he trains." },
-      { "who": "Bulma", "g": "f", "lvl": "A2", "scene": "Bulma enciende el radar del dragón y aparecen siete puntos.", "en": "We need to find all seven Dragon Balls.", "es": "Necesitamos encontrar las siete Esferas del Dragón.", "why": "Need to + verbo base (find). All + número + sustantivo: all seven Dragon Balls." },
-      { "who": "Goku", "g": "m", "lvl": "B1", "scene": "Goku se prepara para el torneo y entrena con más peso.", "en": "If I train harder, I will win the tournament.", "es": "Si entreno más duro, ganaré el torneo.", "why": "Primer condicional: If + presente (I train) y luego will + verbo (will win) para el resultado." }
-    ] },
-    "pokemon": { "name": "Pokémon", "emoji": "⚡", "color": "#E3350D", "scenes": [
-      { "who": "Ash", "g": "m", "lvl": "A1", "scene": "Ash carga a Pikachu después de una batalla muy larga.", "en": "My Pokémon is tired after the battle.", "es": "Mi Pokémon está cansado después de la batalla.", "why": "Sujeto (my Pokémon) + is + adjetivo (tired). After the battle va al final." },
-      { "who": "Misty", "g": "f", "lvl": "A2", "scene": "El grupo ve un Pokémon raro entre los árboles del bosque.", "en": "We are going to catch a new Pokémon.", "es": "Vamos a atrapar un Pokémon nuevo.", "why": "Going to + verbo para planes: are going to catch. El adjetivo (new) va antes del sustantivo." },
-      { "who": "Ash", "g": "m", "lvl": "A2", "scene": "Ash saca la Pokébola, pero Pikachu le da la espalda.", "en": "Pikachu does not want to go inside the ball.", "es": "Pikachu no quiere entrar en la Pokébola.", "why": "Does not + verbo base (want) con un nombre en singular. Go inside = entrar." }
-    ] },
-    "naruto": { "name": "Naruto", "emoji": "🍥", "color": "#F28C28", "scenes": [
-      { "who": "Iruka", "g": "m", "lvl": "A1", "scene": "Naruto pide su tercer tazón en su puesto favorito.", "en": "Naruto eats ramen almost every day.", "es": "Naruto come ramen casi todos los días.", "why": "Verbo con -s para he o un nombre: eats. Almost every day va al final." },
-      { "who": "Naruto", "g": "m", "lvl": "B1", "scene": "Naruto se levanta después de perder un combate y aprieta el puño.", "en": "I will never give up on my dream.", "es": "Nunca renunciaré a mi sueño.", "why": "Never va entre will y el verbo. Give up on = renunciar a algo." },
-      { "who": "Sakura", "g": "f", "lvl": "A2", "scene": "Sakura mira una vieja foto del equipo siete.", "en": "Sasuke left the village many years ago.", "es": "Sasuke se fue de la aldea hace muchos años.", "why": "Left es el pasado irregular de leave. «Hace…» se dice con ago al final: many years ago." }
-    ] },
-    "shrek": { "name": "Shrek", "emoji": "🧅", "color": "#7DB03D", "scenes": [
-      { "who": "Burro", "g": "m", "lvl": "A1", "scene": "Burro llega al pantano y mira la casa de Shrek.", "en": "Shrek lives alone in a swamp.", "es": "Shrek vive solo en un pantano.", "why": "Verbo con -s para un nombre: lives. Alone va después del verbo y el lugar al final." },
-      { "who": "Shrek", "g": "m", "lvl": "A2", "scene": "Burro lleva una hora hablando sin parar en el camino.", "en": "Donkey, please stop talking for one minute!", "es": "¡Burro, por favor deja de hablar un minuto!", "why": "Stop + verbo con -ing (talking) = dejar de hacer algo. Please va antes del verbo." },
-      { "who": "Burro", "g": "m", "lvl": "B1", "scene": "Burro cuenta cómo terminó la historia en el castillo.", "en": "Fiona and Shrek got married in the end.", "es": "Fiona y Shrek se casaron al final.", "why": "Get married = casarse, y su pasado es got married. In the end = al final." }
-    ] },
-    "toy": { "name": "Toy Story", "emoji": "🤠", "color": "#3C8DDE", "scenes": [
-      { "who": "Woody", "g": "m", "lvl": "A2", "scene": "Andy sale del cuarto y los juguetes empiezan a moverse.", "en": "The toys come alive when nobody is watching.", "es": "Los juguetes cobran vida cuando nadie está mirando.", "why": "Come alive = cobrar vida. When + sujeto (nobody) + is watching." },
-      { "who": "Jessie", "g": "f", "lvl": "A1", "scene": "Los juguetes esperan las instrucciones de Woody en la reunión.", "en": "Woody is the leader of Andy's toys.", "es": "Woody es el líder de los juguetes de Andy.", "why": "Posesivo con 's: Andy's toys = los juguetes de Andy. El dueño va primero." },
-      { "who": "Woody", "g": "m", "lvl": "A2", "scene": "Buzz abre sus alas de plástico en la orilla de la cama.", "en": "Buzz thinks that he can really fly.", "es": "Buzz cree que de verdad puede volar.", "why": "Think + that + frase. Really va entre can y el verbo (fly)." }
-    ] },
-    "intensamente": { "name": "Intensamente 2", "emoji": "🧠", "color": "#F08A24", "scenes": [
-      { "who": "Alegría", "g": "f", "lvl": "A2", "scene": "Ansiedad llega al cuartel con una pila de listas y planes.", "en": "Anxiety wants to plan everything for Riley.", "es": "Ansiedad quiere planear todo para Riley.", "why": "Want con -s (wants) + to + verbo (to plan). Everything es el objeto y for Riley va al final." },
-      { "who": "Tristeza", "g": "f", "lvl": "A2", "scene": "Alegría corre de un lado a otro del panel de control.", "en": "Joy tries to keep Riley happy.", "es": "Alegría intenta mantener feliz a Riley.", "why": "Try + to + verbo. Keep + persona + adjetivo: keep Riley happy = mantener feliz a Riley." },
-      { "who": "Alegría", "g": "f", "lvl": "A2", "scene": "Riley llega al campamento de hockey y no conoce a nadie.", "en": "Riley is nervous about her new hockey camp.", "es": "Riley está nerviosa por su nuevo campamento de hockey.", "why": "Nervous about = nerviosa por. Los adjetivos (new, hockey) van antes del sustantivo (camp)." }
-    ] },
-    "spider": { "name": "Spider-Man", "emoji": "🕷️", "color": "#D62828", "scenes": [
-      { "who": "Tía May", "g": "f", "lvl": "A2", "scene": "Peter sale corriendo de la cena porque suenan las sirenas.", "en": "Peter has to save the city again.", "es": "Peter tiene que salvar la ciudad otra vez.", "why": "Has to + verbo base (save) para una obligación con he o un nombre." },
-      { "who": "Ned", "g": "m", "lvl": "B1", "scene": "Ned guarda el secreto de su mejor amigo en la escuela.", "en": "Nobody knows that Peter is Spider-Man.", "es": "Nadie sabe que Peter es Spider-Man.", "why": "Nobody va con el verbo en afirmativo y con -s: nobody knows. Después: that + frase." },
-      { "who": "Narrador", "g": "m", "lvl": "A2", "scene": "Spider-Man cruza Nueva York colgado de sus telarañas.", "en": "Spider-Man swings between the tall buildings.", "es": "Spider-Man se balancea entre los edificios altos.", "why": "Verbo con -s (swings). Between = entre. El adjetivo (tall) va antes de buildings." }
-    ] },
-    "minions": { "name": "Mi villano favorito", "emoji": "🍌", "color": "#F7D02C", "scenes": [
-      { "who": "Gru", "g": "m", "lvl": "A2", "scene": "Los Minions hacen fila frente a un camión lleno de fruta amarilla.", "en": "The Minions love bananas more than anything.", "es": "Los Minions aman los plátanos más que nada.", "why": "Sujeto en plural + verbo sin -s (love). More than anything = más que nada, al final." },
-      { "who": "Agnes", "g": "f", "lvl": "A2", "scene": "Gru prepara el desayuno y peina a las niñas antes de la escuela.", "en": "Gru takes care of three little girls.", "es": "Gru cuida a tres niñas pequeñas.", "why": "Take care of = cuidar, con -s para he: takes care of. El número va antes del adjetivo: three little girls." },
-      { "who": "Narrador", "g": "m", "lvl": "A2", "scene": "Los Minions viajan por el mundo con una maleta y un mapa.", "en": "The Minions are looking for a new boss.", "es": "Los Minions están buscando un nuevo jefe.", "why": "Presente continuo: are + looking. Look for = buscar." }
-    ] },
-    "merlina": { "name": "Merlina", "emoji": "🖤", "color": "#3A3A4A", "scenes": [
-      { "who": "Enid", "g": "f", "lvl": "A2", "scene": "Enid intenta abrazar a su compañera de cuarto, sin éxito.", "en": "Wednesday never smiles at anyone.", "es": "Merlina nunca le sonríe a nadie.", "why": "Never va antes del verbo, y el verbo lleva -s (smiles). Smile at = sonreírle a alguien." },
-      { "who": "Enid", "g": "f", "lvl": "A2", "scene": "Merlina escribe en su máquina de escribir a medianoche.", "en": "Wednesday writes her novel on a typewriter.", "es": "Merlina escribe su novela en una máquina de escribir.", "why": "Verbo con -s (writes) + objeto (her novel). On a typewriter va al final." },
-      { "who": "Narrador", "g": "m", "lvl": "B1", "scene": "Dedos le trae a Merlina una pista escondida en la biblioteca.", "en": "Thing is helping Wednesday solve the mystery.", "es": "Dedos está ayudando a Merlina a resolver el misterio.", "why": "Help + persona + verbo base: helping Wednesday solve. No hace falta to después de help." }
-    ] },
-    "stranger": { "name": "Stranger Things", "emoji": "🚲", "color": "#B3001B", "scenes": [
-      { "who": "Mike", "g": "m", "lvl": "A1", "scene": "Los chicos salen de casa con sus linternas cuando ya es de noche.", "en": "The kids ride their bikes at night.", "es": "Los chicos montan sus bicicletas de noche.", "why": "Sujeto en plural + verbo sin -s (ride). Their = sus. At night va al final." },
-      { "who": "Dustin", "g": "m", "lvl": "A1", "scene": "Once mira fijamente una lata y la lata empieza a moverse sola.", "en": "Eleven can move things with her mind.", "es": "Once puede mover cosas con su mente.", "why": "Can + verbo base (move), sin to. With her mind va al final." },
-      { "who": "Will", "g": "m", "lvl": "A2", "scene": "Las luces de la casa parpadean y se siente un frío extraño.", "en": "Something strange is happening in Hawkins.", "es": "Algo extraño está pasando en Hawkins.", "why": "El adjetivo va después de something: something strange. Is happening = está pasando." }
-    ] }
+ "groups": [
+  {
+   "id": "caricaturas",
+   "name": "Caricaturas",
+   "shows": [
+    "bob",
+    "simpson",
+    "ppg",
+    "scooby"
+   ]
+  },
+  {
+   "id": "anime",
+   "name": "Anime",
+   "shows": [
+    "dbz",
+    "pokemon",
+    "naruto"
+   ]
+  },
+  {
+   "id": "peliculas",
+   "name": "Películas",
+   "shows": [
+    "shrek",
+    "toy",
+    "intensamente",
+    "spider",
+    "minions"
+   ]
+  },
+  {
+   "id": "series",
+   "name": "Series en tendencia",
+   "shows": [
+    "merlina",
+    "stranger"
+   ]
   }
+ ],
+ "shows": {
+  "bob": {
+   "name": "Bob Esponja",
+   "emoji": "🧽",
+   "color": "#F5C400",
+   "scenes": [
+    {
+     "who": "Bob Esponja",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Bob llega temprano al Crustáceo Crujiente, feliz de empezar su turno.",
+     "en": "I love my job at the restaurant!",
+     "es": "¡Amo mi trabajo en el restaurante!",
+     "why": "Sujeto (I) + verbo (love) + lo que amas (my job). El lugar va al final: at the restaurant.",
+     "cast": [
+      "🧽",
+      "🍔"
+     ]
+    },
+    {
+     "who": "Bob Esponja",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Bob toca la puerta de la roca de Patricio con su red en la mano.",
+     "en": "Do you want to catch jellyfish today?",
+     "es": "¿Quieres atrapar medusas hoy?",
+     "why": "Las preguntas en presente empiezan con Do + sujeto (you) + verbo (want). Después va to + verbo (to catch). El tiempo (today) va al final.",
+     "cast": [
+      "🧽",
+      "⭐"
+     ]
+    },
+    {
+     "who": "Calamardo",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Calamardo cierra la ventana porque lo interrumpen mientras ensaya.",
+     "en": "I am practicing my clarinet right now.",
+     "es": "Estoy practicando mi clarinete ahora mismo.",
+     "why": "Presente continuo: am + verbo con -ing (practicing) para algo que pasa en este momento. Right now va al final.",
+     "cast": [
+      "🐙",
+      "🎵"
+     ]
+    },
+    {
+     "who": "Don Cangrejo",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Don Cangrejo cuenta sus monedas una por una en su oficina.",
+     "en": "Money is the most important thing for me.",
+     "es": "El dinero es lo más importante para mí.",
+     "why": "Superlativo con adjetivos largos: the most + adjetivo (important) + sustantivo (thing).",
+     "cast": [
+      "🦀",
+      "💰"
+     ]
+    },
+    {
+     "who": "Bob Esponja",
+     "g": "m",
+     "lvl": "B1",
+     "scene": "Patricio está parado frente a su roca, confundido, sin saber cuál es su casa.",
+     "en": "Patrick forgot where he lives again.",
+     "es": "Patricio olvidó dónde vive otra vez.",
+     "why": "Forgot es el pasado irregular de forget. En una pregunta indirecta (where he lives) el sujeto va antes del verbo, sin does.",
+     "cast": [
+      "🧽",
+      "⭐"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#36C3F0 0%,#1E88C8 70%,#E8D28A 70%)",
+    "decor": [
+     "🫧",
+     "🪸",
+     "🐠",
+     "🫧",
+     "🍔"
+    ]
+   },
+   "yt": "SpongeBob clips English"
+  },
+  "simpson": {
+   "name": "Los Simpson",
+   "emoji": "🍩",
+   "color": "#FFD90F",
+   "scenes": [
+    {
+     "who": "Homero",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Homero abre una caja en la cocina y sus ojos brillan.",
+     "en": "There are twelve donuts in the box.",
+     "es": "Hay doce donas en la caja.",
+     "why": "There are + cantidad + sustantivo en plural para decir «hay». El lugar (in the box) va al final.",
+     "cast": [
+      "👨",
+      "🍩"
+     ]
+    },
+    {
+     "who": "Bart",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Bart escribe una y otra vez en la pizarra después de clases.",
+     "en": "I will not talk in class again.",
+     "es": "No volveré a hablar en clase.",
+     "why": "Para una promesa sobre el futuro: will not + verbo base (talk). Again va al final.",
+     "cast": [
+      "👦",
+      "🏫"
+     ]
+    },
+    {
+     "who": "Marge",
+     "g": "f",
+     "lvl": "A1",
+     "scene": "Marge escucha el saxofón desde la sala y sonríe.",
+     "en": "Lisa plays the saxophone every afternoon.",
+     "es": "Lisa toca el saxofón todas las tardes.",
+     "why": "Con he, she o un nombre, el verbo lleva -s: plays. La frecuencia (every afternoon) va al final.",
+     "cast": [
+      "👩",
+      "🎷"
+     ]
+    },
+    {
+     "who": "Marge",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Marge ve que Homero sigue en el sofá y la bolsa de basura está llena.",
+     "en": "Homer, can you take out the trash?",
+     "es": "Homero, ¿puedes sacar la basura?",
+     "why": "Para pedir algo: Can + sujeto (you) + verbo. Take out es un phrasal verb: «sacar».",
+     "cast": [
+      "👩",
+      "🛋️"
+     ]
+    },
+    {
+     "who": "Lisa",
+     "g": "f",
+     "lvl": "B1",
+     "scene": "Lisa le cuenta a Marge lo que pasó en la planta nuclear.",
+     "en": "Dad fell asleep at work this morning.",
+     "es": "Papá se quedó dormido en el trabajo esta mañana.",
+     "why": "Fell es el pasado irregular de fall. Fall asleep = quedarse dormido. Primero el lugar (at work) y después el tiempo (this morning).",
+     "cast": [
+      "👧",
+      "😴"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#7FC8F8 0%,#BFE6FF 65%,#8BC34A 65%)",
+    "decor": [
+     "☁️",
+     "🏠",
+     "📺",
+     "🍩",
+     "☁️"
+    ]
+   },
+   "yt": "The Simpsons clips English"
+  },
+  "ppg": {
+   "name": "Las Chicas Superpoderosas",
+   "emoji": "💥",
+   "color": "#FF5FA2",
+   "scenes": [
+    {
+     "who": "Bombón",
+     "g": "f",
+     "lvl": "A1",
+     "scene": "Suena la línea directa del alcalde. Bombón reúne a sus hermanas.",
+     "en": "Girls, the city needs our help!",
+     "es": "¡Chicas, la ciudad necesita nuestra ayuda!",
+     "why": "Sujeto (the city) + verbo con -s (needs) + objeto (our help). Our = nuestra.",
+     "cast": [
+      "🎀",
+      "📞"
+     ]
+    },
+    {
+     "who": "Bellota",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Bellota abraza a Burbuja después de que ella ayuda a un gatito.",
+     "en": "Bubbles is the sweetest of the three sisters.",
+     "es": "Burbuja es la más dulce de las tres hermanas.",
+     "why": "Superlativo de adjetivos cortos: the + adjetivo + -est (sweetest). «De las tres» = of the three.",
+     "cast": [
+      "💚",
+      "🐱"
+     ]
+    },
+    {
+     "who": "Burbuja",
+     "g": "f",
+     "lvl": "A1",
+     "scene": "Bellota golpea el piso con el pie porque la fila es muy larga.",
+     "en": "Buttercup does not like to wait.",
+     "es": "A Bellota no le gusta esperar.",
+     "why": "Negativo en presente con she o un nombre: does not + verbo base (like). Después va to + verbo (to wait).",
+     "cast": [
+      "🫧",
+      "💚"
+     ]
+    },
+    {
+     "who": "Bombón",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Desde el cielo, Bombón ve humo saliendo del volcán de Mojo Jojo.",
+     "en": "Mojo Jojo is planning something terrible again.",
+     "es": "Mojo Jojo está planeando algo terrible otra vez.",
+     "why": "Presente continuo: is + verbo con -ing (planning). En inglés el adjetivo va después de something: something terrible.",
+     "cast": [
+      "🎀",
+      "🐵"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#FF9AC8 0%,#FFD1E6 65%,#B39DDB 65%)",
+    "decor": [
+     "🏙️",
+     "✨",
+     "💖",
+     "⭐",
+     "🏙️"
+    ]
+   },
+   "yt": "Powerpuff Girls clips English"
+  },
+  "scooby": {
+   "name": "Scooby-Doo",
+   "emoji": "🐶",
+   "color": "#7B5CC4",
+   "scenes": [
+    {
+     "who": "Shaggy",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Shaggy ve una sombra en la pared detrás de Scooby.",
+     "en": "Scooby, there is a ghost behind you!",
+     "es": "¡Scooby, hay un fantasma detrás de ti!",
+     "why": "There is + a + sustantivo en singular para decir «hay». Behind you = detrás de ti.",
+     "cast": [
+      "🧔",
+      "👻"
+     ]
+    },
+    {
+     "who": "Fred",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "La pandilla llega a una mansión abandonada. Fred tiene un plan.",
+     "en": "Let's split up and look for clues.",
+     "es": "Separémonos y busquemos pistas.",
+     "why": "Let's + verbo para proponer algo. Split up = separarse y look for = buscar son phrasal verbs.",
+     "cast": [
+      "🧑",
+      "🏚️"
+     ]
+    },
+    {
+     "who": "Vilma",
+     "g": "f",
+     "lvl": "B1",
+     "scene": "Vilma le quita la máscara al monstruo y todos se sorprenden.",
+     "en": "The monster was the old janitor all along.",
+     "es": "El monstruo era el viejo conserje desde el principio.",
+     "why": "Was es el pasado de is. El adjetivo (old) va antes del sustantivo (janitor). All along = desde el principio, al final de la frase.",
+     "cast": [
+      "🤓",
+      "👹"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#1B1446 0%,#3B2A7A 65%,#2E4A2E 65%)",
+    "decor": [
+     "🌕",
+     "🏚️",
+     "🦇",
+     "🕸️",
+     "🌲"
+    ]
+   },
+   "yt": "Scooby-Doo clips English"
+  },
+  "dbz": {
+   "name": "Dragon Ball Z",
+   "emoji": "🐉",
+   "color": "#FF7A00",
+   "scenes": [
+    {
+     "who": "Krilin",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Goku termina de entrenar y pide cinco platos de comida.",
+     "en": "Goku is always hungry after training.",
+     "es": "Goku siempre tiene hambre después de entrenar.",
+     "why": "Los adverbios de frecuencia (always) van después del verbo to be (is). After + verbo con -ing (training).",
+     "cast": [
+      "🧑‍🦲",
+      "🍜"
+     ]
+    },
+    {
+     "who": "Vegeta",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Vegeta se transforma y mira a Goku con orgullo.",
+     "en": "I am stronger than you, Kakarot!",
+     "es": "¡Soy más fuerte que tú, Kakaroto!",
+     "why": "Comparativo de adjetivos cortos: adjetivo + -er (stronger) + than. Than = que.",
+     "cast": [
+      "👑",
+      "🥋"
+     ]
+    },
+    {
+     "who": "Milk",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Milk le quita la espada a Gohan y le da sus libros.",
+     "en": "Gohan has to study before he trains.",
+     "es": "Gohan tiene que estudiar antes de entrenar.",
+     "why": "Have to (has to con he) + verbo base para una obligación. Before + sujeto + verbo: before he trains.",
+     "cast": [
+      "👩",
+      "📚"
+     ]
+    },
+    {
+     "who": "Bulma",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Bulma enciende el radar del dragón y aparecen siete puntos.",
+     "en": "We need to find all seven Dragon Balls.",
+     "es": "Necesitamos encontrar las siete Esferas del Dragón.",
+     "why": "Need to + verbo base (find). All + número + sustantivo: all seven Dragon Balls.",
+     "cast": [
+      "👩‍🔬",
+      "🐉"
+     ]
+    },
+    {
+     "who": "Goku",
+     "g": "m",
+     "lvl": "B1",
+     "scene": "Goku se prepara para el torneo y entrena con más peso.",
+     "en": "If I train harder, I will win the tournament.",
+     "es": "Si entreno más duro, ganaré el torneo.",
+     "why": "Primer condicional: If + presente (I train) y luego will + verbo (will win) para el resultado.",
+     "cast": [
+      "🥋",
+      "🏆"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#FFB347 0%,#FFE0A3 62%,#C9A26B 62%)",
+    "decor": [
+     "☁️",
+     "⛰️",
+     "✨",
+     "🌀",
+     "⛰️"
+    ]
+   },
+   "yt": "Dragon Ball Z English dub clips"
+  },
+  "pokemon": {
+   "name": "Pokémon",
+   "emoji": "⚡",
+   "color": "#E3350D",
+   "scenes": [
+    {
+     "who": "Ash",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Ash carga a Pikachu después de una batalla muy larga.",
+     "en": "My Pokémon is tired after the battle.",
+     "es": "Mi Pokémon está cansado después de la batalla.",
+     "why": "Sujeto (my Pokémon) + is + adjetivo (tired). After the battle va al final.",
+     "cast": [
+      "🧢",
+      "⚡"
+     ]
+    },
+    {
+     "who": "Misty",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "El grupo ve un Pokémon raro entre los árboles del bosque.",
+     "en": "We are going to catch a new Pokémon.",
+     "es": "Vamos a atrapar un Pokémon nuevo.",
+     "why": "Going to + verbo para planes: are going to catch. El adjetivo (new) va antes del sustantivo.",
+     "cast": [
+      "💧",
+      "🌟"
+     ]
+    },
+    {
+     "who": "Ash",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Ash saca la Pokébola, pero Pikachu le da la espalda.",
+     "en": "Pikachu does not want to go inside the ball.",
+     "es": "Pikachu no quiere entrar en la Pokébola.",
+     "why": "Does not + verbo base (want) con un nombre en singular. Go inside = entrar.",
+     "cast": [
+      "🧢",
+      "⚡"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#8FD3FF 0%,#D6F0FF 62%,#6CBF4E 62%)",
+    "decor": [
+     "🌳",
+     "☁️",
+     "🌿",
+     "🍃",
+     "🌳"
+    ]
+   },
+   "yt": "Pokemon anime clips English"
+  },
+  "naruto": {
+   "name": "Naruto",
+   "emoji": "🍥",
+   "color": "#F28C28",
+   "scenes": [
+    {
+     "who": "Iruka",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Naruto pide su tercer tazón en su puesto favorito.",
+     "en": "Naruto eats ramen almost every day.",
+     "es": "Naruto come ramen casi todos los días.",
+     "why": "Verbo con -s para he o un nombre: eats. Almost every day va al final.",
+     "cast": [
+      "🧑‍🏫",
+      "🍜"
+     ]
+    },
+    {
+     "who": "Naruto",
+     "g": "m",
+     "lvl": "B1",
+     "scene": "Naruto se levanta después de perder un combate y aprieta el puño.",
+     "en": "I will never give up on my dream.",
+     "es": "Nunca renunciaré a mi sueño.",
+     "why": "Never va entre will y el verbo. Give up on = renunciar a algo.",
+     "cast": [
+      "🍥",
+      "✊"
+     ]
+    },
+    {
+     "who": "Sakura",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Sakura mira una vieja foto del equipo siete.",
+     "en": "Sasuke left the village many years ago.",
+     "es": "Sasuke se fue de la aldea hace muchos años.",
+     "why": "Left es el pasado irregular de leave. «Hace…» se dice con ago al final: many years ago.",
+     "cast": [
+      "🌸",
+      "📷"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#FFB36B 0%,#FFE3C2 62%,#9C7A54 62%)",
+    "decor": [
+     "🏯",
+     "🍃",
+     "☁️",
+     "🍃",
+     "🌳"
+    ]
+   },
+   "yt": "Naruto English dub clips"
+  },
+  "shrek": {
+   "name": "Shrek",
+   "emoji": "🧅",
+   "color": "#7DB03D",
+   "scenes": [
+    {
+     "who": "Burro",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Burro llega al pantano y mira la casa de Shrek.",
+     "en": "Shrek lives alone in a swamp.",
+     "es": "Shrek vive solo en un pantano.",
+     "why": "Verbo con -s para un nombre: lives. Alone va después del verbo y el lugar al final.",
+     "cast": [
+      "🫏",
+      "🧅"
+     ]
+    },
+    {
+     "who": "Shrek",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Burro lleva una hora hablando sin parar en el camino.",
+     "en": "Donkey, please stop talking for one minute!",
+     "es": "¡Burro, por favor deja de hablar un minuto!",
+     "why": "Stop + verbo con -ing (talking) = dejar de hacer algo. Please va antes del verbo.",
+     "cast": [
+      "🧅",
+      "🫏"
+     ]
+    },
+    {
+     "who": "Burro",
+     "g": "m",
+     "lvl": "B1",
+     "scene": "Burro cuenta cómo terminó la historia en el castillo.",
+     "en": "Fiona and Shrek got married in the end.",
+     "es": "Fiona y Shrek se casaron al final.",
+     "why": "Get married = casarse, y su pasado es got married. In the end = al final.",
+     "cast": [
+      "🫏",
+      "👸"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#9CD67A 0%,#D7F0C2 60%,#5B7F3A 60%)",
+    "decor": [
+     "🌲",
+     "🍄",
+     "🪵",
+     "🐸",
+     "🌲"
+    ]
+   },
+   "yt": "Shrek movie clips"
+  },
+  "toy": {
+   "name": "Toy Story",
+   "emoji": "🤠",
+   "color": "#3C8DDE",
+   "scenes": [
+    {
+     "who": "Woody",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Andy sale del cuarto y los juguetes empiezan a moverse.",
+     "en": "The toys come alive when nobody is watching.",
+     "es": "Los juguetes cobran vida cuando nadie está mirando.",
+     "why": "Come alive = cobrar vida. When + sujeto (nobody) + is watching.",
+     "cast": [
+      "🤠",
+      "🧸"
+     ]
+    },
+    {
+     "who": "Jessie",
+     "g": "f",
+     "lvl": "A1",
+     "scene": "Los juguetes esperan las instrucciones de Woody en la reunión.",
+     "en": "Woody is the leader of Andy's toys.",
+     "es": "Woody es el líder de los juguetes de Andy.",
+     "why": "Posesivo con 's: Andy's toys = los juguetes de Andy. El dueño va primero.",
+     "cast": [
+      "🐴",
+      "🤠"
+     ]
+    },
+    {
+     "who": "Woody",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Buzz abre sus alas de plástico en la orilla de la cama.",
+     "en": "Buzz thinks that he can really fly.",
+     "es": "Buzz cree que de verdad puede volar.",
+     "why": "Think + that + frase. Really va entre can y el verbo (fly).",
+     "cast": [
+      "🤠",
+      "🚀"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#7EC8FF 0%,#D9EFFF 64%,#C98E5A 64%)",
+    "decor": [
+     "☁️",
+     "🧸",
+     "🛏️",
+     "🎲",
+     "☁️"
+    ]
+   },
+   "yt": "Toy Story movie clips"
+  },
+  "intensamente": {
+   "name": "Intensamente 2",
+   "emoji": "🧠",
+   "color": "#F08A24",
+   "scenes": [
+    {
+     "who": "Alegría",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Ansiedad llega al cuartel con una pila de listas y planes.",
+     "en": "Anxiety wants to plan everything for Riley.",
+     "es": "Ansiedad quiere planear todo para Riley.",
+     "why": "Want con -s (wants) + to + verbo (to plan). Everything es el objeto y for Riley va al final.",
+     "cast": [
+      "😄",
+      "😬"
+     ]
+    },
+    {
+     "who": "Tristeza",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Alegría corre de un lado a otro del panel de control.",
+     "en": "Joy tries to keep Riley happy.",
+     "es": "Alegría intenta mantener feliz a Riley.",
+     "why": "Try + to + verbo. Keep + persona + adjetivo: keep Riley happy = mantener feliz a Riley.",
+     "cast": [
+      "😢",
+      "😄"
+     ]
+    },
+    {
+     "who": "Alegría",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Riley llega al campamento de hockey y no conoce a nadie.",
+     "en": "Riley is nervous about her new hockey camp.",
+     "es": "Riley está nerviosa por su nuevo campamento de hockey.",
+     "why": "Nervous about = nerviosa por. Los adjetivos (new, hockey) van antes del sustantivo (camp).",
+     "cast": [
+      "😄",
+      "🏒"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#5B3FA8 0%,#A98BEA 62%,#3B2C6E 62%)",
+    "decor": [
+     "✨",
+     "🔮",
+     "💛",
+     "💙",
+     "✨"
+    ]
+   },
+   "yt": "Inside Out 2 clips"
+  },
+  "spider": {
+   "name": "Spider-Man",
+   "emoji": "🕷️",
+   "color": "#D62828",
+   "scenes": [
+    {
+     "who": "Tía May",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Peter sale corriendo de la cena porque suenan las sirenas.",
+     "en": "Peter has to save the city again.",
+     "es": "Peter tiene que salvar la ciudad otra vez.",
+     "why": "Has to + verbo base (save) para una obligación con he o un nombre.",
+     "cast": [
+      "👵",
+      "🕷️"
+     ]
+    },
+    {
+     "who": "Ned",
+     "g": "m",
+     "lvl": "B1",
+     "scene": "Ned guarda el secreto de su mejor amigo en la escuela.",
+     "en": "Nobody knows that Peter is Spider-Man.",
+     "es": "Nadie sabe que Peter es Spider-Man.",
+     "why": "Nobody va con el verbo en afirmativo y con -s: nobody knows. Después: that + frase.",
+     "cast": [
+      "🧑‍💻",
+      "🕷️"
+     ]
+    },
+    {
+     "who": "Narrador",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Spider-Man cruza Nueva York colgado de sus telarañas.",
+     "en": "Spider-Man swings between the tall buildings.",
+     "es": "Spider-Man se balancea entre los edificios altos.",
+     "why": "Verbo con -s (swings). Between = entre. El adjetivo (tall) va antes de buildings.",
+     "cast": [
+      "🎙️",
+      "🕷️"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#0E1A3A 0%,#2A3F7A 62%,#1A1A2E 62%)",
+    "decor": [
+     "🌃",
+     "🏢",
+     "🕸️",
+     "🏙️",
+     "🌙"
+    ]
+   },
+   "yt": "Spider-Man movie clips"
+  },
+  "minions": {
+   "name": "Mi villano favorito",
+   "emoji": "🍌",
+   "color": "#F7D02C",
+   "scenes": [
+    {
+     "who": "Gru",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Los Minions hacen fila frente a un camión lleno de fruta amarilla.",
+     "en": "The Minions love bananas more than anything.",
+     "es": "Los Minions aman los plátanos más que nada.",
+     "why": "Sujeto en plural + verbo sin -s (love). More than anything = más que nada, al final.",
+     "cast": [
+      "🦹",
+      "🍌"
+     ]
+    },
+    {
+     "who": "Agnes",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Gru prepara el desayuno y peina a las niñas antes de la escuela.",
+     "en": "Gru takes care of three little girls.",
+     "es": "Gru cuida a tres niñas pequeñas.",
+     "why": "Take care of = cuidar, con -s para he: takes care of. El número va antes del adjetivo: three little girls.",
+     "cast": [
+      "🦄",
+      "🦹"
+     ]
+    },
+    {
+     "who": "Narrador",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Los Minions viajan por el mundo con una maleta y un mapa.",
+     "en": "The Minions are looking for a new boss.",
+     "es": "Los Minions están buscando un nuevo jefe.",
+     "why": "Presente continuo: are + looking. Look for = buscar.",
+     "cast": [
+      "🎙️",
+      "🍌"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#8ED0FF 0%,#DDF2FF 64%,#F4C430 64%)",
+    "decor": [
+     "☁️",
+     "🍌",
+     "🏠",
+     "🍌",
+     "☁️"
+    ]
+   },
+   "yt": "Minions movie clips"
+  },
+  "merlina": {
+   "name": "Merlina",
+   "emoji": "🖤",
+   "color": "#3A3A4A",
+   "scenes": [
+    {
+     "who": "Enid",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Enid intenta abrazar a su compañera de cuarto, sin éxito.",
+     "en": "Wednesday never smiles at anyone.",
+     "es": "Merlina nunca le sonríe a nadie.",
+     "why": "Never va antes del verbo, y el verbo lleva -s (smiles). Smile at = sonreírle a alguien.",
+     "cast": [
+      "🐺",
+      "🖤"
+     ]
+    },
+    {
+     "who": "Enid",
+     "g": "f",
+     "lvl": "A2",
+     "scene": "Merlina escribe en su máquina de escribir a medianoche.",
+     "en": "Wednesday writes her novel on a typewriter.",
+     "es": "Merlina escribe su novela en una máquina de escribir.",
+     "why": "Verbo con -s (writes) + objeto (her novel). On a typewriter va al final.",
+     "cast": [
+      "🐺",
+      "⌨️"
+     ]
+    },
+    {
+     "who": "Narrador",
+     "g": "m",
+     "lvl": "B1",
+     "scene": "Dedos le trae a Merlina una pista escondida en la biblioteca.",
+     "en": "Thing is helping Wednesday solve the mystery.",
+     "es": "Dedos está ayudando a Merlina a resolver el misterio.",
+     "why": "Help + persona + verbo base: helping Wednesday solve. No hace falta to después de help.",
+     "cast": [
+      "🎙️",
+      "✋"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#1C1C28 0%,#3A3A52 62%,#25222E 62%)",
+    "decor": [
+     "🌙",
+     "🕯️",
+     "🦇",
+     "🥀",
+     "🕯️"
+    ]
+   },
+   "yt": "Wednesday Netflix clips"
+  },
+  "stranger": {
+   "name": "Stranger Things",
+   "emoji": "🚲",
+   "color": "#B3001B",
+   "scenes": [
+    {
+     "who": "Mike",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Los chicos salen de casa con sus linternas cuando ya es de noche.",
+     "en": "The kids ride their bikes at night.",
+     "es": "Los chicos montan sus bicicletas de noche.",
+     "why": "Sujeto en plural + verbo sin -s (ride). Their = sus. At night va al final.",
+     "cast": [
+      "🚲",
+      "🔦"
+     ]
+    },
+    {
+     "who": "Dustin",
+     "g": "m",
+     "lvl": "A1",
+     "scene": "Once mira fijamente una lata y la lata empieza a moverse sola.",
+     "en": "Eleven can move things with her mind.",
+     "es": "Once puede mover cosas con su mente.",
+     "why": "Can + verbo base (move), sin to. With her mind va al final.",
+     "cast": [
+      "🧢",
+      "🥫"
+     ]
+    },
+    {
+     "who": "Will",
+     "g": "m",
+     "lvl": "A2",
+     "scene": "Las luces de la casa parpadean y se siente un frío extraño.",
+     "en": "Something strange is happening in Hawkins.",
+     "es": "Algo extraño está pasando en Hawkins.",
+     "why": "El adjetivo va después de something: something strange. Is happening = está pasando.",
+     "cast": [
+      "🔦",
+      "💡"
+     ]
+    }
+   ],
+   "set": {
+    "bg": "linear-gradient(180deg,#120A1E 0%,#3A1030 62%,#1E1A12 62%)",
+    "decor": [
+     "🌙",
+     "💡",
+     "🌲",
+     "🔴",
+     "🌲"
+    ]
+   },
+   "yt": "Stranger Things clips"
+  }
+ }
 }

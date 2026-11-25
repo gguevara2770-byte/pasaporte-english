@@ -638,7 +638,7 @@ details.lesson:not([open]) { gap: 0; }
 .show-emo { font-size: 1.9rem; line-height: 1; }
 .scene-wrap { max-width: 680px; margin-inline: auto; display: grid; gap: 1rem; }
 .scene-steps { display: flex; gap: .35rem; flex-wrap: wrap; }
-.scene-steps i { width: 26px; height: 6px; border-radius: 99px; background: var(--line); }
+.scene-steps i { width: 26px; height: 6px; min-height: 0; border-radius: 99px; background: var(--line); }
 .scene-steps i.ok { background: var(--ok); }
 .scene-steps i.now { background: var(--brand); }
 .scene-box { display: flex; gap: .9rem; align-items: center; background: linear-gradient(120deg, color-mix(in srgb, var(--c) 22%, #fff), #fff); border: 1px solid var(--line); border-left: 5px solid var(--c); border-radius: 14px; padding: .9rem 1rem; }
@@ -648,6 +648,47 @@ details.lesson:not([open]) { gap: 0; }
 .next-step { display: flex; justify-content: flex-end; padding-block: 2rem 1rem; }
 .vphrase.heard .en::after { content: " ✓"; color: var(--ok); }
 @media (max-width: 720px) { .hub { grid-template-columns: 1fr; } .shows { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.cine { background: #0B0B12; border-radius: 16px; padding: 10px; box-shadow: 0 12px 30px rgb(0 0 0 / .25); }
+.cine-screen { position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: var(--bg); isolation: isolate; }
+.cine-screen::before, .cine-screen::after { content: ""; position: absolute; left: 0; right: 0; height: 7%; background: #000; z-index: 5; }
+.cine-screen::before { top: 0; } .cine-screen::after { bottom: 0; }
+.cine-decor span { position: absolute; font-size: clamp(1.2rem, 5vw, 2.2rem); opacity: .85; animation: cineFloat 6s ease-in-out infinite; }
+.cine-decor span:nth-child(1) { left: 6%; top: 14%; }
+.cine-decor span:nth-child(2) { left: 30%; top: 22%; animation-delay: -1.5s; }
+.cine-decor span:nth-child(3) { right: 28%; top: 12%; animation-delay: -3s; }
+.cine-decor span:nth-child(4) { right: 7%; top: 26%; animation-delay: -4.5s; }
+.cine-decor span:nth-child(5) { left: 48%; top: 40%; animation-delay: -2s; opacity: .5; }
+.cine-cast { position: absolute; left: 0; right: 0; bottom: 21%; display: flex; justify-content: space-around; align-items: flex-end; z-index: 2; }
+.actor { display: grid; justify-items: center; font-size: clamp(2.6rem, 11vw, 4.6rem); line-height: 1; filter: drop-shadow(0 6px 6px rgb(0 0 0 / .3)); animation: cineInL .8s .5s both cubic-bezier(.2,1.4,.5,1); }
+.actor + .actor { animation-name: cineInR; animation-delay: .8s; }
+.actor em { font-style: normal; font-size: .75rem; font-weight: 700; color: #fff; background: rgb(0 0 0 / .55); padding: .1rem .45rem; border-radius: 99px; margin-top: .25rem; }
+.actor.talk { animation: cineInL .8s .5s both cubic-bezier(.2,1.4,.5,1), cineTalk .35s 2.4s 6 ease-in-out; }
+.cine-live .actor, .cine-live .actor + .actor { animation-delay: 0s; animation-duration: .01s; }
+.cine-live .actor.talk { animation: cineTalk .35s 0s 6 ease-in-out; }
+.cine-bubble { position: absolute; left: 6%; top: 11%; max-width: 64%; z-index: 3; background: #fff; color: #111; font-weight: 700; font-size: clamp(.85rem, 2.6vw, 1.1rem); padding: .5rem .8rem; border-radius: 16px; box-shadow: 0 6px 14px rgb(0 0 0 / .25); animation: cinePop .4s 2.2s both cubic-bezier(.2,1.5,.5,1); }
+.cine-bubble::after { content: ""; position: absolute; left: 22px; bottom: -10px; border: 10px solid transparent; border-top-color: #fff; border-bottom: 0; }
+.cine-bubble.q { color: #666; font-weight: 400; font-style: italic; }
+.cine-live .cine-bubble { animation-delay: 0s; }
+.cine-sub { position: absolute; left: 50%; bottom: 9%; transform: translateX(-50%); width: 92%; z-index: 6; text-align: center; color: #fff; font-size: clamp(.75rem, 2.3vw, .98rem); text-shadow: 0 1px 2px #000; background: rgb(0 0 0 / .55); border-radius: 6px; padding: .25rem .5rem; animation: cineFade .6s 1.2s both; }
+.cine-sub.tr { color: #FFE58A; }
+.cine-live .cine-sub { animation-delay: 0s; }
+.cine-clap { position: absolute; inset: 0; z-index: 7; display: grid; place-items: center; background: #0B0B12; color: #fff; font-family: var(--f-mono); font-size: clamp(.9rem, 3vw, 1.3rem); letter-spacing: .08em; text-transform: uppercase; animation: cineClap 1.3s both; pointer-events: none; }
+.cine-clap b { display: block; font-size: 2.4em; text-align: center; }
+.cine-live .cine-clap { display: none; }
+.cine-ctrl { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; padding: .6rem .2rem 0; }
+.cine-ctrl .btn { background: #22222E; color: #fff; border-color: #33334A; }
+.cine-ctrl a { color: #B9C6FF; font-size: .85rem; }
+.cine-still .actor, .cine-still .actor + .actor, .cine-still .cine-bubble, .cine-still .cine-sub { animation: none !important; }
+.cine-still .cine-clap { display: none; }
+@keyframes cineFloat { 50% { transform: translateY(-8px); } }
+@keyframes cineInL { from { transform: translateX(-60px) scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes cineInR { from { transform: translateX(60px) scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes cineTalk { 50% { transform: translateY(-7px) rotate(-4deg); } }
+@keyframes cinePop { from { transform: scale(.3); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes cineFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cineClap { 0%, 60% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .cine *, .cine-screen * { animation: none !important; } .cine-clap { display: none; } }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
@@ -2560,6 +2601,7 @@ function renderEscenas() {
   }
   const show = ESC.shows[SC.show], i = SC.i, s = show.scenes[i], key = escKey(SC.show, i);
   const toks = s.en.split(" "), solved = !!(S.esc || {})[key], showSol = solved || SC.shown;
+  const oldCine = document.querySelector("#escenas .cine");
   let body;
   if (showSol) {
     body = `<div class="zone ok">${toks.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
@@ -2584,13 +2626,37 @@ function renderEscenas() {
     <div class="inner tutor-body"><div class="scene-wrap">
       <div class="scene-steps" aria-hidden="true">${show.scenes.map((_, j) => `<i class="${(S.esc || {})[escKey(SC.show, j)] ? "ok" : j === i ? "now" : ""}"></i>`).join("")}</div>
       <article class="card">
-        <div class="scene-box" style="--c:${show.color}"><span class="scene-emo" aria-hidden="true">🎬</span><div class="scene-txt"><span class="eyebrow">La escena · ${esc(s.lvl)}</span><span>${esc(s.scene)}</span></div></div>
-        <p class="scene-who"><b>${esc(s.who)}</b> dice:</p>
-        <p class="q-text">«${esc(s.es)}»</p>
+        ${cineHtml(show, s, i, solved || SC.shown)}
+        <p class="scene-who"><span class="eyebrow">La escena · ${esc(s.lvl)}</span><br>${esc(s.scene)}</p>
+        <p class="q-text"><b>${esc(s.who)}:</b> «${esc(s.es)}»</p>
         <p class="note">Ordena la frase en inglés.</p>
         ${body}
       </article>
     </div></div>`;
+  const nc = scEl.querySelector(".cine");
+  if (oldCine && nc && oldCine.dataset.k === nc.dataset.k) { oldCine.querySelector(".cine-screen").classList.add("cine-still"); nc.replaceWith(oldCine); }
+}
+let cineTimer = null, cineLive = false;
+function cineHtml(show, s, i, revealed) {
+  const set = show.set || { bg: show.color, decor: [] }, cast = s.cast || [show.emoji];
+  const live = cineLive; cineLive = false;
+  return `<div class="cine" data-k="${esc(show.name)}-${i}-${revealed ? 1 : 0}" aria-label="Escena animada">
+    <div class="cine-screen ${live ? "cine-live" : ""}" id="cineScreen" style="--bg:${set.bg}">
+      <div class="cine-decor" aria-hidden="true">${set.decor.map(x => `<span>${x}</span>`).join("")}</div>
+      <div class="cine-cast" aria-hidden="true">${cast.map((x, j) => `<span class="actor ${j === 0 && revealed ? "talk" : ""}">${x}${j === 0 ? `<em>${esc(s.who)}</em>` : ""}</span>`).join("")}</div>
+      <div class="cine-bubble ${revealed ? "" : "q"}">${revealed ? esc(s.en) : "¿Qué dijo en inglés? 🤔"}</div>
+      <div class="cine-sub ${revealed ? "tr" : ""}">${revealed ? esc(s.es) : esc(s.scene)}</div>
+      <div class="cine-clap" aria-hidden="true"><span><b>🎬</b>${esc(show.name)} · Escena ${i + 1}</span></div>
+    </div>
+    <div class="cine-ctrl"><button class="btn small" data-act="sc-play">▶ ${revealed ? "Ver la escena con su voz" : "Ver la escena otra vez"}</button>
+      <a href="${ytLink(show.yt || show.name)}" target="_blank" rel="noopener">Ver clips reales en YouTube ↗</a></div>
+  </div>`;
+}
+function playScene(withVoice) {
+  clearTimeout(cineTimer);
+  if (!withVoice || !ESC || !SC.show) return;
+  const s = ESC.shows[SC.show].scenes[SC.i];
+  cineTimer = setTimeout(() => { if (location.hash === "#escenas" && SC.show) say(s.en, false, s.g); }, cineLive ? 200 : 2300);
 }
 function openShow(id) {
   const n = ESC.shows[id].scenes.length; let i = 0;
@@ -2609,16 +2675,25 @@ document.addEventListener("click", e => {
   if (!act.startsWith("sc-") || !ESC) return;
   if (act === "sc-back") { e.preventDefault(); SC.show = null; SC.msg = ""; renderEscenas(); window.scrollTo(0, 0); return; }
   if (act === "sc-show") { openShow(b.dataset.show); renderEscenas(); window.scrollTo(0, 0); return; }
+  clearTimeout(cineTimer);
   const show = ESC.shows[SC.show]; if (!show) return;
   const s = show.scenes[SC.i], key = escKey(SC.show, SC.i), toks = s.en.split(" ");
   if (act === "sc-pick") {
     SC.picked.push(+b.dataset.i); SC.bad = false;
     if (SC.picked.length === toks.length) {
-      if (SC.picked.map(x => toks[x]).join(" ") === s.en) { S.esc = S.esc || {}; S.esc[key] = 1; save(); say(s.en, false, s.g); }
+      if (SC.picked.map(x => toks[x]).join(" ") === s.en) { S.esc = S.esc || {}; S.esc[key] = 1; save(); cineLive = true; say(s.en, false, s.g); }
       else SC.bad = true;
     }
   } else if (act === "sc-unpick") { SC.picked.splice(+b.dataset.i, 1); SC.bad = false; }
-  else if (act === "sc-solve") { SC.shown = true; say(s.en, false, s.g); }
+  else if (act === "sc-solve") { SC.shown = true; cineLive = true; say(s.en, false, s.g); }
+  else if (act === "sc-play") {
+    const revealed = !!(S.esc || {})[key] || SC.shown;
+    const old = document.querySelector("#escenas .cine"); if (!old) return;
+    const tmp = document.createElement("div"); tmp.innerHTML = cineHtml(show, s, SC.i, revealed);
+    old.replaceWith(tmp.firstElementChild);
+    if (revealed) playScene(true);
+    return;
+  }
   else if (act === "sc-retry") { SC.shown = false; SC.picked = []; SC.bad = false; }
   else if (act === "sc-next") {
     if (SC.i < show.scenes.length - 1) { SC.i++; SC.picked = []; SC.bad = false; SC.shown = false; }
