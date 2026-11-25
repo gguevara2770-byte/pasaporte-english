@@ -1,6 +1,6 @@
 // Service worker de Pasaporte English: guarda la app para que funcione sin conexión.
 // Cambia CACHE (por ejemplo a "pasaporte-v5") cada vez que publiques cambios.
-const CACHE = "pasaporte-v14";
+const CACHE = "pasaporte-v15";
 const ASSETS = [
   "./",
   "index.html",
@@ -10,7 +10,7 @@ const ASSETS = [
   "icons/icon-512.png",
   "data/tutor.json",
   "data/karaoke.json",
-  "data/viajes.json",
+  "data/viajes.json", "data/escenas.json",
   "data/m1.json", "data/m2.json", "data/m3.json", "data/m4.json", "data/m5.json", "data/m6.json"
 ];
 

@@ -9,8 +9,9 @@ import { getStore } from "@netlify/blobs";
 
 export const config = { path: "/api/tutor" };
 
-const FREE_MSGS = () => Number(process.env.MENSAJES_GRATIS || 5);
-const FREE_OPENS = 10;   // conversaciones nuevas por día en el plan gratuito
+// La app es gratuita. Solo hay un tope diario por persona para proteger el costo de la IA (configurable en Netlify).
+const FREE_MSGS = () => Number(process.env.MENSAJES_DIA || 150);
+const FREE_OPENS = 60;   // conversaciones nuevas por día y persona
 async function userFromToken(s, token) {
   if (!/^[0-9a-f]{48}$/.test(String(token || ""))) return null;
   const sess = await s.get("s/" + token, { type: "json" });
@@ -187,7 +188,7 @@ export default async function handler(req) {
   const s = getStore({ name: "pasaporte-cuentas", consistency: "strong" });
   const who = await userFromToken(s, body.token);
   if (!who) return reply(401, { error: "login" });
-  const premium = !!(who.user.plan && who.user.plan.hasta > Date.now());
+  const premium = false;   // todos tienen el mismo acceso
   const isOpen = !Array.isArray(body.history) || body.history.length === 0;
   let qKey = null, q = null;
   if (!premium) {

@@ -617,6 +617,38 @@ details.lesson:not([open]) { gap: 0; }
 .pay-chip { justify-self: start; font-size: .8rem; font-weight: 700; border-radius: 99px; padding: .2rem .6rem; background: var(--brand-soft); color: var(--brand); }
 .pay-chip.yape { background: #F3E8FF; color: #6B21A8; }
 
+.hero-prog { margin-top: 1.1rem; display: grid; gap: .4rem; max-width: 420px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: .8rem 1rem; box-shadow: var(--shadow); }
+.hero-prog b { font-family: var(--f-display); font-size: 1.05rem; }
+.hero-prog small { color: var(--muted); }
+.hub { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.hub-card { display: flex; gap: .9rem; align-items: flex-start; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.2rem; box-shadow: var(--shadow); min-width: 0; transition: transform .15s, border-color .15s; }
+.hub-card:hover { transform: translateY(-2px); border-color: var(--brand); }
+.hub-ico { font-size: 2rem; line-height: 1; flex: none; width: 52px; height: 52px; display: grid; place-items: center; background: var(--brand-soft); border-radius: 14px; }
+.hub-txt { display: grid; gap: .35rem; min-width: 0; flex: 1; }
+.hub-txt b { font-family: var(--f-display); font-size: 1.15rem; }
+.hub-txt > span:not(.bar) { color: var(--muted); font-size: .93rem; }
+.hub-txt small { color: var(--muted); font-size: .82rem; font-variant-numeric: tabular-nums; }
+.hub-card.hub-new { border-left: 4px solid #FF7A00; }
+.shows { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: .8rem; margin-bottom: 2rem; }
+.show-card { display: grid; gap: .45rem; justify-items: start; text-align: left; font: inherit; color: var(--ink); cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-top: 5px solid var(--c, var(--brand)); border-radius: 14px; padding: .9rem 1rem; box-shadow: var(--shadow); transition: transform .15s; }
+.show-card:hover { transform: translateY(-2px); }
+.show-card .bar { width: 100%; }
+.show-card small { color: var(--muted); font-size: .82rem; }
+.show-card.done { background: var(--ok-soft); }
+.show-emo { font-size: 1.9rem; line-height: 1; }
+.scene-wrap { max-width: 680px; margin-inline: auto; display: grid; gap: 1rem; }
+.scene-steps { display: flex; gap: .35rem; flex-wrap: wrap; }
+.scene-steps i { width: 26px; height: 6px; border-radius: 99px; background: var(--line); }
+.scene-steps i.ok { background: var(--ok); }
+.scene-steps i.now { background: var(--brand); }
+.scene-box { display: flex; gap: .9rem; align-items: center; background: linear-gradient(120deg, color-mix(in srgb, var(--c) 22%, #fff), #fff); border: 1px solid var(--line); border-left: 5px solid var(--c); border-radius: 14px; padding: .9rem 1rem; }
+.scene-emo { font-size: 2.6rem; line-height: 1; flex: none; }
+.scene-txt { display: grid; gap: .2rem; }
+.scene-who { font-size: .95rem; color: var(--muted); }
+.next-step { display: flex; justify-content: flex-end; padding-block: 2rem 1rem; }
+.vphrase.heard .en::after { content: " ✓"; color: var(--ok); }
+@media (max-width: 720px) { .hub { grid-template-columns: 1fr; } .shows { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -627,10 +659,7 @@ details.lesson:not([open]) { gap: 0; }
     <a class="brand" href="#inicio"><span class="logo">P</span>Pasaporte <small>English</small></a>
     <nav class="links" aria-label="Secciones">
       <a href="#programa">Curso</a>
-      <a href="#tutor">Tutor IA</a>
-      <a href="#viajes">Viajes</a>
-      <a href="#karaoke">Karaoke</a>
-      <a href="#premium" class="nav-premium">Premium</a>
+      <a href="#practicar">Practicar</a>
     </nav>
     <div class="nav-right">
       <button class="btn small" id="installBtn" hidden>Instalar app</button>
@@ -653,12 +682,13 @@ details.lesson:not([open]) { gap: 0; }
           <a class="btn" href="#modulo-1" id="heroZero">Empezar desde cero</a>
         </div>
         <p class="hero-level" id="heroLogin"><a href="#cuenta">Inicia sesión</a> para continuar donde te quedaste desde cualquier celular o computadora.</p>
+        <div class="hero-prog" id="heroProg" hidden></div>
         <p class="hero-level" id="heroLevel">¿Ya tienes base? El test de nivel te dice en 10 minutos desde qué módulo empezar.</p>
         <div class="stats">
           <div><b>6</b><span>módulos</span></div>
           <div><b>24</b><span>lecciones</span></div>
           <div><b>240</b><span>ejercicios</span></div>
-          <div><b>45</b><span>minutos al día</span></div>
+          <div><b>49</b><span>escenas de películas</span></div>
         </div>
       </div>
       <div class="demo-wrap">
@@ -681,91 +711,20 @@ details.lesson:not([open]) { gap: 0; }
         <button class="need" data-act="tu-topic" data-topic="entrevista"><b>¿Tienes una entrevista en inglés?</b><span>Ensaya las preguntas más comunes con una reclutadora y recibe correcciones al instante, antes del día importante.</span><em>Ensayar mi entrevista →</em></button>
         <button class="need" data-act="tu-topic" data-topic="oficina"><b>¿Quieres crecer en tu trabajo?</b><span>Reuniones, correos y presentaciones: el inglés que te abre la puerta a mejores puestos y mejores sueldos.</span><em>Practicar inglés de oficina →</em></button>
         <button class="need" data-act="tu-topic" data-topic="extranjeros"><b>¿Conoces o atiendes a extranjeros?</b><span>Haz amigos, ayuda a turistas y habla de tu país sin quedarte en blanco.</span><em>Conversar con extranjeros →</em></button>
-        <a class="need" href="#karaoke"><b>¿Quieres entender canciones y series?</b><span>Entrena el oído con la música que ya escuchas y deja de depender de los subtítulos.</span><em>Ir al karaoke →</em></a>
+        <a class="need" href="#escenas"><b>¿Te aburre estudiar?</b><span>Aprende con escenas de Bob Esponja, Los Simpson, Dragon Ball Z y tus películas favoritas: ordena lo que dijo el personaje en inglés.</span><em>Jugar con escenas →</em></a>
         <a class="need" href="#nivel"><b>¿No sabes cuál es tu nivel?</b><span>En 10 minutos te decimos desde qué módulo empezar, para que no pierdas tiempo repitiendo lo que ya sabes.</span><em>Hacer el test de nivel →</em></a>
       </div>
     </div>
   </section>
 
-  <section class="block" id="programas">
+  <section class="block" id="practica-home">
     <div class="inner">
       <div class="sec-head">
-        <span class="eyebrow">Nuestros programas</span>
-        <h2>Elige tu objetivo</h2>
-        <p>Un mismo método, cuatro caminos. Empieza por el que más te motive y combínalos cuando quieras.</p>
+        <span class="eyebrow">Practica a tu manera</span>
+        <h2>Elige qué practicar hoy</h2>
+        <p>Cada actividad guarda tu avance. Retoma donde te quedaste cuando quieras.</p>
       </div>
-      <div class="progs">
-        <a class="prog" href="#programa"><span class="prog-tag">A1 → B1+</span><b>Inglés general</b><span>Seis módulos con lecciones, práctica guiada, audio y lecturas.</span><em>Ver el programa →</em></a>
-        <a class="prog prog-travel" href="#viajes"><span class="prog-tag">Nuevo</span><b>Inglés para viajar</b><span>Aeropuerto, hotel, restaurantes y emergencias, con frases útiles y simulaciones.</span><em>Preparar mi viaje →</em></a>
-        <a class="prog" href="#tutor"><span class="prog-tag">8 áreas</span><b>Inglés para el trabajo</b><span>Entrevistas, reuniones y atención al cliente según tu profesión.</span><em>Practicar →</em></a>
-        <a class="prog" href="#tutor"><span class="prog-tag">Tutor IA</span><b>Club de conversación</b><span>Habla sobre fútbol, música y tus temas favoritos con personajes propios.</span><em>Conversar →</em></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="travel-band" id="viajar-intro">
-    <div class="inner travel-in">
-      <div class="travel-copy">
-        <span class="eyebrow">Inglés para viajar</span>
-        <h2>Tu próximo viaje, sin miedo a hablar</h2>
-        <p>¿Viajas en los próximos meses? No esperes a estar frente al oficial de migración para practicar. Ensaya hoy las conversaciones reales de tu viaje: check-in, pedir comida, moverte por la ciudad y hacer amigos de otros países.</p>
-        <div class="cta"><a class="btn primary" href="#viajes">Ver frases para viajar</a><button class="btn" data-act="tu-topic" data-topic="viajar">Simular mi viaje con Sofía</button></div>
-      </div>
-      <ol class="travel-steps">
-        <li><b>Antes de salir</b><span>Reservas, check-in y preguntas de migración.</span></li>
-        <li><b>En destino</b><span>Hotel, transporte, restaurantes y compras.</span></li>
-        <li><b>Imprevistos</b><span>Maleta perdida, pasaporte y salud.</span></li>
-        <li><b>Nuevos amigos</b><span>Conversa con viajeros y con gente del lugar.</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="block" id="metodo">
-    <div class="inner">
-      <div class="sec-head">
-        <span class="eyebrow">El método</span>
-        <h2>Así se trabaja cada semana</h2>
-        <p>Es el mismo orden que siguen las academias: primero la regla, luego la práctica guiada y al final el uso real del idioma.</p>
-      </div>
-      <div class="steps">
-        <div class="step"><h3>Entiende la regla</h3><p>Una lección corta en español, con tabla y ejemplos que puedes escuchar.</p></div>
-        <div class="step"><h3>Practica con explicaciones</h3><p>Al responder ves por qué la opción correcta funciona y por qué cada una de las otras falla.</p></div>
-        <div class="step"><h3>Escucha y repite</h3><p>Dictados de frases parecidas, repetición en voz alta y grabación de tu pronunciación.</p></div>
-        <div class="step"><h3>Úsalo de verdad</h3><p>Ordenas frases, lees textos del nivel y respondes preguntas reales en voz alta.</p></div>
-      </div>
-      <div class="types" aria-label="Tipos de práctica en cada módulo">
-        <span><b>4</b>Lecciones</span>
-        <span><b>8</b>Gramática</span>
-        <span><b>12</b>Vocabulario</span>
-        <span><b>4</b>Escucha</span>
-        <span><b>8</b>Habla</span>
-        <span><b>5</b>Ordena la frase</span>
-        <span><b>3</b>Lectura</span>
-        <span><b>19</b>Temas con tutor IA</span>
-        <span><b>20</b>Canciones para karaoke</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="temas">
-    <div class="inner">
-      <div class="sec-head">
-        <span class="eyebrow">Tutor IA</span>
-        <h2>Aprende hablando de lo que te gusta</h2>
-        <p>Elige un tema y conversa en inglés con un tutor que interpreta un papel: un camarero, un entrevistador, un cliente. Te traduce cada frase y corrige tus mensajes con una explicación en español.</p>
-      </div>
-      <div id="topicGroups"></div>
-    </div>
-  </section>
-
-  <section class="block" id="karaoke-intro">
-    <div class="inner ka-teaser">
-      <div class="sec-head" style="margin:0">
-        <span class="eyebrow">Karaoke</span>
-        <h2>Canta tus canciones favoritas en inglés</h2>
-        <p>Los éxitos más populares para cantar en YouTube en versión karaoke, ordenados por nivel y con un consejo para aprender de cada canción.</p>
-      </div>
-      <a class="btn primary" href="#karaoke">Abrir el karaoke</a>
+      <div id="homeHub"></div>
     </div>
   </section>
 
@@ -780,38 +739,6 @@ details.lesson:not([open]) { gap: 0; }
     </div>
   </section>
 
-  <section class="block" id="rutina">
-    <div class="inner">
-      <div class="sec-head">
-        <span class="eyebrow">Tu rutina</span>
-        <h2>45 minutos, de lunes a viernes</h2>
-        <p>La constancia importa más que las horas. Una sesión corta cada día rinde más que tres horas el domingo.</p>
-      </div>
-      <div class="routine">
-        <div class="rt"><span class="min">10<small> min</small></span><h3>Vocabulario</h3><p>Repasa las palabras del módulo con su audio. Añade 3 nuevas cada día a tu cuaderno.</p></div>
-        <div class="rt"><span class="min">15<small> min</small></span><h3>Lección y gramática</h3><p>Lee la lección de la semana y haz las preguntas. Copia la regla amarilla de las que falles.</p></div>
-        <div class="rt"><span class="min">10<small> min</small></span><h3>Escucha</h3><p>Los ejercicios de escucha y, aparte, un podcast o serie con subtítulos en inglés.</p></div>
-        <div class="rt"><span class="min">10<small> min</small></span><h3>Habla</h3><p>Repite las frases, grábate y responde una pregunta en voz alta cada día.</p></div>
-      </div>
-      <div class="week-plan">
-        <div><strong>Lunes a jueves:</strong> lección nueva y su práctica.</div>
-        <div><strong>Viernes:</strong> ordena frases y lectura del módulo.</div>
-        <div><strong>Fin de semana:</strong> repasa lo que fallaste y ve algo en inglés por gusto.</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="planes">
-    <div class="inner">
-      <div class="sec-head">
-        <span class="eyebrow">Planes</span>
-        <h2>Empieza gratis. Pasa a Premium cuando quieras</h2>
-        <p>Prueba el método con el módulo 1, el test de nivel y el tutor. Cuando estés listo, desbloquea todo.</p>
-      </div>
-      <div id="landingPlans"></div>
-    </div>
-  </section>
-
   <section class="block" id="preguntas">
     <div class="inner">
       <div class="sec-head">
@@ -819,12 +746,13 @@ details.lesson:not([open]) { gap: 0; }
         <h2>Antes de empezar</h2>
       </div>
       <div class="faq">
+        <details><summary>¿Cuánto cuesta?</summary><p>Nada. Todo el curso, el tutor IA, las escenas, el inglés para viajar y el karaoke son gratis. Solo crea tu cuenta para guardar tu avance.</p></details>
         <details><summary>¿Necesito saber algo de inglés?</summary><p>No. El módulo 1 empieza desde el verbo to be. Si ya tienes base, haz el test de nivel y te diremos desde qué módulo empezar.</p></details>
         <details><summary>¿Hasta qué nivel puedo llegar?</summary><p>Los seis módulos llevan de A1 a B1+. Con 45 minutos diarios y exposición extra al idioma (series, música, podcasts), B1 es una meta realista. El curso te da la estructura. La práctica fuera de él marca la diferencia.</p></details>
         <details><summary>¿Cómo funciona la práctica de pronunciación?</summary><p>En Chrome (Android o computadora) puedes grabarte y la app compara lo que dijiste con la frase. En iPhone y otros navegadores, escucha el audio, repite en voz alta y marca la frase como practicada.</p></details>
         <details><summary>¿Cómo funciona el tutor IA?</summary><p>Es una inteligencia artificial que conversa contigo en inglés, traduce cada frase y corrige tus mensajes. Necesita conexión a internet; el resto del curso funciona también sin conexión.</p></details>
         <details><summary>¿Cómo instalo la app en el celular?</summary><p>En Android (Chrome), pulsa «Instalar app» arriba o abre el menú ⋮ y elige «Instalar aplicación». En iPhone (Safari), pulsa Compartir y luego «Añadir a pantalla de inicio».</p></details>
-        <details><summary>¿Dónde se guarda mi progreso?</summary><p>En tu dispositivo. Si cambias de celular o borras los datos de la app, el progreso empieza de cero.</p></details>
+        <details><summary>¿Dónde se guarda mi progreso?</summary><p>En tu dispositivo y, si inicias sesión, también en la nube. Así puedes cambiar de celular o usar la computadora y continuar donde te quedaste.</p></details>
       </div>
     </div>
   </section>
@@ -837,7 +765,8 @@ details.lesson:not([open]) { gap: 0; }
 <main id="nivel" hidden></main>
 <main id="viajes" hidden></main>
 <main id="admin" hidden></main>
-<main id="premium" hidden></main>
+<main id="practicar" hidden></main>
+<main id="escenas" hidden></main>
 
 <footer>
   <div class="inner">
@@ -850,8 +779,7 @@ details.lesson:not([open]) { gap: 0; }
 <nav class="tabbar" aria-label="Navegación principal">
   <a href="#inicio" data-v="landing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</a>
   <a href="#programa" data-v="module"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>Curso</a>
-  <a href="#tutor" data-v="tutor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Tutor</a>
-  <a href="#viajes" data-v="viajes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>Viajes</a>
+  <a href="#practicar" data-v="practicar escenas tutor viajes karaoke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>Practicar</a>
   <a href="#perfil" data-v="perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Perfil</a>
 </nav>
 
@@ -981,7 +909,12 @@ function updateProgress() {
   else { hc.href = "#nivel"; hc.textContent = "Hacer el test de nivel"; hz.href = "#modulo-1"; hz.textContent = "Empezar desde cero"; }
   hl.innerHTML = LV ? `Tu nivel según el test: <strong>${esc(LV.level)}</strong>. Te recomendamos el módulo ${LV.start + 1}. <a href="#nivel">Ver resultado o repetir el test</a>`
     : "¿Ya tienes base? El test de nivel te dice en 10 minutos desde qué módulo empezar.";
-  renderProgram();
+  const hp = document.getElementById("heroProg");
+  if (hp) {
+    hp.hidden = !started;
+    if (started) hp.innerHTML = `<b>Tu avance: ${o}% del curso</b><div class="bar"><i style="width:${o}%"></i></div><small>Siguiente: módulo ${next + 1} · ${esc(MODS[next].title)}</small>`;
+  }
+  renderProgram(); renderHomeHub();
   if (view.m != null) {
     const p = Math.round(pct(view.m) * 100);
     const bar = document.getElementById("mBar"); if (bar) bar.style.width = p + "%";
@@ -1210,10 +1143,6 @@ function renderModule() {
     <div class="inner">
       <div class="tabs" role="tablist" aria-label="Tipos de práctica" id="tabs"></div>
       <div id="panel" role="tabpanel"></div>
-      <div class="mod-nav">
-        ${m > 0 ? `<a class="btn" href="#modulo-${m}">← Módulo ${m}: ${MODS[m - 1].title}</a>` : "<span></span>"}
-        ${m < 5 ? `<a class="btn primary" href="#modulo-${m + 2}">Módulo ${m + 2}: ${MODS[m + 1].title} →</a>` : `<a class="btn" href="#programa">Volver al programa</a>`}
-      </div>
       <p style="padding-bottom:3rem"><button class="linkbtn" data-act="reset" id="resetBtn">Reiniciar el progreso de este módulo</button></p>
     </div>`;
   renderTabs(); renderPanel(); updateProgress();
@@ -1247,6 +1176,10 @@ function renderPanel() {
       ${T.tr ? `<p class="text-es">${esc(d.read.es)}</p>` : ""}
     </article>
     ${d.read.qs.map((_, k) => readQCard(m, k)).join("")}</div>`;
+  const ti = TABS.findIndex(t => t[0] === view.tab);
+  html += `<div class="next-step">${ti < TABS.length - 1
+    ? `<button class="btn primary" data-act="tab" data-tab="${TABS[ti + 1][0]}" data-scroll="1">Siguiente: ${TABS[ti + 1][1]} →</button>`
+    : m < 5 ? `<a class="btn primary" href="#modulo-${m + 2}">Siguiente: módulo ${m + 2} · ${MODS[m + 1].title} →</a>` : `<a class="btn primary" href="#practicar">¡Curso terminado! Sigue practicando →</a>`}</div>`;
   document.getElementById("panel").innerHTML = html;
 }
 
@@ -1330,7 +1263,7 @@ document.addEventListener("click", e => {
     case "tu-idea": { const ta = document.getElementById("tuInput"); const idea = TU.ideas[+b.dataset.i]; if (ta && idea) { ta.value = idea.en; ta.focus(); } break; }
     case "tu-voice": TU.voice = !TU.voice; S.voice = TU.voice; save(); b.textContent = TU.voice ? "Voz del tutor: activada" : "Voz del tutor: desactivada"; break;
     case "tu-retry": callTutor(); break;
-    case "tab": view.tab = b.dataset.tab; S.tab[view.m] = view.tab; save(); renderTabs(); renderPanel(); break;
+    case "tab": view.tab = b.dataset.tab; S.tab[view.m] = view.tab; save(); renderTabs(); renderPanel(); if (b.dataset.scroll) document.getElementById("tabs").scrollIntoView({ behavior: "smooth", block: "start" }); break;
     case "self": S.p[key] = 1; save(); refresh(key); break;
     case "model": T.model[key] = true; S.p[key] = 1; save(); refresh(key); break;
     case "rec": rec(key); break;
@@ -1405,7 +1338,7 @@ function topicGroupsHtml() {
   return `<div class="topic-groups">${TOPIC_GROUPS.map(g => `<div class="tgroup ${g.id === "tendencia" ? "wide" : ""}"><h3>${g.name}${g.id === "tendencia" ? '<span class="trend-tag">Nuevo</span>' : ""}</h3><p>${g.desc}</p>
     <div class="tlist">${g.topics.map(t => `<button class="tcard" data-act="tu-topic" data-topic="${t.id}"><b>${t.name}</b><span>${t.desc}</span><span class="host">${avatar(t.id, "sm")}Con ${charOf(t.id).n}</span></button>`).join("")}</div></div>`).join("")}</div>`;
 }
-function renderTopicGroups() { document.getElementById("topicGroups").innerHTML = topicGroupsHtml(); }
+function renderTopicGroups() { const el = document.getElementById("topicGroups"); if (el) el.innerHTML = topicGroupsHtml(); }
 function stopTutor() {
   if (TU.ctl) { TU.ctl.abort(); TU.ctl = null; }
   TU.busy = false;
@@ -1416,6 +1349,7 @@ function startScenario(sc) {
   TU.scen = sc; TU.level = TU.level || currentLevel();
   TU.msgs = []; TU.ideas = []; TU.err = null;
   TU.turns = [];
+  S.tuN = (S.tuN || 0) + 1; save();
   renderTutor(); window.scrollTo(0, 0);
   callTutor();
 }
@@ -1442,7 +1376,7 @@ async function callTutor() {
     if (!r || typeof r.reply !== "string" || !r.reply.trim()) throw new AIError("format");
     const quedan = r._quedan; delete r._quedan;
     TU.turns.push({ role: "assistant", content: JSON.stringify(r) });
-    if (typeof quedan === "number") TU.notice = quedan > 0 ? `Plan gratis: te quedan ${quedan} ${quedan === 1 ? "mensaje" : "mensajes"} hoy. Con Premium conversas sin límite.` : "Usaste tus mensajes gratis de hoy. Con Premium conversas sin límite.";
+    if (typeof quedan === "number" && quedan <= 5) TU.notice = quedan > 0 ? `Te quedan ${quedan} ${quedan === 1 ? "mensaje" : "mensajes"} por hoy.` : "Llegaste al máximo de mensajes de hoy. Vuelve mañana.";
     const last = TU.msgs[TU.msgs.length - 1];
     if (last && last.who === "me" && r.feedback && typeof r.feedback === "object") last.fb = { ok: !!r.feedback.ok, corrected: String(r.feedback.corrected || ""), why: String(r.feedback.why_es || "") };
     TU.msgs.push({ who: "tutor", en: r.reply, es: String(r.reply_es || "") });
@@ -1460,8 +1394,8 @@ async function callTutor() {
       refusal: ["La IA no quiso responder a ese mensaje. Prueba a decirlo de otra forma.", false, false],
       busy: ["El tutor está muy solicitado en este momento. Vuelve a intentarlo en unos segundos.", true, false],
       appbad: ["No se pudo continuar esta conversación. Elige otra situación para empezar de nuevo.", false, false],
-      login: ["Crea tu cuenta gratis o inicia sesión para conversar con el tutor. Tienes 5 mensajes gratis cada día.", false, true, "#cuenta", "Iniciar sesión"],
-      limit: ["Usaste tus mensajes gratis de hoy. Hazte Premium para conversar sin límite, o vuelve mañana.", false, true, "#premium", "Ver Premium"],
+      login: ["Inicia sesión o crea tu cuenta gratis para conversar con el tutor. Así también guardas tu avance.", false, true, "#cuenta", "Iniciar sesión"],
+      limit: ["Llegaste al máximo de mensajes de hoy. Vuelve mañana para seguir conversando.", false, false],
       network: ["No hay conexión a internet. El tutor necesita conexión para responder.", true, false],
       appoff: ["El tutor no está disponible en este momento. Vuelve a intentarlo en unos minutos.", true, false],
       format: ["La IA respondió en un formato inesperado. Vuelve a intentarlo o prueba otro modelo.", true, false],
@@ -2011,12 +1945,14 @@ let ACC = {};
 try { ACC = JSON.parse(localStorage.getItem(ACC_STORE) || "{}") || {}; } catch (e) {}
 let syncTimer = null, syncMsg = "";
 function saveAcc() { try { localStorage.setItem(ACC_STORE, JSON.stringify(ACC)); } catch (e) {} }
-function cloudData() { return { v: 1, p: S.p, tab: S.tab, voice: S.voice, nivel: LV, perfil: PROFILE }; }
+function cloudData() { return { v: 1, p: S.p, tab: S.tab, voice: S.voice, nivel: LV, perfil: PROFILE, esc: S.esc || {}, vi: S.vi || {}, ka: S.ka || {}, tuN: S.tuN || 0 }; }
 function mergeCloud(d) {
   if (!d || typeof d !== "object") return;
   if (d.p && typeof d.p === "object") for (const k in d.p) if (S.p[k] == null) S.p[k] = d.p[k];
   if (d.tab && typeof d.tab === "object") S.tab = Object.assign({}, d.tab, S.tab);
   if (typeof d.voice === "boolean" && S.voice == null) S.voice = d.voice;
+  ["esc", "vi", "ka"].forEach(k => { if (d[k] && typeof d[k] === "object") S[k] = Object.assign({}, d[k], S[k] || {}); });
+  if (typeof d.tuN === "number") S.tuN = Math.max(S.tuN || 0, d.tuN);
   try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {}
   if (d.nivel && !LV) { LV = d.nivel; try { localStorage.setItem(LV_STORE, JSON.stringify(LV)); } catch (e) {} }
   if (d.perfil && !PROFILE) { PROFILE = d.perfil; try { localStorage.setItem(PROF_STORE, JSON.stringify(PROFILE)); } catch (e) {} }
@@ -2042,7 +1978,6 @@ function accountCardHtml() {
   if (ACC.token) return `<div class="card acc" id="accCard">
       <h2>Tu cuenta</h2>
       <p>Sesión iniciada como <strong>${esc(ACC.email)}</strong>.</p>
-      <p>Plan: <strong>${esc(planLabel())}</strong> · <a href="#premium">${isPremium() ? "Ver mi plan" : "Hazte Premium"}</a></p>
       <p class="note">Tu progreso, tu nivel y tu perfil se guardan en la nube. Entra con tu correo desde cualquier celular o computadora y continúa donde te quedaste.</p>
       <p class="ok-msg" id="accSync">${esc(syncMsg)}</p>
       <div class="row"><button class="btn small" data-act="acc-sync">Guardar ahora</button><button class="linkbtn" data-act="acc-out">Cerrar sesión</button></div>
@@ -2123,7 +2058,7 @@ if (ACC.token) {
 
 /* ---------- Inglés para viajar ---------- */
 let VIAJES = null;
-fetch("data/viajes.json").then(r => r.json()).then(d => { VIAJES = d; if (location.hash === "#viajes") renderViajes(); }).catch(() => {});
+fetch("data/viajes.json").then(r => r.json()).then(d => { VIAJES = d; if (location.hash === "#viajes") renderViajes(); renderHomeHub(); }).catch(() => {});
 function renderViajes() {
   const cats = VIAJES ? VIAJES.categorias : [];
   viEl.innerHTML = `<div class="mhead mhead-travel"><div class="inner">
@@ -2154,7 +2089,7 @@ function renderViajes() {
       ${!VIAJES ? '<p class="note">Cargando frases…</p>' : `<div class="phrase-grid">${cats.map((c, i) => i >= 3 && !isPremium()
         ? `<section class="phrase-cat locked"><h3>${esc(c.nombre)}</h3><p class="note">${c.frases.length} frases con audio y traducción.</p><a class="btn small primary" href="#premium">Desbloquear con Premium</a></section>`
         : `<section class="phrase-cat"><h3>${esc(c.nombre)}</h3>
-        ${c.frases.map(f => `<button class="vphrase" data-act="say" data-say="${esc(f[0])}" data-g="f"><span class="en">${esc(f[0])}</span><span class="tr">${esc(f[1])}</span></button>`).join("")}</section>`).join("")}</div>`}
+        ${c.frases.map(f => `<button class="vphrase ${(S.vi || {})[f[0]] ? "heard" : ""}" data-act="say" data-say="${esc(f[0])}" data-g="f"><span class="en">${esc(f[0])}</span><span class="tr">${esc(f[1])}</span></button>`).join("")}</section>`).join("")}</div>`}
       <div class="travel-tips card">
         <h2>Consejos antes de viajar</h2>
         <ul class="lt-rules">
@@ -2377,10 +2312,10 @@ document.addEventListener("click", e => {
 });
 
 /* ---------- Premium y pagos (Mercado Pago) ---------- */
-const prEl = document.getElementById("premium");
+const prEl = document.createElement("main");   // La vista Premium ya no se muestra.
 let PLAN = { premium: false, tipo: null, hasta: 0, estado: "gratis", precios: { mensual: 29, semestral: 129, moneda: "PEN" } };
 let PAY = { busy: false, msg: "", err: "" };
-function isPremium() { return !!PLAN.premium; }
+function isPremium() { return true; }   // App 100 % gratuita: no hay contenido bloqueado.
 function money(v) { return (PLAN.precios.moneda === "PEN" ? "S/ " : PLAN.precios.moneda + " ") + Number(v).toLocaleString("es-PE", { minimumFractionDigits: 0, maximumFractionDigits: 2 }); }
 function planLabel() {
   if (!PLAN.premium) return PLAN.estado === "pendiente" ? "Gratis (pago pendiente)" : "Gratis";
@@ -2520,7 +2455,7 @@ document.addEventListener("click", e => {
 // Vuelta desde Mercado Pago: ?pago=volver&payment_id=… o &preapproval_id=…
 (function handlePaymentReturn() {
   const q = new URLSearchParams(location.search);
-  if (!q.has("pago")) return;
+  return;   // Pagos desactivados: la app es gratuita.
   const params = {};
   const pid = q.get("payment_id") || q.get("collection_id"); if (pid && /^\d+$/.test(pid)) params.payment_id = pid;
   const pre = q.get("preapproval_id"); if (pre && /^[\w-]+$/.test(pre)) params.preapproval_id = pre;
@@ -2533,11 +2468,11 @@ const kaEl = document.getElementById("karaoke");
 let KSONGS = null;
 function stopSong() {}
 ICON.play = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
-fetch("data/karaoke.json").then(r => r.json()).then(d => { KSONGS = d; if (location.hash === "#karaoke") renderKaraoke(); }).catch(() => {});
+fetch("data/karaoke.json").then(r => r.json()).then(d => { KSONGS = d; if (location.hash === "#karaoke") renderKaraoke(); renderHomeHub(); }).catch(() => {});
 function ytLink(q) { return "https://www.youtube.com/results?search_query=" + encodeURIComponent(q); }
 function songCard(s) {
   return `<article class="song-card"><span class="lvl">${esc(s.lvl)}</span><b>${esc(s.t)}</b><span class="art">${esc(s.a)}</span><p>${esc(s.tip)}</p>
-    <div class="row"><a class="btn primary small" href="${ytLink(s.t + " " + s.a + " karaoke")}" target="_blank" rel="noopener">${ICON.play} Cantar en YouTube</a>
+    <div class="row"><a class="btn primary small" data-ka="${esc(s.t)}" href="${ytLink(s.t + " " + s.a + " karaoke")}" target="_blank" rel="noopener">${ICON.play} ${(S.ka || {})[s.t] ? "Cantar otra vez" : "Cantar en YouTube"}</a>
     <a class="linkbtn" href="${ytLink(s.t + " " + s.a + " lyrics")}" target="_blank" rel="noopener">Ver con letra</a></div></article>`;
 }
 function renderKaraoke() {
@@ -2557,14 +2492,150 @@ function renderKaraoke() {
     </div>`;
 }
 
+/* ---------- Practicar ---------- */
+const pcEl = document.getElementById("practicar"), scEl = document.getElementById("escenas");
+let ESC = null;
+const SC = { show: null, i: 0, picked: [], bad: false, shown: false, msg: "" };
+fetch("data/escenas.json").then(r => r.json()).then(d => {
+  ESC = d; renderHomeHub();
+  if (location.hash === "#escenas") renderEscenas(); else if (location.hash === "#practicar") renderPracticar();
+}).catch(() => {});
+function escKey(show, i) { return show + "-" + i; }
+function escTotal() { return ESC ? Object.values(ESC.shows).reduce((n, s) => n + s.scenes.length, 0) : 49; }
+function escDone(show) {
+  const d = S.esc || {};
+  if (show) return ESC.shows[show].scenes.filter((_, i) => d[escKey(show, i)]).length;
+  return ESC ? Object.keys(ESC.shows).reduce((n, id) => n + escDone(id), 0) : Object.keys(d).length;
+}
+function hubItems() {
+  const tu = S.tuN || 0;
+  const viT = VIAJES ? VIAJES.categorias.reduce((n, c) => n + c.frases.length, 0) : 28;
+  const kaT = KSONGS ? KSONGS.groups.reduce((n, g) => n + g.songs.length, 0) : 20;
+  return [
+    { href: "#escenas", ico: "🎬", t: "Escenas de películas y caricaturas", d: "Lee la escena y ordena lo que dijo el personaje en inglés.", done: escDone(), total: escTotal(), unit: "escenas", cls: "hub-new" },
+    { href: "#tutor", ico: "💬", t: "Conversa con el tutor IA", d: "Fútbol, música, viajes o tu trabajo. Te corrige y te traduce.", done: Math.min(tu, 20), total: 20, unit: "conversaciones (meta: 20)" },
+    { href: "#viajes", ico: "✈️", t: "Inglés para viajar", d: "Escucha las frases del aeropuerto, el hotel y el restaurante.", done: Math.min(Object.keys(S.vi || {}).length, viT), total: viT, unit: "frases escuchadas" },
+    { href: "#karaoke", ico: "🎤", t: "Karaoke", d: "Canta éxitos en inglés en YouTube y entrena el oído.", done: Math.min(Object.keys(S.ka || {}).length, kaT), total: kaT, unit: "canciones cantadas" }
+  ];
+}
+function hubHtml() {
+  return `<div class="hub">${hubItems().map(x => {
+    const p = x.total ? Math.min(100, Math.round(x.done / x.total * 100)) : 0;
+    return `<a class="hub-card ${x.cls || ""}" href="${x.href}"><span class="hub-ico" aria-hidden="true">${x.ico}</span><span class="hub-txt"><b>${x.t}</b><span>${x.d}</span><span class="bar"><i style="width:${p}%"></i></span><small>${x.done} de ${x.total} ${x.unit}</small></span></a>`;
+  }).join("")}</div>`;
+}
+function renderHomeHub() { const el = document.getElementById("homeHub"); if (el) el.innerHTML = hubHtml(); if (pcEl && !pcEl.hidden) renderPracticar(); }
+function renderPracticar() {
+  pcEl.innerHTML = `<div class="mhead"><div class="inner">
+      <nav class="crumbs"><a href="#inicio">Inicio</a> / Practicar</nav>
+      <h1>Practicar</h1>
+      <p class="goal">Elige una actividad. Tu avance se guarda solo.</p>
+    </div></div>
+    <div class="inner tutor-body">${hubHtml()}
+      <p class="note" style="margin-top:1.5rem">¿Prefieres seguir el curso paso a paso? <a href="#programa">Ve a los módulos</a>.</p>
+    </div>`;
+}
+
+/* ---------- Escenas: ordena lo que dijo el personaje ---------- */
+function sceneSeed(key) { let n = 0; for (const c of key) n = (n * 31 + c.charCodeAt(0)) % 100000; return n; }
+function renderEscenas() {
+  if (!ESC) { scEl.innerHTML = '<div class="inner loading">Cargando escenas…</div>'; return; }
+  const total = escTotal(), done = escDone(), p = Math.round(done / total * 100);
+  if (!SC.show) {
+    scEl.innerHTML = `<div class="mhead"><div class="inner">
+        <nav class="crumbs"><a href="#practicar">Practicar</a> / Escenas</nav>
+        <h1>Escenas de películas y caricaturas</h1>
+        <p class="goal">Lee lo que pasa en la escena y ordena en inglés lo que dijo el personaje. Al acertar, escuchas la frase y ves por qué va en ese orden.</p>
+        <div class="mprog"><div class="bar light"><i style="width:${p}%"></i></div><span>${done} de ${total} escenas</span></div>
+      </div></div>
+      <div class="inner tutor-body">
+        ${SC.msg ? `<p class="ok-msg">${esc(SC.msg)}</p>` : ""}
+        ${ESC.groups.map(g => `<h2 class="sub-h">${esc(g.name)}</h2><div class="shows">${g.shows.map(id => {
+          const s = ESC.shows[id], d = escDone(id), n = s.scenes.length;
+          return `<button class="show-card ${d === n ? "done" : ""}" data-act="sc-show" data-show="${id}" style="--c:${s.color}"><span class="show-emo" aria-hidden="true">${s.emoji}</span><b>${esc(s.name)}</b><span class="bar"><i style="width:${Math.round(d / n * 100)}%"></i></span><small>${d === n ? "¡Completada! " : ""}${d} de ${n} escenas</small></button>`;
+        }).join("")}</div>`).join("")}
+        <p class="note">Las frases son originales, escritas para practicar inglés a partir de situaciones de cada historia. No son citas de los guiones.</p>
+      </div>`;
+    return;
+  }
+  const show = ESC.shows[SC.show], i = SC.i, s = show.scenes[i], key = escKey(SC.show, i);
+  const toks = s.en.split(" "), solved = !!(S.esc || {})[key], showSol = solved || SC.shown;
+  let body;
+  if (showSol) {
+    body = `<div class="zone ok">${toks.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+      <p class="verdict ${solved ? "ok" : "no"}">${solved ? "¡Correcto! Así lo dijo." : "Esta es la frase."}</p>
+      <div class="reveal"><span class="en">${esc(s.en)} ${sayBtn(s.en, "Escuchar", false, s.g)}</span><span class="es">${esc(s.es)}</span></div>
+      <p class="rule"><strong>Por qué va en este orden:</strong> ${esc(s.why)}</p>
+      <div class="next-step" style="padding:0">${!solved ? `<button class="linkbtn" data-act="sc-retry" style="margin-right:auto">Intentar otra vez</button>` : ""}<button class="btn primary" data-act="sc-next">${i < show.scenes.length - 1 ? "Siguiente escena →" : "Terminar " + esc(show.name) + " ✓"}</button></div>`;
+  } else {
+    const order = shuffleIdx(toks.length, sceneSeed(key));
+    const zone = SC.picked.length ? SC.picked.map((ti, pi) => `<button class="chip" data-act="sc-unpick" data-i="${pi}">${esc(toks[ti])}</button>`).join("") : '<span class="placeholder">Toca las palabras en orden</span>';
+    const bank = order.filter(x => !SC.picked.includes(x)).map(x => `<button class="chip" data-act="sc-pick" data-i="${x}">${esc(toks[x])}</button>`).join("");
+    body = `<div class="zone ${SC.bad ? "bad" : ""}">${zone}</div>
+      <div class="bank">${bank}</div>
+      ${SC.bad ? `<p class="verdict no">Casi. Toca una palabra para quitarla y prueba otro orden.</p><p class="note">Pista: ${esc(s.why)}</p>` : ""}
+      <div><button class="linkbtn" data-act="sc-solve">Ver la frase</button></div>`;
+  }
+  scEl.innerHTML = `<div class="mhead"><div class="inner">
+      <nav class="crumbs"><a href="#practicar">Practicar</a> / <a href="#escenas" data-act="sc-back">Escenas</a> / ${esc(show.name)}</nav>
+      <h1>${show.emoji} ${esc(show.name)}</h1>
+      <div class="mprog"><div class="bar light"><i style="width:${Math.round(escDone(SC.show) / show.scenes.length * 100)}%"></i></div><span>Escena ${i + 1} de ${show.scenes.length}</span></div>
+    </div></div>
+    <div class="inner tutor-body"><div class="scene-wrap">
+      <div class="scene-steps" aria-hidden="true">${show.scenes.map((_, j) => `<i class="${(S.esc || {})[escKey(SC.show, j)] ? "ok" : j === i ? "now" : ""}"></i>`).join("")}</div>
+      <article class="card">
+        <div class="scene-box" style="--c:${show.color}"><span class="scene-emo" aria-hidden="true">🎬</span><div class="scene-txt"><span class="eyebrow">La escena · ${esc(s.lvl)}</span><span>${esc(s.scene)}</span></div></div>
+        <p class="scene-who"><b>${esc(s.who)}</b> dice:</p>
+        <p class="q-text">«${esc(s.es)}»</p>
+        <p class="note">Ordena la frase en inglés.</p>
+        ${body}
+      </article>
+    </div></div>`;
+}
+function openShow(id) {
+  const n = ESC.shows[id].scenes.length; let i = 0;
+  while (i < n && (S.esc || {})[escKey(id, i)]) i++;
+  Object.assign(SC, { show: id, i: i < n ? i : 0, picked: [], bad: false, shown: false, msg: "" });
+}
+document.addEventListener("click", e => {
+  const ka = e.target.closest("a[data-ka]");
+  if (ka) { S.ka = S.ka || {}; S.ka[ka.dataset.ka] = 1; save(); setTimeout(renderKaraoke, 300); return; }
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "say" && viEl && !viEl.hidden && b.classList.contains("vphrase")) {
+    S.vi = S.vi || {}; if (!S.vi[b.dataset.say]) { S.vi[b.dataset.say] = 1; save(); b.classList.add("heard"); }
+    return;
+  }
+  if (!act.startsWith("sc-") || !ESC) return;
+  if (act === "sc-back") { e.preventDefault(); SC.show = null; SC.msg = ""; renderEscenas(); window.scrollTo(0, 0); return; }
+  if (act === "sc-show") { openShow(b.dataset.show); renderEscenas(); window.scrollTo(0, 0); return; }
+  const show = ESC.shows[SC.show]; if (!show) return;
+  const s = show.scenes[SC.i], key = escKey(SC.show, SC.i), toks = s.en.split(" ");
+  if (act === "sc-pick") {
+    SC.picked.push(+b.dataset.i); SC.bad = false;
+    if (SC.picked.length === toks.length) {
+      if (SC.picked.map(x => toks[x]).join(" ") === s.en) { S.esc = S.esc || {}; S.esc[key] = 1; save(); say(s.en, false, s.g); }
+      else SC.bad = true;
+    }
+  } else if (act === "sc-unpick") { SC.picked.splice(+b.dataset.i, 1); SC.bad = false; }
+  else if (act === "sc-solve") { SC.shown = true; say(s.en, false, s.g); }
+  else if (act === "sc-retry") { SC.shown = false; SC.picked = []; SC.bad = false; }
+  else if (act === "sc-next") {
+    if (SC.i < show.scenes.length - 1) { SC.i++; SC.picked = []; SC.bad = false; SC.shown = false; }
+    else { const d = escDone(SC.show), n = show.scenes.length; SC.msg = d === n ? `¡Completaste ${show.name}! Elige otra serie para seguir.` : `Terminaste ${show.name}: acertaste ${d} de ${n}. Puedes volver a intentarlo cuando quieras.`; SC.show = null; }
+    renderEscenas(); window.scrollTo(0, 0); return;
+  }
+  renderEscenas();
+});
+
 /* ---------- Rutas ---------- */
 const landEl = document.getElementById("landing");
 const profEl = document.getElementById("perfil");
 const viEl = document.getElementById("viajes");
-const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl, viajes: viEl, admin: adEl, premium: prEl };
+const VIEWS = { landing: landEl, module: modEl, tutor: tutorEl, karaoke: kaEl, perfil: profEl, nivel: lvEl, viajes: viEl, admin: adEl, practicar: pcEl, escenas: scEl };
 function showView(name) {
   Object.entries(VIEWS).forEach(([k, el]) => { el.hidden = k !== name; });
-  document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.v === name));
+  document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.v.split(" ").includes(name)));
 }
 function route() {
   const h = location.hash;
@@ -2574,7 +2645,6 @@ function route() {
     showView("module");
     if (!DATA.length) { modEl.innerHTML = '<div class="inner loading">Cargando el módulo…</div>'; return; }
     const m = +mm[1] - 1; const st = S.tab[m];
-    if (m > 0 && !isPremium()) { view.m = null; renderPaywall(m); window.scrollTo(0, 0); return; }
     view.m = m; view.tab = TABS.some(t => t[0] === st) ? st : "leccion"; T.tr = false;
     renderModule(); window.scrollTo(0, 0);
   } else if (h === "#tutor") { view.m = null; showView("tutor"); renderTutor(); window.scrollTo(0, 0); }
@@ -2582,7 +2652,8 @@ function route() {
   else if (h === "#perfil") { view.m = null; showView("perfil"); renderProfile(); window.scrollTo(0, 0); }
   else if (h === "#cuenta") { view.m = null; showView("perfil"); renderProfile(); const a = document.getElementById("accCard"); if (a) a.scrollIntoView(); else window.scrollTo(0, 0); }
   else if (h === "#viajes") { view.m = null; showView("viajes"); renderViajes(); window.scrollTo(0, 0); }
-  else if (h === "#premium") { view.m = null; showView("premium"); renderPremium(); window.scrollTo(0, 0); }
+  else if (h === "#practicar" || h === "#premium") { view.m = null; showView("practicar"); renderPracticar(); window.scrollTo(0, 0); }
+  else if (h === "#escenas") { view.m = null; showView("escenas"); renderEscenas(); window.scrollTo(0, 0); }
   else if (h === "#admin") { view.m = null; showView("admin"); if (AD.key && !AD.users) adminLoad(); else renderAdmin(); window.scrollTo(0, 0); }
   else if (h === "#nivel") { view.m = null; showView("nivel"); renderLevel(); window.scrollTo(0, 0); }
   else {
@@ -2598,10 +2669,8 @@ window.addEventListener("hashchange", route);
 /* ---------- Arranque ---------- */
 document.getElementById("demo").innerHTML = demoCard();
 updateProfileBtn();
-renderLandingPlans();
-loadPlan();
 renderProgram();
-renderTopicGroups();
+renderHomeHub();
 route();
 Promise.all([1, 2, 3, 4, 5, 6].map(n => fetch(`data/m${n}.json`).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })))
   .then(d => { DATA = d; updateProgress(); if (/^#modulo-/.test(location.hash)) route(); })
