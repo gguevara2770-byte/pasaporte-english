@@ -649,6 +649,16 @@ details.lesson:not([open]) { gap: 0; }
 .vphrase.heard .en::after { content: " ✓"; color: var(--ok); }
 @media (max-width: 720px) { .hub { grid-template-columns: 1fr; } .shows { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+.vid { display: grid; gap: .6rem; background: #0B0B12; border-radius: 16px; padding: 10px; box-shadow: 0 12px 30px rgb(0 0 0 / .25); }
+.vid-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #000; }
+.vid-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.vid-tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
+.vid-tabs .chip { background: #22222E; color: #E8EAF6; border-color: #33334A; font-weight: 600; font-size: .85rem; }
+.vid-tabs .chip.on { background: var(--brand); border-color: var(--brand); color: #fff; }
+.vid-help { color: #E8EAF6; font-size: .88rem; }
+.vid-help summary { cursor: pointer; font-weight: 700; color: #FFE58A; }
+.vid-help ol { margin: .4rem 0 0; padding-left: 1.2rem; display: grid; gap: .2rem; }
+.vid-src { color: #9AA3C7; font-size: .8rem; margin: 0; }
 .cine { background: #0B0B12; border-radius: 16px; padding: 10px; box-shadow: 0 12px 30px rgb(0 0 0 / .25); }
 .cine-screen { position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: var(--bg); isolation: isolate; }
 .cine-screen::before, .cine-screen::after { content: ""; position: absolute; left: 0; right: 0; height: 7%; background: #000; z-index: 5; }
@@ -729,7 +739,7 @@ details.lesson:not([open]) { gap: 0; }
           <div><b>6</b><span>módulos</span></div>
           <div><b>24</b><span>lecciones</span></div>
           <div><b>240</b><span>ejercicios</span></div>
-          <div><b>49</b><span>escenas de películas</span></div>
+          <div><b>49</b><span>escenas con video</span></div>
         </div>
       </div>
       <div class="demo-wrap">
@@ -2586,7 +2596,7 @@ function renderEscenas() {
     scEl.innerHTML = `<div class="mhead"><div class="inner">
         <nav class="crumbs"><a href="#practicar">Practicar</a> / Escenas</nav>
         <h1>Escenas de películas y caricaturas</h1>
-        <p class="goal">Lee lo que pasa en la escena y ordena en inglés lo que dijo el personaje. Al acertar, escuchas la frase y ves por qué va en ese orden.</p>
+        <p class="goal">Mira el video original con subtítulos y después ordena en inglés lo que dice el personaje. Al acertar, escuchas la frase y ves por qué va en ese orden.</p>
         <div class="mprog"><div class="bar light"><i style="width:${p}%"></i></div><span>${done} de ${total} escenas</span></div>
       </div></div>
       <div class="inner tutor-body">
@@ -2595,13 +2605,12 @@ function renderEscenas() {
           const s = ESC.shows[id], d = escDone(id), n = s.scenes.length;
           return `<button class="show-card ${d === n ? "done" : ""}" data-act="sc-show" data-show="${id}" style="--c:${s.color}"><span class="show-emo" aria-hidden="true">${s.emoji}</span><b>${esc(s.name)}</b><span class="bar"><i style="width:${Math.round(d / n * 100)}%"></i></span><small>${d === n ? "¡Completada! " : ""}${d} de ${n} escenas</small></button>`;
         }).join("")}</div>`).join("")}
-        <p class="note">Las frases son originales, escritas para practicar inglés a partir de situaciones de cada historia. No son citas de los guiones.</p>
+        <p class="note">Cada serie tiene videos oficiales de YouTube con subtítulos. Las frases para ordenar son ejercicios escritos para practicar con estos personajes; no son el diálogo exacto de los videos.</p>
       </div>`;
     return;
   }
   const show = ESC.shows[SC.show], i = SC.i, s = show.scenes[i], key = escKey(SC.show, i);
   const toks = s.en.split(" "), solved = !!(S.esc || {})[key], showSol = solved || SC.shown;
-  const oldCine = document.querySelector("#escenas .cine");
   let body;
   if (showSol) {
     body = `<div class="zone ok">${toks.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
@@ -2618,23 +2627,45 @@ function renderEscenas() {
       ${SC.bad ? `<p class="verdict no">Casi. Toca una palabra para quitarla y prueba otro orden.</p><p class="note">Pista: ${esc(s.why)}</p>` : ""}
       <div><button class="linkbtn" data-act="sc-solve">Ver la frase</button></div>`;
   }
-  scEl.innerHTML = `<div class="mhead"><div class="inner">
-      <nav class="crumbs"><a href="#practicar">Practicar</a> / <a href="#escenas" data-act="sc-back">Escenas</a> / ${esc(show.name)}</nav>
-      <h1>${show.emoji} ${esc(show.name)}</h1>
-      <div class="mprog"><div class="bar light"><i style="width:${Math.round(escDone(SC.show) / show.scenes.length * 100)}%"></i></div><span>Escena ${i + 1} de ${show.scenes.length}</span></div>
-    </div></div>
-    <div class="inner tutor-body"><div class="scene-wrap">
-      <div class="scene-steps" aria-hidden="true">${show.scenes.map((_, j) => `<i class="${(S.esc || {})[escKey(SC.show, j)] ? "ok" : j === i ? "now" : ""}"></i>`).join("")}</div>
+  const prog = `<div class="bar light"><i style="width:${Math.round(escDone(SC.show) / show.scenes.length * 100)}%"></i></div><span>Práctica ${i + 1} de ${show.scenes.length}</span>`;
+  const play = `<div class="scene-steps" aria-hidden="true">${show.scenes.map((_, j) => `<i class="${(S.esc || {})[escKey(SC.show, j)] ? "ok" : j === i ? "now" : ""}"></i>`).join("")}</div>
       <article class="card">
-        ${cineHtml(show, s, i, solved || SC.shown)}
         <p class="scene-who"><span class="eyebrow">La escena · ${esc(s.lvl)}</span><br>${esc(s.scene)}</p>
         <p class="q-text"><b>${esc(s.who)}:</b> «${esc(s.es)}»</p>
         <p class="note">Ordena la frase en inglés.</p>
         ${body}
-      </article>
+      </article>`;
+  // El video no se vuelve a dibujar mientras practicas, para que no se detenga.
+  const vk = SC.show + "-" + (SC.vid || 0), cur = document.getElementById("scVid");
+  if (cur && cur.dataset.k === vk) {
+    document.getElementById("scPlay").innerHTML = play;
+    document.getElementById("scProg").innerHTML = prog;
+    return;
+  }
+  scEl.innerHTML = `<div class="mhead"><div class="inner">
+      <nav class="crumbs"><a href="#practicar">Practicar</a> / <a href="#escenas" data-act="sc-back">Escenas</a> / ${esc(show.name)}</nav>
+      <h1>${show.emoji} ${esc(show.name)}</h1>
+      <div class="mprog" id="scProg">${prog}</div>
+    </div></div>
+    <div class="inner tutor-body"><div class="scene-wrap">
+      ${videoHtml(show, vk)}
+      <div id="scPlay" class="scene-wrap" style="max-width:none">${play}</div>
     </div></div>`;
-  const nc = scEl.querySelector(".cine");
-  if (oldCine && nc && oldCine.dataset.k === nc.dataset.k) { oldCine.querySelector(".cine-screen").classList.add("cine-still"); nc.replaceWith(oldCine); }
+}
+function videoHtml(show, vk) {
+  const vids = show.videos || [];
+  if (!vids.length) return "";
+  const v = vids[SC.vid || 0] || vids[0];
+  const src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(v.id) + "?cc_load_policy=1&cc_lang_pref=en&hl=es&rel=0&playsinline=1";
+  return `<section class="vid" id="scVid" data-k="${esc(vk)}" aria-label="Video original">
+    <div class="vid-frame"><iframe src="${src}" title="${esc(show.name)}: ${esc(v.t)}" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    ${vids.length > 1 ? `<div class="vid-tabs">${vids.map((x, j) => `<button class="chip ${x === v ? "on" : ""}" data-act="sc-vid" data-i="${j}">🎬 ${esc(x.t)}</button>`).join("")}</div>` : `<div class="vid-tabs"><span class="chip on">🎬 ${esc(v.t)}</span></div>`}
+    <details class="vid-help"><summary>Cómo ver la traducción al español</summary>
+      <ol><li>Los subtítulos en inglés se activan solos. Si no aparecen, pulsa el botón <b>CC</b>.</li>
+      <li>Para verlos en español: pulsa ⚙️ <b>Configuración</b> → <b>Subtítulos</b> → <b>Traducir automáticamente</b> → <b>Español</b>.</li>
+      <li>Truco: mira el clip primero con subtítulos en inglés y repítelo en español solo si no entendiste.</li></ol></details>
+    <p class="vid-src">Video oficial de ${esc(show.canal || "YouTube")}, reproducido desde YouTube.</p>
+  </section>`;
 }
 let cineTimer = null, cineLive = false;
 function cineHtml(show, s, i, revealed) {
@@ -2661,7 +2692,7 @@ function playScene(withVoice) {
 function openShow(id) {
   const n = ESC.shows[id].scenes.length; let i = 0;
   while (i < n && (S.esc || {})[escKey(id, i)]) i++;
-  Object.assign(SC, { show: id, i: i < n ? i : 0, picked: [], bad: false, shown: false, msg: "" });
+  Object.assign(SC, { show: id, i: i < n ? i : 0, vid: 0, picked: [], bad: false, shown: false, msg: "" });
 }
 document.addEventListener("click", e => {
   const ka = e.target.closest("a[data-ka]");
@@ -2675,6 +2706,7 @@ document.addEventListener("click", e => {
   if (!act.startsWith("sc-") || !ESC) return;
   if (act === "sc-back") { e.preventDefault(); SC.show = null; SC.msg = ""; renderEscenas(); window.scrollTo(0, 0); return; }
   if (act === "sc-show") { openShow(b.dataset.show); renderEscenas(); window.scrollTo(0, 0); return; }
+  if (act === "sc-vid") { SC.vid = +b.dataset.i; renderEscenas(); return; }
   clearTimeout(cineTimer);
   const show = ESC.shows[SC.show]; if (!show) return;
   const s = show.scenes[SC.i], key = escKey(SC.show, SC.i), toks = s.en.split(" ");
