@@ -658,6 +658,7 @@ details.lesson:not([open]) { gap: 0; }
 .vid-help { color: #E8EAF6; font-size: .88rem; }
 .vid-help summary { cursor: pointer; font-weight: 700; color: #FFE58A; }
 .vid-help ol { margin: .4rem 0 0; padding-left: 1.2rem; display: grid; gap: .2rem; }
+.moment { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; }
 .vid-src { color: #9AA3C7; font-size: .8rem; margin: 0; }
 .cine { background: #0B0B12; border-radius: 16px; padding: 10px; box-shadow: 0 12px 30px rgb(0 0 0 / .25); }
 .cine-screen { position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: var(--bg); isolation: isolate; }
@@ -739,7 +740,7 @@ details.lesson:not([open]) { gap: 0; }
           <div><b>6</b><span>módulos</span></div>
           <div><b>24</b><span>lecciones</span></div>
           <div><b>240</b><span>ejercicios</span></div>
-          <div><b>49</b><span>escenas con video</span></div>
+          <div><b>45</b><span>frases de películas</span></div>
         </div>
       </div>
       <div class="demo-wrap">
@@ -2551,8 +2552,8 @@ fetch("data/escenas.json").then(r => r.json()).then(d => {
   ESC = d; renderHomeHub();
   if (location.hash === "#escenas") renderEscenas(); else if (location.hash === "#practicar") renderPracticar();
 }).catch(() => {});
-function escKey(show, i) { return show + "-" + i; }
-function escTotal() { return ESC ? Object.values(ESC.shows).reduce((n, s) => n + s.scenes.length, 0) : 49; }
+function escKey(show, i) { return "v3-" + show + "-" + i; }
+function escTotal() { return ESC ? Object.values(ESC.shows).reduce((n, s) => n + s.scenes.length, 0) : 45; }
 function escDone(show) {
   const d = S.esc || {};
   if (show) return ESC.shows[show].scenes.filter((_, i) => d[escKey(show, i)]).length;
@@ -2596,7 +2597,7 @@ function renderEscenas() {
     scEl.innerHTML = `<div class="mhead"><div class="inner">
         <nav class="crumbs"><a href="#practicar">Practicar</a> / Escenas</nav>
         <h1>Escenas de películas y caricaturas</h1>
-        <p class="goal">Mira el video original con subtítulos y después ordena en inglés lo que dice el personaje. Al acertar, escuchas la frase y ves por qué va en ese orden.</p>
+        <p class="goal">Mira el momento del video original, escucha lo que dice el personaje y ordena la frase en inglés. Al acertar, ves por qué va en ese orden.</p>
         <div class="mprog"><div class="bar light"><i style="width:${p}%"></i></div><span>${done} de ${total} escenas</span></div>
       </div></div>
       <div class="inner tutor-body">
@@ -2605,7 +2606,7 @@ function renderEscenas() {
           const s = ESC.shows[id], d = escDone(id), n = s.scenes.length;
           return `<button class="show-card ${d === n ? "done" : ""}" data-act="sc-show" data-show="${id}" style="--c:${s.color}"><span class="show-emo" aria-hidden="true">${s.emoji}</span><b>${esc(s.name)}</b><span class="bar"><i style="width:${Math.round(d / n * 100)}%"></i></span><small>${d === n ? "¡Completada! " : ""}${d} de ${n} escenas</small></button>`;
         }).join("")}</div>`).join("")}
-        <p class="note">Cada serie tiene videos oficiales de YouTube con subtítulos. Las frases para ordenar son ejercicios escritos para practicar con estos personajes; no son el diálogo exacto de los videos.</p>
+        <p class="note">Cada serie tiene un video oficial de YouTube. Cada ejercicio es una frase que se dice en ese video, con el minuto exacto para que la escuches.</p>
       </div>`;
     return;
   }
@@ -2627,12 +2628,13 @@ function renderEscenas() {
       ${SC.bad ? `<p class="verdict no">Casi. Toca una palabra para quitarla y prueba otro orden.</p><p class="note">Pista: ${esc(s.why)}</p>` : ""}
       <div><button class="linkbtn" data-act="sc-solve">Ver la frase</button></div>`;
   }
-  const prog = `<div class="bar light"><i style="width:${Math.round(escDone(SC.show) / show.scenes.length * 100)}%"></i></div><span>Práctica ${i + 1} de ${show.scenes.length}</span>`;
+  const prog = `<div class="bar light"><i style="width:${Math.round(escDone(SC.show) / show.scenes.length * 100)}%"></i></div><span>Momento ${i + 1} de ${show.scenes.length}</span>`;
   const play = `<div class="scene-steps" aria-hidden="true">${show.scenes.map((_, j) => `<i class="${(S.esc || {})[escKey(SC.show, j)] ? "ok" : j === i ? "now" : ""}"></i>`).join("")}</div>
       <article class="card">
-        <p class="scene-who"><span class="eyebrow">La escena · ${esc(s.lvl)}</span><br>${esc(s.scene)}</p>
-        <p class="q-text"><b>${esc(s.who)}:</b> «${esc(s.es)}»</p>
-        <p class="note">Ordena la frase en inglés.</p>
+        <div class="moment"><span class="eyebrow">Momento ${mmss(s.t)} – ${mmss(s.end)} · ${esc(s.lvl)}</span><button class="btn small primary" data-act="sc-moment">▶ Ver este momento</button></div>
+        <p class="scene-who">${esc(s.scene)}</p>
+        <p class="q-text"><b>${esc(s.who)}</b> dice: «${esc(s.es)}»</p>
+        <p class="note">Escucha el momento y ordena en inglés lo que dijo.</p>
         ${body}
       </article>`;
   // El video no se vuelve a dibujar mientras practicas, para que no se detenga.
@@ -2640,6 +2642,8 @@ function renderEscenas() {
   if (cur && cur.dataset.k === vk) {
     document.getElementById("scPlay").innerHTML = play;
     document.getElementById("scProg").innerHTML = prog;
+    const fr = cur.querySelector("iframe");
+    if (fr && fr.dataset.t !== String(s.t)) { fr.dataset.t = String(s.t); fr.src = vidSrc(show, s, false); }
     return;
   }
   scEl.innerHTML = `<div class="mhead"><div class="inner">
@@ -2648,17 +2652,22 @@ function renderEscenas() {
       <div class="mprog" id="scProg">${prog}</div>
     </div></div>
     <div class="inner tutor-body"><div class="scene-wrap">
-      ${videoHtml(show, vk)}
+      ${videoHtml(show, vk, s)}
       <div id="scPlay" class="scene-wrap" style="max-width:none">${play}</div>
     </div></div>`;
 }
-function videoHtml(show, vk) {
+function mmss(t) { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"); }
+function vidSrc(show, s, play) {
+  const v = (show.videos || [])[SC.vid || 0] || show.videos[0];
+  return "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(v.id) + "?cc_load_policy=1&cc_lang_pref=en&hl=es&rel=0&playsinline=1&start=" + (s.t || 0) + (s.end ? "&end=" + s.end : "") + (play ? "&autoplay=1" : "");
+}
+function videoHtml(show, vk, s) {
   const vids = show.videos || [];
   if (!vids.length) return "";
   const v = vids[SC.vid || 0] || vids[0];
-  const src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(v.id) + "?cc_load_policy=1&cc_lang_pref=en&hl=es&rel=0&playsinline=1";
+  const src = vidSrc(show, s, false);
   return `<section class="vid" id="scVid" data-k="${esc(vk)}" aria-label="Video original">
-    <div class="vid-frame"><iframe src="${src}" title="${esc(show.name)}: ${esc(v.t)}" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    <div class="vid-frame"><iframe data-t="${s.t || 0}" src="${src}" title="${esc(show.name)}: ${esc(v.t)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
     ${vids.length > 1 ? `<div class="vid-tabs">${vids.map((x, j) => `<button class="chip ${x === v ? "on" : ""}" data-act="sc-vid" data-i="${j}">🎬 ${esc(x.t)}</button>`).join("")}</div>` : `<div class="vid-tabs"><span class="chip on">🎬 ${esc(v.t)}</span></div>`}
     <details class="vid-help"><summary>Cómo ver la traducción al español</summary>
       <ol><li>Los subtítulos en inglés se activan solos. Si no aparecen, pulsa el botón <b>CC</b>.</li>
@@ -2717,6 +2726,11 @@ document.addEventListener("click", e => {
       else SC.bad = true;
     }
   } else if (act === "sc-unpick") { SC.picked.splice(+b.dataset.i, 1); SC.bad = false; }
+  else if (act === "sc-moment") {
+    const fr = document.querySelector("#scVid iframe");
+    if (fr) { fr.dataset.t = String(s.t); fr.src = vidSrc(show, s, true); document.getElementById("scVid").scrollIntoView({ behavior: "smooth", block: "start" }); }
+    return;
+  }
   else if (act === "sc-solve") { SC.shown = true; cineLive = true; say(s.en, false, s.g); }
   else if (act === "sc-play") {
     const revealed = !!(S.esc || {})[key] || SC.shown;
