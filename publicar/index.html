@@ -724,6 +724,37 @@ details.lesson:not([open]) { gap: 0; }
 .ex-line { font-size: .85rem; color: var(--muted); }
 .ex-line.ok { color: var(--ok); font-weight: 700; }
 
+.ps-q { display: grid; gap: .5rem; padding: .8rem 0; border-top: 1px solid var(--line); }
+.ps-q:first-of-type { border-top: 0; }
+.ps-q b { font-size: 1rem; }
+.ps-opts { display: flex; flex-wrap: wrap; gap: .45rem; }
+.ps-opt { font: inherit; cursor: pointer; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 99px; padding: .4rem .85rem; font-size: .92rem; }
+.ps-opt:hover { border-color: var(--brand); }
+.ps-opt.on { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 700; }
+.plan-card { display: grid; gap: 1rem; }
+.plan-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; }
+.plan-kpis div { background: var(--surface-2); border-radius: 12px; padding: .7rem .8rem; display: grid; gap: .15rem; }
+.plan-kpis b { font-family: var(--f-display); font-size: 1.35rem; }
+.plan-kpis span { color: var(--muted); font-size: .82rem; }
+.plan-alert { border-radius: 12px; padding: .75rem .9rem; background: var(--ok-soft); }
+.plan-alert.warn { background: #FFF8E1; border-left: 4px solid #E0A800; }
+.plan-week { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.plan-week li { display: grid; grid-template-columns: 92px 1fr; gap: .7rem; align-items: start; background: var(--surface-2); border-radius: 10px; padding: .6rem .75rem; }
+.plan-week li.rest { opacity: .7; }
+.plan-week .day { font-weight: 700; }
+.plan-week .what b { display: block; }
+.plan-week .what span { color: var(--muted); font-size: .9rem; }
+.plan-sess { display: grid; gap: .35rem; margin: 0; padding: 0; list-style: none; }
+.plan-sess li { display: flex; justify-content: space-between; gap: .6rem; border-bottom: 1px dashed var(--line); padding: .3rem 0; }
+.plan-sess li em { font-style: normal; font-weight: 700; color: var(--brand); white-space: nowrap; }
+.plan-time { display: grid; gap: .3rem; margin: 0; padding-left: 1.1rem; }
+.hero-today { margin-top: .9rem; display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--brand); border-radius: 12px; padding: .7rem .9rem; box-shadow: var(--shadow); max-width: 560px; }
+.hero-today span { flex: 1; min-width: 200px; }
+.readx { display: grid; gap: .8rem; }
+.readx summary { cursor: pointer; font-weight: 700; font-family: var(--f-display); font-size: 1.1rem; }
+.readx .tipo { font-size: .78rem; font-weight: 700; background: var(--brand-soft); color: var(--brand); border-radius: 99px; padding: .15rem .55rem; margin-left: .4rem; vertical-align: middle; }
+@media (max-width: 720px) { .plan-kpis { grid-template-columns: 1fr 1fr; } .plan-week li { grid-template-columns: 1fr; gap: .2rem; } }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -758,6 +789,7 @@ details.lesson:not([open]) { gap: 0; }
         </div>
         <p class="hero-level" id="heroLogin"><a href="#cuenta">Inicia sesión</a> para continuar donde te quedaste desde cualquier celular o computadora.</p>
         <div class="hero-prog" id="heroProg" hidden></div>
+        <div class="hero-today" id="heroToday" hidden></div>
         <p class="hero-level" id="heroLevel">¿Ya tienes base? El test de nivel te dice en 10 minutos desde qué módulo empezar.</p>
         <div class="stats">
           <div><b>6</b><span>módulos</span></div>
@@ -962,7 +994,7 @@ function keysFor(m, tab) {
     vocabulario: d.vocab.w.map((_, k) => `${m}:v:${k}`),
     practica: d.grammar.map((_, k) => `${m}:g:${k}`).concat(d.order.map((_, k) => `${m}:o:${k}`)),
     voz: d.listen.map((_, k) => `${m}:li:${k}`).concat(d.speak.p.map((_, k) => `${m}:sp:${k}`), d.speak.q.map((_, k) => `${m}:sq:${k}`)),
-    lectura: d.read.qs.map((_, k) => `${m}:rd:${k}`),
+    lectura: d.read.qs.map((_, k) => `${m}:rd:${k}`).concat(...(d.readx || []).map((x, j) => x.qs.map((_, k) => `${m}:x${j}:${k}`))),
     examen: []
   };
   return tab ? map[tab] : Object.values(map).flat();
@@ -985,14 +1017,14 @@ function updateProgress() {
   if (started) { hc.href = "#modulo-" + (next + 1); hc.textContent = `Continuar en el módulo ${next + 1}`; hz.href = "#tutor"; hz.textContent = "Conversar con el tutor IA"; }
   else if (LV) { hc.href = "#modulo-" + (next + 1); hc.textContent = `Empezar en el módulo ${next + 1}`; hz.href = "#tutor"; hz.textContent = "Conversar con el tutor IA"; }
   else { hc.href = "#nivel"; hc.textContent = "Hacer el test de nivel"; hz.href = "#modulo-1"; hz.textContent = "Empezar desde cero"; }
-  hl.innerHTML = LV ? `Tu nivel según el test: <strong>${esc(LV.level)}</strong>. Te recomendamos el módulo ${LV.start + 1}. <a href="#nivel">Ver resultado o repetir el test</a>`
+  hl.innerHTML = LV ? `Tu nivel según el test: <strong>${esc(LV.level)}</strong>. Te recomendamos el módulo ${LV.start + 1}. ${S.plan ? '<a href="#plan">Ver mi plan de estudio</a>' : '<a href="#plan"><strong>Ahora arma tu plan de estudio →</strong></a>'}`
     : "¿Ya tienes base? El test de nivel te dice en 10 minutos desde qué módulo empezar.";
   const hp = document.getElementById("heroProg");
   if (hp) {
     hp.hidden = !started;
     if (started) hp.innerHTML = `<b>Tu avance: ${o}% del curso</b><div class="bar"><i style="width:${o}%"></i></div><small>Siguiente: módulo ${next + 1} · ${esc(MODS[next].title)}</small>`;
   }
-  renderProgram(); renderHomeHub();
+  renderProgram(); renderHomeHub(); renderToday(next);
   if (view.m != null) {
     const p = Math.round(pct(view.m) * 100);
     const bar = document.getElementById("mBar"); if (bar) bar.style.width = p + "%";
@@ -1097,6 +1129,28 @@ function listenCard(m, k) {
     top: `<div class="listen-box"><button class="btn primary play" data-act="say" data-say="${esc(L.s)}">${ICON.speaker} Reproducir</button><button class="btn" data-act="say" data-slow="1" data-say="${esc(L.s)}">${ICON.slow} Lento</button><p class="audio-only">Escucha las veces que necesites y elige la frase que oíste.</p></div>`,
     reveal: `<div class="reveal"><span class="eyebrow">Lo que se dijo</span><span class="en">${esc(L.s)}</span><span class="es">${esc(L.es)}</span></div>` });
 }
+function readXCard(m, j, k) {
+  const R = DATA[m].readx[j], q = R.qs[k], key = `${m}:x${j}:${k}`;
+  return mcq({ key, label: `Pregunta ${k + 1} de ${R.qs.length}`, opts: q.o, a: q.a, stack: true,
+    top: `<p class="q-text">${esc(q.q)}</p><p class="es">${esc(q.es)}</p>` });
+}
+const TRX = {};
+function readXHtml(m, j) {
+  const R = DATA[m].readx[j], ks = R.qs.map((_, k) => `${m}:x${j}:${k}`), d = doneOf(ks), open = TRX["o" + m + "-" + j];
+  return `<details class="card reading" data-rx="${m}-${j}" ${open ? "open" : ""}><summary>${esc(R.t)}<span class="tipo">${esc(R.tipo)}</span> <span class="note">· ${d}/${ks.length}</span></summary>
+    <div class="row" style="margin-top:.6rem">${sayBtn(R.en, "Escuchar el texto")}<button class="btn small" data-act="trx" data-rx="${m}-${j}">${TRX[m + "-" + j] ? "Ocultar traducción" : "Mostrar traducción"}</button></div>
+    <p class="text">${esc(R.en)}</p>
+    ${TRX[m + "-" + j] ? `<p class="text-es">${esc(R.es)}</p>` : ""}
+    <div class="grid one">${R.qs.map((_, k) => readXCard(m, j, k)).join("")}</div>
+  </details>`;
+}
+document.addEventListener("toggle", e => { const el = e.target; if (el.dataset && el.dataset.rx) { const [m, j] = el.dataset.rx.split("-"); TRX["o" + m + "-" + j] = el.open; } }, true);
+document.addEventListener("click", e => {
+  const b = e.target.closest('[data-act="trx"]'); if (!b) return;
+  TRX[b.dataset.rx] = !TRX[b.dataset.rx]; const [m, j] = b.dataset.rx.split("-").map(Number);
+  TRX["o" + m + "-" + j] = true;
+  const el = document.querySelector(`details[data-rx="${m}-${j}"]`); if (el) { const t = document.createElement("div"); t.innerHTML = readXHtml(m, j); el.replaceWith(t.firstElementChild); }
+});
 function readQCard(m, k) {
   const q = DATA[m].read.qs[k]; const key = `${m}:rd:${k}`;
   return mcq({ key, label: `Comprensión ${k + 1} de ${DATA[m].read.qs.length}`, opts: q.o, a: q.a, stack: true,
@@ -1199,6 +1253,7 @@ function orderCard(m, k) {
 function cardFor(key) {
   if (key === "demo") return demoCard();
   const [ms, t, ks] = key.split(":"); const m = +ms, k = +ks;
+  if (/^x\d+$/.test(t)) return readXCard(m, +t.slice(1), k);
   return { l: lessonCard, g: grammarCard, v: vocabCard, li: listenCard, sp: speakCard, sq: speakQCard, o: orderCard, r: readQCard }[t](m, k);
 }
 function refresh(key) {
@@ -1336,7 +1391,10 @@ function renderPanel() {
       <p class="text">${esc(d.read.en)}</p>
       ${T.tr ? `<p class="text-es">${esc(d.read.es)}</p>` : ""}
     </article>
-    ${d.read.qs.map((_, k) => readQCard(m, k)).join("")}</div>`;
+    ${d.read.qs.map((_, k) => readQCard(m, k)).join("")}</div>
+    ${d.readx && d.readx.length ? `<h3 class="sub-h" style="margin-top:2.5rem">Lecturas complementarias</h3>
+      <p class="note" style="margin-bottom:1rem">Textos extra del nivel, como en las lecturas de un instituto: artículos, testimonios y cuentos. Ábrelos cuando termines la lectura principal.</p>
+      <div class="readx">${d.readx.map((x, j) => readXHtml(m, j)).join("")}</div>` : ""}`;
   if (view.tab === "examen") html += examPanel(m);
   const ti = TABS.findIndex(t => t[0] === view.tab);
   if (ti < TABS.length - 1) html += `<div class="next-step"><button class="btn primary" data-act="tab" data-tab="${TABS[ti + 1][0]}" data-scroll="1">Siguiente: ${TABS[ti + 1][1]} →</button></div>`;
@@ -1847,7 +1905,9 @@ function renderProfile() {
       <h1>${PROFILE && PROFILE.names ? "Hola, " + esc(PROFILE.names.split(/\s+/)[0]) : "Mi perfil"}</h1>
       <p class="goal">${ACC.token ? "Tu progreso se guarda en tu cuenta: continúa donde te quedaste desde cualquier dispositivo." : "Inicia sesión para guardar tu progreso en la nube y continuar desde cualquier dispositivo."}</p>
     </div></div>
-    <div class="inner tutor-body"><div class="prof-grid">
+    <div class="inner tutor-body">
+      <div class="card" style="margin-bottom:1.2rem"><h2>Mi plan de estudio</h2>${S.plan ? `<p>${S.plan.days} días por semana · ${fmtMin(S.plan.mins)} por sesión · desde el módulo ${S.plan.start + 1}.</p><div class="row"><a class="btn primary" href="#plan">Ver mi plan</a></div>` : LV ? `<p class="note">Ya tienes tu nivel. Responde 5 preguntas y te armamos un plan.</p><div class="row"><a class="btn primary" href="#plan">Armar mi plan</a></div>` : `<p class="note">Primero haz el test de nivel. Después te armamos un plan según tu tiempo.</p><div class="row"><a class="btn primary" href="#nivel">Hacer el test de nivel</a></div>`}</div>
+      <div class="prof-grid">
       ${accountCardHtml()}
       <form class="card" id="profForm" novalidate>
         <h2>Datos personales</h2>
@@ -2065,6 +2125,7 @@ function renderLevel() {
       <span class="eyebrow">Tu resultado · ${esc(R.date)}</span>
       <div class="lt-level">${esc(R.level)}</div>
       <p>${esc(R.msg)}</p>
+      <p class="note">${S.plan ? "Tu plan de estudio está más abajo." : "<b>Paso 1 de 2 listo.</b> Más abajo arma tu plan de estudio según el tiempo que tienes."}</p>
       <div class="lt-rec"><span class="eyebrow">Te recomendamos empezar en</span><h3>Módulo ${R.start + 1}: ${esc(M.title)}</h3><p class="note">${esc(M.goal)}</p>
         <a class="btn primary" href="#modulo-${R.start + 1}">Empezar en el módulo ${R.start + 1}</a></div>
       <h3>Resultado por nivel</h3>
@@ -2072,14 +2133,15 @@ function renderLevel() {
       <p class="note">Un nivel se considera dominado con 3 de 4 respuestas correctas. El tutor IA usará el nivel ${esc(M.level)} por defecto.</p>
       <details class="lt-review"><summary>Ver mis respuestas y explicaciones</summary><ol>${review}</ol></details>
       <p><button class="linkbtn" data-act="lt-start">Repetir el test</button></p>
-    </div>`;
+    </div>
+    ${planSectionHtml()}`;
   }
   lvEl.innerHTML = `<div class="mhead"><div class="inner">
       <nav class="crumbs"><a href="#inicio">Inicio</a> / Test de nivel</nav>
       <h1>Test de nivel</h1>
       <p class="goal">Responde ${N} preguntas cortas y te diremos tu nivel y desde qué módulo empezar.</p>
     </div></div>
-    <div class="inner tutor-body"><div class="lt-wrap">${body}</div></div>`;
+    <div class="inner tutor-body"><div class="lt-wrap" style="display:grid;gap:1.2rem">${body}</div></div>`;
 }
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
@@ -2100,13 +2162,121 @@ document.addEventListener("click", e => {
   }
 });
 
+/* ---------- Plan de estudio personalizado ---------- */
+const PS_Q = [
+  { k: "goal", q: "¿Para qué quieres aprender inglés?", o: [["viajar", "Para viajar"], ["trabajo", "Para mi trabajo"], ["estudios", "Para estudios o un examen"], ["social", "Para conversar, series y música"]] },
+  { k: "days", q: "¿Cuántos días a la semana puedes estudiar?", o: [[2, "2 días"], [3, "3 días"], [4, "4 días"], [5, "5 días"], [6, "6 días"], [7, "Todos los días"]] },
+  { k: "mins", q: "¿Cuánto tiempo puedes estudiar cada uno de esos días?", o: [[15, "15 min"], [30, "30 min"], [45, "45 min"], [60, "1 hora"], [90, "1 hora y media"], [120, "2 horas"]] },
+  { k: "when", q: "¿En qué momento del día te queda mejor?", o: [["manana", "En la mañana"], ["mediodia", "Al mediodía"], ["tarde", "En la tarde"], ["noche", "En la noche"]] },
+  { k: "deadline", q: "¿Para cuándo quieres llegar a tu meta?", o: [[13, "En 3 meses"], [26, "En 6 meses"], [52, "En 1 año"], [0, "Sin apuro"]] }
+];
+const PS = { ans: {}, edit: false };
+const HOURS_PER_MODULE = 20;   // horas de estudio estimadas por módulo (lecciones, práctica, lectura, tutor y examen)
+const DAY_NAMES = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+const DAY_SETS = { 2: [1, 5], 3: [0, 2, 4], 4: [0, 1, 3, 5], 5: [0, 1, 2, 3, 4], 6: [0, 1, 2, 3, 4, 5], 7: [0, 1, 2, 3, 4, 5, 6] };
+const BLOCKS = [
+  { t: "Lección y gramática", d: "Lee la lección y resuelve la práctica de gramática y ordenar frases.", tab: "leccion" },
+  { t: "Vocabulario, escucha y habla", d: "Estudia las palabras del módulo, escucha y repite en voz alta.", tab: "vocabulario" },
+  { t: "Lectura", d: "Lee el texto del módulo y responde sus preguntas. En los módulos intermedios, suma una lectura complementaria.", tab: "lectura" },
+  { t: "Club de conversación", d: "Conversa con el tutor IA sobre un tema de tu meta y ordena una escena de película.", href: "#tutor" },
+  { t: "Repaso y examen", d: "Repasa lo que fallaste en la semana. Cuando termines el módulo, da el examen final.", tab: "examen" },
+  { t: "Práctica libre", d: "Escenas de películas, karaoke o frases para viajar: inglés para disfrutar.", href: "#practicar" }
+];
+const DAY_PLAN = { 2: [[0, 1], [2, 3, 4]], 3: [[0], [1, 3], [2, 4]], 4: [[0], [1], [2], [3, 4]], 5: [[0], [1], [2], [3], [4]], 6: [[0], [1], [2], [3], [0, 4], [5]], 7: [[0], [1], [2], [3], [1], [4], [5]] };
+const GOAL_TIPS = {
+  viajar: ["Una vez por semana, entra a «Inglés para viajar» y escucha las frases de la categoría de tu viaje.", "En el club de conversación, simula tu viaje con Sofía: migración, hotel y restaurante."],
+  trabajo: ["En el club de conversación, elige los temas de trabajo: entrevistas, reuniones o tu área profesional.", "Anota en un cuaderno 5 frases útiles para tu trabajo cada semana y úsalas con el tutor."],
+  estudios: ["Haz todas las lecturas complementarias y responde sus preguntas sin mirar la traducción.", "Apunta a 18 o más en cada examen final, no solo a aprobar."],
+  social: ["Dos veces por semana, ordena escenas de películas y canta una canción en el karaoke.", "Mira tu serie favorita con subtítulos en inglés al menos un capítulo por semana."]
+};
+const WHEN_TIPS = { manana: "Estudia antes de revisar redes sociales: tu mente está más fresca.", mediodia: "Usa tu hora de almuerzo: con audífonos puedes hacer la parte de escucha.", tarde: "Fija una hora fija, por ejemplo al llegar a casa, y pon una alarma.", noche: "Evita estudiar muy cansado: haz primero lo más difícil (gramática) y deja la escucha para el final." };
+function planStats(p) {
+  const weekly = p.days * p.mins, mods = 6 - p.start, total = mods * HOURS_PER_MODULE * 60;
+  const weeks = Math.ceil(total / weekly), perMod = Math.ceil(HOURS_PER_MODULE * 60 / weekly);
+  let need = null;
+  if (p.deadline && weeks > p.deadline) need = Math.ceil(total / p.deadline / p.days / 5) * 5;
+  return { weekly, mods, weeks, perMod, need };
+}
+function fmtMin(m) { const h = Math.floor(m / 60), r = m % 60; return h ? h + " h" + (r ? " " + r + " min" : "") : r + " min"; }
+function addWeeks(base, w) { const d = new Date(base); d.setDate(d.getDate() + w * 7); return d.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric" }); }
+function blockFor(p, dayIdx) { const set = DAY_SETS[p.days], pos = set.indexOf(dayIdx); return pos < 0 ? null : DAY_PLAN[p.days][pos].map(i => BLOCKS[i]); }
+function surveyHtml() {
+  const all = PS_Q.every(q => PS.ans[q.k] != null);
+  return `<div class="card" id="planCard">
+    <span class="eyebrow">Paso 2 de 2</span>
+    <h2>Arma tu plan de estudio</h2>
+    <p class="note">Cuéntanos cuánto tiempo tienes y te armamos un plan semana a semana, desde el módulo ${LV.start + 1}, con el método de las academias: presentación, práctica guiada, producción y repaso.</p>
+    ${PS_Q.map(q => `<div class="ps-q"><b>${q.q}</b><div class="ps-opts">${q.o.map(([v, l]) => `<button class="ps-opt ${PS.ans[q.k] === v ? "on" : ""}" data-act="ps-pick" data-k="${q.k}" data-v="${v}" aria-pressed="${PS.ans[q.k] === v}">${l}</button>`).join("")}</div></div>`).join("")}
+    <div class="row"><button class="btn primary" data-act="ps-make" ${all ? "" : "disabled"}>Crear mi plan</button>${S.plan ? '<button class="linkbtn" data-act="ps-cancel">Cancelar</button>' : ""}</div>
+  </div>`;
+}
+function planHtml(p) {
+  const st = planStats(p), base = p.created || Date.now(), M = MODS;
+  const goalName = PS_Q[0].o.find(o => o[0] === p.goal)[1].toLowerCase();
+  const alert = st.need
+    ? `<div class="plan-alert warn"><b>Con este ritmo terminarías en unas ${st.weeks} semanas</b> (más de lo que quieres). Para llegar a tiempo necesitarías unos <b>${st.need} minutos</b> al día, ${p.days} días a la semana${st.need > 120 ? ", o sumar más días" : ""}. También puedes quedarte con tu ritmo: lo importante es no parar.</div>`
+    : `<div class="plan-alert"><b>¡Tu ritmo es bueno!</b> Con ${fmtMin(st.weekly)} a la semana terminarías los ${st.mods} módulos en unas ${st.weeks} semanas, aproximadamente el ${addWeeks(base, st.weeks)}.</div>`;
+  const low = st.weekly < 150 ? `<p class="note">Te recomendamos al menos 2 horas y media por semana. Con menos tiempo también se avanza, pero los resultados tardan más.</p>` : "";
+  let w = 0;
+  const timeline = M.slice(p.start).map((Mo, i) => { const m = p.start + i, a = w + 1; w += st.perMod; return `<li><b>Módulo ${m + 1} · ${esc(Mo.level)} · ${esc(Mo.title)}</b>: semanas ${a}–${w}, hasta el ${addWeeks(base, w)} aprox.${passed(m) ? " ✓ Aprobado" : ""}</li>`; }).join("");
+  const week = DAY_NAMES.map((dn, i) => { const bl = blockFor(p, i); return bl
+    ? `<li><span class="day">${dn}</span><span class="what"><b>${bl.map(b => b.t).join(" + ")}</b><span>${bl.map(b => b.d).join(" ")} (${fmtMin(p.mins)})</span></span></li>`
+    : `<li class="rest"><span class="day">${dn}</span><span class="what"><b>Descanso</b><span>Si te animas, mira algo en inglés por gusto.</span></span></li>`; }).join("");
+  const parts = [["Calentamiento", "Repasa 5 palabras o frases de la clase anterior.", .1], ["Presentación", "La parte nueva: lección, vocabulario o texto.", .25], ["Práctica guiada", "Ejercicios con explicación de cada respuesta.", .3], ["Producción", "Habla o escribe: graba tu voz o conversa con el tutor.", .25], ["Cierre", "Anota tus errores y una frase nueva que quieras usar.", .1]];
+  const sess = parts.map(([t, d, f]) => `<li><span><b>${t}:</b> ${d}</span><em>${Math.max(2, Math.round(p.mins * f))} min</em></li>`).join("");
+  return `<div class="card plan-card" id="planCard">
+    <span class="eyebrow">Tu plan de estudio</span>
+    <h2>Inglés ${esc(goalName)}: desde el módulo ${p.start + 1}</h2>
+    <div class="plan-kpis"><div><b>${p.days}</b><span>días por semana</span></div><div><b>${fmtMin(p.mins)}</b><span>por sesión</span></div><div><b>${st.perMod}</b><span>semanas por módulo</span></div></div>
+    ${alert}${low}
+    <h3>Tu semana</h3><ul class="plan-week">${week}</ul>
+    <h3>Así es cada sesión (método de academia)</h3><ul class="plan-sess">${sess}</ul>
+    <h3>Tu camino</h3><ol class="plan-time">${timeline}</ol>
+    <p class="note">Para pasar de un módulo al siguiente hay que aprobar su examen final con más de 16. Si un examen te toma más tiempo, el plan se corre un poco: no pasa nada.</p>
+    <h3>Consejos para tu meta</h3><ul class="lt-rules">${GOAL_TIPS[p.goal].map(t => `<li>${t}</li>`).join("")}<li>${WHEN_TIPS[p.when]}</li></ul>
+    <div class="row"><a class="btn primary" href="#modulo-${nextModule() + 1}" data-gotab="${todayTab(p)}" data-m="${nextModule()}">Empezar la sesión de hoy</a><button class="linkbtn" data-act="ps-edit">Cambiar mis respuestas</button></div>
+  </div>`;
+}
+function nextModule() { let n = MODS.findIndex((_, m) => !passed(m)); if (n < 0) n = 5; if (LV && LV.start > n) n = LV.start; return n; }
+function todayIdx() { return (new Date().getDay() + 6) % 7; }
+function todayTab(p) { const bl = blockFor(p, todayIdx()); const t = bl && bl.find(b => b.tab); return t ? t.tab : "leccion"; }
+function renderToday(next) {
+  const el = document.getElementById("heroToday"); if (!el) return;
+  const p = S.plan; el.hidden = !p; if (!p) return;
+  const bl = blockFor(p, todayIdx());
+  if (!bl) { el.innerHTML = `<span>📅 <b>Hoy es tu día de descanso.</b> Si te animas, ordena una escena de película (5 min).</span><a class="btn small" href="#escenas">Ver escenas</a>`; return; }
+  const first = bl[0];
+  el.innerHTML = `<span>📅 <b>Hoy te toca:</b> ${bl.map(b => esc(b.t)).join(" + ")} · ${fmtMin(p.mins)} · módulo ${next + 1}</span>` +
+    (first.href ? `<a class="btn small primary" href="${first.href}">Empezar</a>` : `<a class="btn small primary" href="#modulo-${next + 1}" data-gotab="${first.tab}" data-m="${next}">Empezar</a>`);
+}
+document.addEventListener("click", e => {
+  const g = e.target.closest("a[data-gotab]");
+  if (g) { const m = +g.dataset.m; S.tab[m] = g.dataset.gotab; save(); if (view.m === m) { view.tab = g.dataset.gotab; renderTabs(); renderPanel(); } return; }
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "ps-pick") {
+    const q = PS_Q.find(x => x.k === b.dataset.k); const opt = q.o.find(o => String(o[0]) === b.dataset.v);
+    PS.ans[q.k] = opt[0]; rerenderPlan();
+  }
+  if (act === "ps-make") {
+    if (!PS_Q.every(q => PS.ans[q.k] != null)) return;
+    S.plan = { ...PS.ans, start: LV ? LV.start : 0, created: Date.now() }; PS.edit = false; save();
+    rerenderPlan(); updateProgress();
+    const c = document.getElementById("planCard"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  if (act === "ps-edit") { PS.edit = true; PS.ans = S.plan ? { goal: S.plan.goal, days: S.plan.days, mins: S.plan.mins, when: S.plan.when, deadline: S.plan.deadline } : {}; rerenderPlan(); }
+  if (act === "ps-cancel") { PS.edit = false; rerenderPlan(); }
+});
+function planSectionHtml() { if (!LV) return ""; return S.plan && !PS.edit ? planHtml(S.plan) : surveyHtml(); }
+function rerenderPlan() { const c = document.getElementById("planCard"); if (!c) return; const t = document.createElement("div"); t.innerHTML = planSectionHtml(); c.replaceWith(t.firstElementChild); }
+
 /* ---------- Cuenta en la nube ---------- */
 const ACC_STORE = "pasaporte-cuenta";
 let ACC = {};
 try { ACC = JSON.parse(localStorage.getItem(ACC_STORE) || "{}") || {}; } catch (e) {}
 let syncTimer = null, syncMsg = "";
 function saveAcc() { try { localStorage.setItem(ACC_STORE, JSON.stringify(ACC)); } catch (e) {} }
-function cloudData() { return { v: 1, p: S.p, tab: S.tab, voice: S.voice, nivel: LV, perfil: PROFILE, esc: S.esc || {}, vi: S.vi || {}, ka: S.ka || {}, tuN: S.tuN || 0, ex: S.ex || {} }; }
+function cloudData() { return { v: 1, p: S.p, tab: S.tab, voice: S.voice, nivel: LV, perfil: PROFILE, esc: S.esc || {}, vi: S.vi || {}, ka: S.ka || {}, tuN: S.tuN || 0, ex: S.ex || {}, plan: S.plan || null }; }
 function mergeCloud(d) {
   if (!d || typeof d !== "object") return;
   if (d.p && typeof d.p === "object") for (const k in d.p) if (S.p[k] == null) S.p[k] = d.p[k];
@@ -2114,6 +2284,7 @@ function mergeCloud(d) {
   if (typeof d.voice === "boolean" && S.voice == null) S.voice = d.voice;
   ["esc", "vi", "ka"].forEach(k => { if (d[k] && typeof d[k] === "object") S[k] = Object.assign({}, d[k], S[k] || {}); });
   if (typeof d.tuN === "number") S.tuN = Math.max(S.tuN || 0, d.tuN);
+  if (d.plan && typeof d.plan === "object" && !S.plan) S.plan = d.plan;
   if (d.ex && typeof d.ex === "object") { S.ex = S.ex || {}; for (const k in d.ex) { const a = S.ex[k], b = d.ex[k]; if (b && (!a || (b.best || 0) > (a.best || 0))) S.ex[k] = b; } }
   try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {}
   if (d.nivel && !LV) { LV = d.nivel; try { localStorage.setItem(LV_STORE, JSON.stringify(LV)); } catch (e) {} }
@@ -2972,6 +3143,7 @@ function route() {
   else if (h === "#escenas") { view.m = null; showView("escenas"); renderEscenas(); window.scrollTo(0, 0); }
   else if (h === "#admin") { view.m = null; showView("admin"); if (AD.key && !AD.users) adminLoad(); else renderAdmin(); window.scrollTo(0, 0); }
   else if (h === "#nivel") { view.m = null; showView("nivel"); renderLevel(); window.scrollTo(0, 0); }
+  else if (h === "#plan") { view.m = null; showView("nivel"); if (LV) LT.step = PLACEMENT.length; renderLevel(); const c = document.getElementById("planCard"); if (c) setTimeout(() => c.scrollIntoView({ block: "start" }), 50); else window.scrollTo(0, 0); }
   else {
     view.m = null; showView(h === "#programa" ? "module" : "landing");
     VIEWS.landing.hidden = false; VIEWS.module.hidden = true;
