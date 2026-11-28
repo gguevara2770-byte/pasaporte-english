@@ -1254,7 +1254,7 @@ function cardFor(key) {
   if (key === "demo") return demoCard();
   const [ms, t, ks] = key.split(":"); const m = +ms, k = +ks;
   if (/^x\d+$/.test(t)) return readXCard(m, +t.slice(1), k);
-  return { l: lessonCard, g: grammarCard, v: vocabCard, li: listenCard, sp: speakCard, sq: speakQCard, o: orderCard, r: readQCard }[t](m, k);
+  return { l: lessonCard, g: grammarCard, v: vocabCard, li: listenCard, sp: speakCard, sq: speakQCard, o: orderCard, r: readQCard, rd: readQCard }[t](m, k);
 }
 function refresh(key) {
   if (key === "tutor") { updateMic(); return; }
